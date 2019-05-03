@@ -16,7 +16,7 @@ class App extends React.Component {
     var allPages = [];
     for (var i = 1; i <= 4; i++) {
       let imageURL = "http://3.92.210.170:8888/s3:data.2012-aug/data/stanford/1920/10/01_01/Stanford_Daily-IMG/Stanford_Daily_19201001_0001_000" + i.toString() + ".jp2";
-      let eachPage = {
+      /*let eachPage = {
         "@context": "http://iiif.io/api/image/2/context.json",
         "@id": imageURL,
         // TODO: check size.
@@ -28,10 +28,9 @@ class App extends React.Component {
           "scaleFactors": [1, 2, 4, 8, 16, 32],
           "width": 1024
         }]
-      };
+      };*/
 
-      // TODO: This should work after "@id" is fixed on the server.
-      //let eachPage = imageURL + "/info.json";
+      let eachPage = imageURL + "/info.json";
 
       console.log(eachPage);
       allPages.push(eachPage);
