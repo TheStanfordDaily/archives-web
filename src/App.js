@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home'
 import PaperView from './pages/PaperView'
+import NotFound from './pages/NotFound'
 
 class App extends React.Component {
   componentDidMount() {
@@ -29,8 +30,11 @@ class App extends React.Component {
               </li>
             </ul>
           </nav>
-          <Route path="/" exact component={Home} />
-          <Route path="/:year(\d{4})-:month(\d{2})-:day(\d{2})" exact component={PaperView} />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/:year(\d{4})-:month(\d{2})-:day(\d{2})" exact component={PaperView} />
+            <Route component={NotFound} />
+          </Switch>
         </div>
       </Router>
     );
