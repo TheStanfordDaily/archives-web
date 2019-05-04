@@ -16,6 +16,12 @@ function createPaperFrom(year, month, day, fullFilePath) {
 
 export async function fetchPaper(year, month, day) {
   let allPapers = await fetchMetadata();
+
+  // TODO: Better way to check it?
+  if (allPapers[year] === undefined || allPapers[year][month] === undefined || allPapers[year][month][day] === undefined) {
+    return null;
+  }
+
   let fullFilePath = allPapers[year][month][day];
   if (!fullFilePath) {
     return null;

@@ -26,6 +26,7 @@ class PaperView extends React.Component {
     let paper = await fetchPaper(matchParams.year, matchParams.month, matchParams.day);
     if (paper === null) {
       this.setState({ paperNotFound: true });
+      return;
     }
 
     let results = await paper.getPages();
