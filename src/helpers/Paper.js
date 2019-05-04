@@ -17,7 +17,7 @@ class Paper {
     this.pages = [];
 
     let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => $.parseXML(e));
-    // fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.folderPath + this.metsFilePath)
+    // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath)
 
     let altoFiles = $(xmlResults).find("fileGrp[ID='ALTOGRP']")[0].children;
     //console.log(altoFiles);

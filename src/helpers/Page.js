@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { STRINGS } from './constants';
 
 class Page {
   constructor(date, pageNumber, folderPath, altoFilePath, imageFilePath) {
@@ -12,12 +13,12 @@ class Page {
 
   async getPage() {
     let results = await fetch('./test-alto.xml').then(e => e.text()).then(e => $.parseXML(e));
-    // fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.folderPath + this.altoFilePath)
+    // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath)
     return results;
   }
 
   getTileSource() {
-    return "http://34.230.42.163:8888/s3:" + this.folderPath + this.imageFilePath + "/info.json";
+    return STRINGS.IMAGE_SERVER_URL + this.folderPath + this.imageFilePath + "/info.json";
   }
 }
 
