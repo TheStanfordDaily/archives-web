@@ -12,8 +12,7 @@ class Page {
   }
 
   async getPage() {
-    let results = await fetch('./test-alto.xml').then(e => e.text()).then(e => parseXML(e));
-    // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath)
+    let results = await fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath).then(e => e.text()).then(e => parseXML(e));
     return results;
   }
 

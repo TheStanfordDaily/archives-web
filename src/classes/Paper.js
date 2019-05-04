@@ -1,5 +1,6 @@
-import Page from './Page';
 import parseXML from 'jquery';
+import Page from './Page';
+import { STRINGS } from '../helpers/constants';
 
 class Paper {
   constructor(year, month, day, folderPath, metsFilePath) {
@@ -16,8 +17,7 @@ class Paper {
 
     this.pages = [];
 
-    let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => parseXML(e));
-    // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath)
+    let xmlResults = await fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath).then(e => e.text()).then(e => parseXML(e));
 
     let altoFiles = xmlResults.find("fileGrp[ID='ALTOGRP']")[0].children;
     //console.log(altoFiles);
