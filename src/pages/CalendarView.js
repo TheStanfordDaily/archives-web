@@ -72,13 +72,18 @@ class CalendarView extends React.Component {
 
   setPaperMonth(op = null) {
     let thisMonth = this.state.currentMonth.clone();
-    // Note that this.state.currentMonth is mutable, so `.add`/`.substract` directly would work.
-    if (op === "NEXT") {
-      thisMonth.add(1, "months");
-    } else if (op === "PREV") {
-      thisMonth.subtract(1, "months");
-    } else {
-      // Default is just `this.state.currentMonth`.
+
+    // Default is just `this.state.currentMonth`.
+    if (op !== null) {
+      // Note that this.state.currentMonth is mutable, so `.add`/`.substract` directly would work.
+      if (op === "NEXT") {
+        thisMonth.add(1, "months");
+      } else if (op === "PREV") {
+        thisMonth.subtract(1, "months");
+      }
+      let yearString = thisMonth.format('YYYY');
+      let monthString = thisMonth.format('MM');
+      this.props.history.push("/calendar/" + yearString + "/" + monthString + "/");
     }
 
     let allEvents = [];
