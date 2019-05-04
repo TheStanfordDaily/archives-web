@@ -2,7 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import NotFound from './NotFound';
-import { fetchPapersByYear } from '../helpers/papers';
+import { fetchAllPapers, fetchPapersByYear } from '../helpers/papers';
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -11,10 +11,26 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarNotFound: false };
+    this.state = { calendarNotFound: false, allEvents: [] };
   }
 
   async componentDidMount() {
+    let allEvents = [];
+
+    let allPapers = await fetchAllPapers();
+    //console.log(allPapers);
+    for ( let eachPaper of allPapers ) {
+      let eachEvent = {
+        start: eachPaper.date,
+        end: eachPaper.date,
+        title: moment(eachPaper.date).format('YYYY-MM-DD')
+      };
+      allEvents.push(eachEvent);
+    }
+    //console.log(allEvents);
+    this.setState({ allEvents: allEvents });
+
+
     if (!this.props.match.params.month) {
       let yearData = await fetchPapersByYear(this.props.match.params.year);
       console.log(yearData);
@@ -39,18 +55,8 @@ class CalendarView extends React.Component {
         <div>
           <BigCalendar
             localizer={localizer}
-            events={[
-              {
-                start: new Date(),
-                end: new Date(),
-                title: "Some title"
-              },
-              {
-                start: new Date(moment().add(1, "days")),
-                end: new Date(moment().add(1, "days")),
-                title: "Some title"
-              }
-            ]}
+            events={this.state.allEvents}
+            defaultDate={new Date(1892, 10 - 1)}
             startAccessor="start"
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
