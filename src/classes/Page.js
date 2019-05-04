@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import parseXML from 'jquery';
 import { STRINGS } from '../helpers/constants';
 
 class Page {
@@ -12,7 +12,7 @@ class Page {
   }
 
   async getPage() {
-    let results = await fetch('./test-alto.xml').then(e => e.text()).then(e => $.parseXML(e));
+    let results = await fetch('./test-alto.xml').then(e => e.text()).then(e => parseXML(e));
     // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath)
     return results;
   }

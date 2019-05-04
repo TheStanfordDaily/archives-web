@@ -1,5 +1,5 @@
 import Page from './Page';
-import $ from 'jquery';
+import parseXML from 'jquery';
 
 class Paper {
   constructor(year, month, day, folderPath, metsFilePath) {
@@ -16,10 +16,10 @@ class Paper {
 
     this.pages = [];
 
-    let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => $.parseXML(e));
+    let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => parseXML(e));
     // fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath)
 
-    let altoFiles = $(xmlResults).find("fileGrp[ID='ALTOGRP']")[0].children;
+    let altoFiles = xmlResults.find("fileGrp[ID='ALTOGRP']")[0].children;
     //console.log(altoFiles);
     for (var i = 0; i < altoFiles.length; i++) {
       let altoFileTag = altoFiles[i];
@@ -27,7 +27,7 @@ class Paper {
       altoFilename = altoFilename.replace("file://./", "");
       console.log(altoFilename);
 
-      let imageFileTag = $(xmlResults).find("fileGrp[ID='IMGGRP']")[0].children[i];
+      let imageFileTag = xmlResults.find("fileGrp[ID='IMGGRP']")[0].children[i];
       let imageFilename = imageFileTag.children[0].attributes["xlink:href"].nodeValue;
       imageFilename = imageFilename.replace("file://./", "");
       console.log(imageFilename);
