@@ -32,6 +32,8 @@ class App extends React.Component {
       minZoomLevel: 1,
       defaultZoomLevel: 1,
       sequenceMode: true,
+      showReferenceStrip: true,
+      showNavigator: true,
       tileSources: allTileSources
     });
   }
