@@ -1,8 +1,7 @@
 import React from 'react';
 import OpenSeadragon from 'openseadragon';
 import NotFound from './NotFound';
-import Paper from '../classes/Paper';
-import { STRINGS } from '../helpers/constants';
+import { fetchPaper } from '../helpers/papers';
 
 class PaperView extends React.Component {
   constructor(props) {
@@ -19,12 +18,12 @@ class PaperView extends React.Component {
     );
     console.log(openseadragonImagesFolderPath);*/
 
-    //await this.fetchAllPapers();
 
-    //let testPaper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
-    //let testPaper = this.allPapers[10000];
+    //let paper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
+    //let allPapers = await fetchAllPapers();
+    //let paper = allPapers[10000];
     let matchParams = this.props.match.params;
-    let paper = await this.fetchPaper(matchParams.year, matchParams.month, matchParams.day);
+    let paper = await fetchPaper(matchParams.year, matchParams.month, matchParams.day);
     if (paper === null) {
       this.setState({ paperNotFound: true });
     }
@@ -72,39 +71,6 @@ class PaperView extends React.Component {
         <div id="openseadragon1" style={{ "width": 800, "height": 600}} />
       </div>
     );
-  }
-
-  async fetchPaper(year, month, day) {
-    let allPapers = await fetch(STRINGS.FILE_SERVER_URL + "metadata.json").then(e => e.json());
-    let fullFilePath = allPapers[year][month][day];
-    if (!fullFilePath) {
-      return null;
-    }
-    // https://stackoverflow.com/a/5555607/2603230
-    var folderPath = fullFilePath.substring(0, fullFilePath.lastIndexOf("/") + 1);
-    var metsFilePath = fullFilePath.substring(fullFilePath.lastIndexOf("/") + 1, fullFilePath.length);
-    let paper = new Paper(Number(year), Number(month), Number(day), folderPath, metsFilePath);
-    return paper;
-  }
-
-  async fetchAllPapers() {
-    this.allPapers = [];
-    let results = await fetch(STRINGS.FILE_SERVER_URL + "metadata.json").then(e => e.json());
-    //console.log(results);
-    for (var year in results) {
-      for (var month in results[year]) {
-        for (var day in results[year][month]) {
-          let fullFilePath = results[year][month][day];
-          // https://stackoverflow.com/a/5555607/2603230
-          var folderPath = fullFilePath.substring(0, fullFilePath.lastIndexOf("/") + 1);
-          var metsFilePath = fullFilePath.substring(fullFilePath.lastIndexOf("/") + 1, fullFilePath.length);
-          let paper = new Paper(Number(year), Number(month), Number(day), folderPath, metsFilePath);
-          //console.log(fullFilePath);
-          this.allPapers.push(paper);
-        }
-      }
-    }
-    console.log(this.allPapers);
   }
 }
 
