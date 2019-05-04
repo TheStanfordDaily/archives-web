@@ -14,7 +14,7 @@ class App extends React.Component {
     );
     console.log(openseadragonImagesFolderPath);*/
 
-    let testPaper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/Stanford_Daily_19201001_0001-METS.xml");
+    let testPaper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
     let results = await testPaper.getPages();
     console.log(results);
 
@@ -32,7 +32,6 @@ class App extends React.Component {
       minZoomLevel: 1,
       defaultZoomLevel: 1,
       sequenceMode: true,
-      debugMode: true, // TODO: REMOVE THIS
       tileSources: allTileSources
     });
   }

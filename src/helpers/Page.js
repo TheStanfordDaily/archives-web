@@ -1,19 +1,23 @@
+import $ from 'jquery';
+
 class Page {
-  constructor(date, pageNumber, altoFilename, imageFilename) {
+  constructor(date, pageNumber, folderPath, altoFilePath, imageFilePath) {
     this.date = date;
+    // `pageNumber` is 1-based (because the filename convention).
     this.pageNumber = pageNumber;
-    this.altoFilename = altoFilename;
-    this.imageFilename = imageFilename;
+    this.folderPath = folderPath;
+    this.altoFilePath = altoFilePath;
+    this.imageFilePath = imageFilePath;
   }
 
   async getPage() {
-    let results = await fetch('./test-alto.xml').then(e => new DOMParser().parseFromString(e, 'application/xml'));
-    // await fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.altoFilename).then(e => new DOMParser().parseFromString(e, 'application/xml'));
+    let results = await fetch('./test-alto.xml').then(e => e.text()).then(e => $.parseXML(e));
+    // fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.folderPath + this.altoFilePath)
     return results;
   }
 
   getTileSource() {
-    return this.imageFilename + "/info.json";
+    return "http://34.230.42.163:8888/s3:" + this.folderPath + this.imageFilePath + "/info.json";
   }
 }
 

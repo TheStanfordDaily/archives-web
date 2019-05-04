@@ -1,10 +1,12 @@
 import Page from './Page';
+import $ from 'jquery';
 
 class Paper {
-  constructor(year, month, day, metsFile) {
+  constructor(year, month, day, folderPath, metsFilePath) {
     // The argument monthIndex is 0-based. Hence the `-1`.
     this.date = new Date(year, month - 1, day);
-    this.metsFile = metsFile;
+    this.folderPath = folderPath;
+    this.metsFilePath = metsFilePath;
   }
 
   async getPages() {
@@ -12,13 +14,26 @@ class Paper {
       return this.pages;
     }
 
-    let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => new DOMParser().parseFromString(e, 'application/xml'));
-    // fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.metsFile).then(e => new DOMParser().parseFromString(e, 'application/xml'));
-
     this.pages = [];
-    for (var i = 1; i <= 4; i++) {  // TODO: get actual data
-      let imageURL = "http://34.230.42.163:8888/s3:data.2012-aug/data/stanford/1920/10/01_01/Stanford_Daily-IMG/Stanford_Daily_19201001_0001_000" + i.toString() + ".jp2";
-      let eachPage = new Page(this.date, i, "./a.xml", imageURL);
+
+    let xmlResults = await fetch('./test-mets.xml').then(e => e.text()).then(e => $.parseXML(e));
+    // fetch('https://s3.amazonaws.com/stanforddailyarchive/' + this.folderPath + this.metsFilePath)
+
+    let altoFiles = $(xmlResults).find("fileGrp[ID='ALTOGRP']")[0].children;
+    //console.log(altoFiles);
+    for (var i = 0; i < altoFiles.length; i++) {
+      let altoFileTag = altoFiles[i];
+      let altoFilename = altoFileTag.children[0].attributes["xlink:href"].nodeValue;
+      altoFilename = altoFilename.replace("file://./", "");
+      console.log(altoFilename);
+
+      let imageFileTag = $(xmlResults).find("fileGrp[ID='IMGGRP']")[0].children[i];
+      let imageFilename = imageFileTag.children[0].attributes["xlink:href"].nodeValue;
+      imageFilename = imageFilename.replace("file://./", "");
+      console.log(imageFilename);
+
+      // `+1` because `pageNumber` is 1-based.
+      let eachPage = new Page(this.date, i + 1, this.folderPath, altoFilename, imageFilename);
       this.pages.push(eachPage);
     }
 
