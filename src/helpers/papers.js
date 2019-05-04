@@ -1,7 +1,8 @@
+import moment from 'moment'
 import Paper from '../classes/Paper';
 import { STRINGS } from '../helpers/constants';
 
-async function fetchMetadata() {
+export async function fetchMetadata() {
   let allPapers = await fetch(STRINGS.FILE_SERVER_URL + "metadata.json").then(e => e.json());
   return allPapers;
 }
@@ -57,4 +58,23 @@ export async function fetchAllPapers() {
   }
   console.log(results);
   return results;
+}
+
+export function getMonthEventsFromMetadata(metadata, month) {
+  let allEvents = [];
+  let yearString = month.format('YYYY');
+  let monthString = month.format('MM');
+  for (let eachDay in metadata[yearString][monthString]) {
+    //console.log(eachDay);
+    let thisDay = new Date(month.year(), month.month(), eachDay);
+    let eachEvent = {
+      start: thisDay,
+      end: thisDay,
+      title: moment(thisDay).format('YYYY-MM-DD')
+    };
+    //console.log(eachEvent);
+    allEvents.push(eachEvent);
+  }
+  console.log(allEvents);
+  return allEvents;
 }

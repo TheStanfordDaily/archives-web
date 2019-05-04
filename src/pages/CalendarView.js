@@ -2,7 +2,8 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import NotFound from './NotFound';
-import { fetchAllPapers, fetchPapersByYear } from '../helpers/papers';
+import CalendarToolbar from './components/CalendarToolbar';
+import { fetchMetadata, fetchPapersByYear, getMonthEventsFromMetadata } from '../helpers/papers';
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -11,25 +12,18 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarNotFound: false, allEvents: [] };
+    this.state = { calendarNotFound: false, allPapers: [], allEvents: [], currentMonth: null };
   }
 
   async componentDidMount() {
-    let allEvents = [];
+    let allPapers = await fetchMetadata();
+    this.setState({ allPapers: allPapers });
 
-    let allPapers = await fetchAllPapers();
-    //console.log(allPapers);
-    for ( let eachPaper of allPapers ) {
-      let eachEvent = {
-        start: eachPaper.date,
-        end: eachPaper.date,
-        title: moment(eachPaper.date).format('YYYY-MM-DD')
-      };
-      allEvents.push(eachEvent);
-    }
-    //console.log(allEvents);
-    this.setState({ allEvents: allEvents });
-
+    let yearString = this.props.match.params.year;
+    let monthString = this.props.match.params.month;
+    let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
+    this.setState({currentMonth: thisMonth});
+    this.setPaperMonth();
 
     if (!this.props.match.params.month) {
       let yearData = await fetchPapersByYear(this.props.match.params.year);
@@ -56,11 +50,12 @@ class CalendarView extends React.Component {
           <BigCalendar
             localizer={localizer}
             events={this.state.allEvents}
-            defaultDate={new Date(1892, 10 - 1)}
+            defaultDate={new Date(Number(this.props.match.params.year), Number(this.props.match.params.month) - 1)}
             startAccessor="start"
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
             views={[ "month" ]}
+            components={{ toolbar: CalendarToolbar([ (op) => this.setPaperMonth(op) ]) }}
             style={{ "height": 500 }}
           />
         </div>
@@ -73,6 +68,25 @@ class CalendarView extends React.Component {
     let selectedDateString = moment(selectedDate).format('YYYY-MM-DD');
     console.log(selectedDateString);
     this.props.history.push('/paper/' + selectedDateString);
+  }
+
+  setPaperMonth(op = null) {
+    let thisMonth = this.state.currentMonth.clone();
+    // Note that this.state.currentMonth is mutable, so `.add`/`.substract` directly would work.
+    if (op === "NEXT") {
+      thisMonth.add(1, "months");
+    } else if (op === "PREV") {
+      thisMonth.subtract(1, "months");
+    } else {
+      // Default is just `this.state.currentMonth`.
+    }
+
+    let allEvents = [];
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().subtract(1, "months")));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone()));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().add(1, "months")));
+
+    this.setState({ currentMonth: thisMonth, allEvents: allEvents });
   }
 }
 
