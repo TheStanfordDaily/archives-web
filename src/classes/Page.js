@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { STRINGS } from './constants';
+import { STRINGS } from '../helpers/constants';
 
 class Page {
   constructor(date, pageNumber, folderPath, altoFilePath, imageFilePath) {

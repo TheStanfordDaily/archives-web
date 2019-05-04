@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import OpenSeadragon from 'openseadragon';
-import Paper from './helpers/Paper';
+import Paper from './classes/Paper';
 
 class App extends React.Component {
   async componentDidMount() {
