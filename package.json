@@ -6,6 +6,7 @@
     "jquery": "^3.4.1",
     "openseadragon": "^2.4.0",
     "react": "^16.8.6",
+    "react-big-calendar": "^0.20.4",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0"
