@@ -49,6 +49,7 @@ class PaperView extends React.Component {
       defaultZoomLevel: 1,
       sequenceMode: true,
       showReferenceStrip: true,
+      referenceStripScroll: 'vertical',
       showNavigator: true,
       tileSources: allTileSources
     });
