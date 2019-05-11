@@ -79,7 +79,6 @@ class Paper {
         sections.push(sectionInfo);
       }
 
-      // `+1` because `pageNumber` is 1-based.
       let eachPage = new Page(this.date, pageNumber, pageLabel, this.folderPath, altoFilename, imageFilename, sections);
       this.pages.push(eachPage);
     }

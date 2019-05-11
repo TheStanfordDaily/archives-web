@@ -1,3 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+.PaperMain {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.NavigationSection {
+  flex: 30%;
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+/* Main column */
+.PaperSection {
+  flex: 70%;
+}
+
 .highlight {
   opacity: 0.4;
   filter: alpha(opacity=40);
