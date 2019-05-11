@@ -61,6 +61,10 @@ export async function fetchAllPapers() {
 }
 
 export function getMonthEventsFromMetadata(metadata, month) {
+  if (!isMonthInMetaData(metadata, month)) {
+    return [];
+  }
+
   let allEvents = [];
   let yearString = month.format('YYYY');
   let monthString = month.format('MM');
@@ -77,4 +81,13 @@ export function getMonthEventsFromMetadata(metadata, month) {
   }
   console.log(allEvents);
   return allEvents;
+}
+
+export function isMonthInMetaData(metadata, month) {
+  let yearString = month.format('YYYY');
+  let monthString = month.format('MM');
+  if (metadata[yearString] === undefined || metadata[yearString][monthString] === undefined) {
+    return false;
+  }
+  return true;
 }

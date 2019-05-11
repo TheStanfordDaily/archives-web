@@ -1,9 +1,9 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import NotFound from './NotFound';
 import CalendarToolbar from './components/CalendarToolbar';
-import { fetchMetadata, fetchPapersByYear, getMonthEventsFromMetadata } from '../helpers/papers';
+import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
+import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -12,47 +12,37 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarNotFound: false, allPapers: [] };
+    this.state = { loading: true, allPapers: [] };
   }
 
   async componentDidMount() {
     let allPapers = await fetchMetadata();
-    this.setState({ allPapers: allPapers });
-
-    if (!this.props.match.params.month) {
-      let yearData = await fetchPapersByYear(this.props.match.params.year);
-      console.log(yearData);
-      if (yearData === null) {
-        this.setState({ calendarNotFound: true });
-      }
-    }
+    this.setState({ allPapers: allPapers, loading: false });
   }
 
   componentWillUnmount() {
   }
 
   render() {
-    if (this.state.allPapers.length === 0) {
+    if (this.state.loading) {
       return (
         <div>Loading...</div>
       );
     }
 
-    if (this.state.calendarNotFound) {
-      return (
-        <NotFound />
-      );
-    }
-
-
     let yearString = this.props.match.params.year;
     let monthString = this.props.match.params.month;
     let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
 
+    let calendarNotFound = !isMonthInMetaData(this.state.allPapers, thisMonth);
+
     let allEvents = [];
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().subtract(1, "months")));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone()));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().add(1, "months")));
+    if (!calendarNotFound) {
+      allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().subtract(1, "months")));
+      allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone()));
+      allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().add(1, "months")));
+    }
+
     return (
       <div className="CalendarView">
         CalendarView{this.props.match.params.year}, {this.props.match.params.month}
@@ -64,12 +54,14 @@ class CalendarView extends React.Component {
             startAccessor="start"
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
-            views={[ "month" ]}
+            views={{ month: true, notfound: CalendarNotFoundComponent }}
+            view={ calendarNotFound ? "notfound" : "month" }
             components={{ toolbar: CalendarToolbar }}
             style={{ "height": 500 }}
             onNavigate={(date) => {
               this.goToNewDate(date);
             }}
+            onView={() => {}} // Do nothing (to suppress the warning)
           />
         </div>
       </div>
