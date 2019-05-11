@@ -34,8 +34,8 @@ class App extends React.Component {
           </nav>
           <Switch>
             <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
-            <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})(/)?:month(\\d{2})?"} exact component={CalendarView} />
-            <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} exact component={PaperView} />
+            <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
+            <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
             <Route component={NotFound} />
           </Switch>
         </div>
