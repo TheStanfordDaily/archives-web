@@ -5,6 +5,7 @@ import moment from 'moment'
 import queryString from 'query-string';
 import NotFound from './NotFound';
 import { fetchPaper } from '../helpers/papers';
+import { STRINGS } from '../helpers/constants'
 
 import "./css/PaperView.css"
 
@@ -152,7 +153,7 @@ class PaperView extends React.Component {
 
     return (
       <div className="PaperView">
-        <Link to={"/calendar/" + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
+        <Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
         <div id="openseadragon1" style={{ "width": 800, "height": 600 }} />
       </div>
     );

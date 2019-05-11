@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import CalendarView from './pages/CalendarView'
 import PaperView from './pages/PaperView'
 import NotFound from './pages/NotFound'
+import { STRINGS } from './helpers/constants'
 
 class App extends React.Component {
   componentDidMount() {
@@ -32,9 +33,9 @@ class App extends React.Component {
             </ul>
           </nav>
           <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/calendar/:year(\d{4})(/)?:month(\d{2})?" exact component={CalendarView} />
-            <Route path="/paper/:year(\d{4})-:month(\d{2})-:day(\d{2})" exact component={PaperView} />
+            <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
+            <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})(/)?:month(\\d{2})?"} exact component={CalendarView} />
+            <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} exact component={PaperView} />
             <Route component={NotFound} />
           </Switch>
         </div>
