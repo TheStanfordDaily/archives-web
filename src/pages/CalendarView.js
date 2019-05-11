@@ -12,18 +12,14 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarNotFound: false, allPapers: [], allEvents: [], currentMonth: null };
+    this.state = { calendarNotFound: false, allPapers: [], currentMonth: null };
   }
 
   async componentDidMount() {
+    this.updateCurrentMonth();
+
     let allPapers = await fetchMetadata();
     this.setState({ allPapers: allPapers });
-
-    let yearString = this.props.match.params.year;
-    let monthString = this.props.match.params.month;
-    let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
-    this.setState({currentMonth: thisMonth});
-    this.setPaperMonth();
 
     if (!this.props.match.params.month) {
       let yearData = await fetchPapersByYear(this.props.match.params.year);
@@ -37,26 +33,54 @@ class CalendarView extends React.Component {
   componentWillUnmount() {
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.year !== prevProps.match.params.year ||
+      this.props.match.params.month !== prevProps.match.params.month) {
+      this.updateCurrentMonth();
+    }
+  }
+
+  updateCurrentMonth() {
+    let yearString = this.props.match.params.year;
+    let monthString = this.props.match.params.month;
+    let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
+    this.setState({ currentMonth: thisMonth });
+  }
+
   render() {
     if (this.state.calendarNotFound) {
       return (
         <NotFound />
       );
     }
+
+    if (this.state.allPapers.length === 0 || this.state.currentMonth === null) {
+      return (
+        <div>Loading...</div>
+      );
+    }
+
+    let allEvents = [];
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone().subtract(1, "months")));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone()));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone().add(1, "months")));
     return (
       <div className="CalendarView">
         CalendarView{this.props.match.params.year}, {this.props.match.params.month}
         <div>
           <BigCalendar
             localizer={localizer}
-            events={this.state.allEvents}
-            defaultDate={new Date(Number(this.props.match.params.year), Number(this.props.match.params.month) - 1)}
+            events={allEvents}
+            date={new Date(this.state.currentMonth)}
             startAccessor="start"
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
             views={[ "month" ]}
-            components={{ toolbar: CalendarToolbar([ (op) => this.setPaperMonth(op) ]) }}
+            components={{ toolbar: CalendarToolbar }}
             style={{ "height": 500 }}
+            onNavigate={(date) => {
+              this.goToNewDate(date);
+            }}
           />
         </div>
       </div>
@@ -70,28 +94,11 @@ class CalendarView extends React.Component {
     this.props.history.push('/paper/' + selectedDateString);
   }
 
-  setPaperMonth(op = null) {
-    let thisMonth = this.state.currentMonth.clone();
-
-    // Default is just `this.state.currentMonth`.
-    if (op !== null) {
-      // Note that this.state.currentMonth is mutable, so `.add`/`.substract` directly would work.
-      if (op === "NEXT") {
-        thisMonth.add(1, "months");
-      } else if (op === "PREV") {
-        thisMonth.subtract(1, "months");
-      }
-      let yearString = thisMonth.format('YYYY');
-      let monthString = thisMonth.format('MM');
-      this.props.history.push("/calendar/" + yearString + "/" + monthString + "/");
-    }
-
-    let allEvents = [];
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().subtract(1, "months")));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone()));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().add(1, "months")));
-
-    this.setState({ currentMonth: thisMonth, allEvents: allEvents });
+  goToNewDate(newDate) {
+    let newDateMoment = moment(newDate);
+    let yearString = newDateMoment.format('YYYY');
+    let monthString = newDateMoment.format('MM');
+    this.props.history.push("/calendar/" + yearString + "/" + monthString + "/");
   }
 }
 
