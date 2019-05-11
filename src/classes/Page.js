@@ -2,7 +2,7 @@ import parseXML from 'jquery';
 import { STRINGS } from '../helpers/constants';
 
 class Page {
-  constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath) {
+  constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath, sections) {
     this.date = date;
     // `pageNumber` is 1-based (because the filename convention).
     this.pageNumber = pageNumber;
@@ -12,6 +12,9 @@ class Page {
     this.folderPath = folderPath;
     this.altoFilePath = altoFilePath;
     this.imageFilePath = imageFilePath;
+
+    // Format: [{type: "", title: "", areaIDs: ["", ...]}, ...]
+    this.sections = sections;
   }
 
   async getAltoData() {
