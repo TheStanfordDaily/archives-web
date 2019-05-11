@@ -32,12 +32,13 @@ class Page {
     let width = textBlock.attributes["width"].nodeValue * scaleFactor;
     let height = textBlock.attributes["height"].nodeValue * scaleFactor;
     let results = {
+      id: id,
       x: xPos,
       y: yPos,
       width: width,
       height: height
     };
-    //console.log(results);
+    console.log(results);
     return results;
   }
 
@@ -49,7 +50,7 @@ class Page {
 
     let overlays = [];
 
-    let overlayIDs = ["P1_TB00011", "P1_TB00012", "P1_TB00013", "P1_TB00014", "P1_TB00015", "P1_TB00016", "P1_TB00017"];
+    let overlayIDs = ["P1_TB00011", "P1_TB00012", "P1_TB00013", "P1_TB00014", "P1_TB00015", "P1_TB00016", "P1_TB00017", "P1_CB00002", "P1_TB00018"];
     for (let eachID of overlayIDs) {
       let overlayPos = this.getBlockPositionAndSize(eachID);
       let overlay = {
