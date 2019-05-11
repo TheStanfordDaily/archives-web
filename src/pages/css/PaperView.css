@@ -8,22 +8,32 @@ html, body {
   padding: 0px;
 }
 
-.PaperMain {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .NavigationSection {
-  flex: 30%;
+  width: 30%;
+  height: 100vh;
+  float: left;
   background-color: #f1f1f1;
   padding: 20px;
-  height: 100vh;
   overflow: scroll;
 }
 
 .PaperSection {
-  flex: 70%;
+  width: 70%;
   height: 100vh;
+  float: right;
+}
+
+@media screen and (max-width: 700px) {
+  .NavigationSection {
+    float: none;
+    height: 30vh;
+    width: 100%;
+  }
+  .PaperSection {
+    float: none;
+    height: 70vh;
+    width: 100%;
+  }
 }
 
 .highlight {
