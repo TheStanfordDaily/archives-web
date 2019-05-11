@@ -94,7 +94,15 @@ class PaperView extends React.Component {
   onPageChange(page) {
     // `page` is 0-indexed.
     let pageNumber = page + 1;
-    this.props.history.push("#page=" + pageNumber.toString());
+
+    let hashValue = queryString.parse(this.props.location.hash);
+    //console.log("hashValue.page is " + hashValue.page.toString() + "while pageNumber is " + pageNumber.toString());
+    // Only use `history.push` if current hash pageNumber is not equal to the new pageNumber.
+    if (Number(hashValue.page) !== pageNumber) {
+      console.log("Number(hashValue.page) !== pageNumber");
+      hashValue.page = pageNumber;
+      this.props.history.push("#" + queryString.stringify(hashValue));
+    }
   }
 
   // TODO: Do we need this?
