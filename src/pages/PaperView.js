@@ -161,7 +161,7 @@ class PaperView extends React.Component {
               <p><button key={section.title} onClick={() => this.viewer.goToPage(page.pageNumber - 1)}>{section.title} (Page {page.pageLabel})</button></p>
             )
           })}</div>
-          <div className="PaperSection" id="openseadragon1" style={{ "height": 600 }} />
+          <div className="PaperSection" id="openseadragon1" />
         </div>
       </div>
     );

@@ -2,6 +2,12 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
 .PaperMain {
   display: flex;
   flex-wrap: wrap;
@@ -11,11 +17,13 @@
   flex: 30%;
   background-color: #f1f1f1;
   padding: 20px;
+  height: 100vh;
+  overflow: scroll;
 }
 
-/* Main column */
 .PaperSection {
   flex: 70%;
+  height: 100vh;
 }
 
 .highlight {
