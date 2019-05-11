@@ -80,14 +80,14 @@ class PaperView extends React.Component {
     console.log("Hash set/changed to:");
     console.log(hashValue);
 
-    if (!isNaN(hashValue.page)) {
-      let pageNumber = Number(hashValue.page);
-      if (pageNumber <= 0) {
-        return;
-      }
+    let pageNumber = Number(hashValue.page);
+    if (!isNaN(pageNumber) && pageNumber > 0) {
       console.log("Going to page " + pageNumber);
       // `goToPage` is 0-indexed.
       this.viewer.goToPage(pageNumber - 1);
+    } else {
+      // By default, go to page 1.
+      this.viewer.goToPage(0);
     }
   }
 
