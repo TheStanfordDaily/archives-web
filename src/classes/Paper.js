@@ -58,6 +58,8 @@ class Paper {
         let title = eachSection.attributes["LABEL"] ? eachSection.attributes["LABEL"].nodeValue : "Untitled";
         //console.log(title);
 
+        let sectionID = eachSection.attributes["DMDID"] ? eachSection.attributes["DMDID"].nodeValue : eachSection.attributes["ID"].nodeValue;
+
         let areaIDs = [];
         let rawAreas = parseXML(eachSection).find("area[FILEID='" + altoFileID + "']");
         //console.log(rawAreas);
@@ -69,6 +71,7 @@ class Paper {
         let sectionInfo = {
           type: type,
           title: title,
+          sectionID: sectionID,
           areaIDs: areaIDs
         }
         //console.log(sectionInfo);
