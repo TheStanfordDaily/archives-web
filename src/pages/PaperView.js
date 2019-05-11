@@ -1,5 +1,6 @@
 import React from 'react';
 import OpenSeadragon from 'openseadragon';
+import queryString from 'query-string';
 import NotFound from './NotFound';
 import { fetchPaper } from '../helpers/papers';
 
@@ -41,7 +42,7 @@ class PaperView extends React.Component {
     console.log(allTileSources);
     this.setState({ loading: false });
 
-    var viewer = new OpenSeadragon({
+    this.viewer = new OpenSeadragon({
       id: "openseadragon1",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
       preserveViewport: true,
@@ -53,9 +54,39 @@ class PaperView extends React.Component {
       showNavigator: true,
       tileSources: allTileSources
     });
+
+
+    // Go to the page number given by the hash.
+    this.onHashChange();
+
+    // https://stackoverflow.com/a/38965945/2603230
+    // https://gist.github.com/Restuta/e400a555ba24daa396cc
+    this.bind_onHashChange = this.onHashChange.bind(this);
+    window.addEventListener("hashchange", this.bind_onHashChange, false);
   }
 
   componentWillUnmount() {
+    console.log("unmount");
+
+    // https://stackoverflow.com/a/38965945/2603230
+    // https://gist.github.com/Restuta/e400a555ba24daa396cc
+    window.removeEventListener("hashchange", this.bind_onHashChange, false);
+  }
+
+  onHashChange() {
+    let hashValue = queryString.parse(this.props.location.hash);
+    console.log("Hash set/changed to:");
+    console.log(hashValue);
+
+    if (!isNaN(hashValue.page)) {
+      let pageNumber = Number(hashValue.page);
+      if (pageNumber <= 0) {
+        return;
+      }
+      console.log("Going to page " + pageNumber);
+      // `goToPage` is 0-indexed.
+      this.viewer.goToPage(pageNumber - 1);
+    }
   }
 
   // TODO: Do we need this?
