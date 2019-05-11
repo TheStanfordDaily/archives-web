@@ -1,6 +1,7 @@
 import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
+import NotFound from './NotFound'
 import CalendarToolbar from './components/CalendarToolbar';
 import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
@@ -33,6 +34,12 @@ class CalendarView extends React.Component {
     let yearString = this.props.match.params.year;
     let monthString = this.props.match.params.month;
     let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
+
+    if (!thisMonth.isValid()) {
+      return (
+        <NotFound />
+      )
+    }
 
     let calendarNotFound = !isMonthInMetaData(this.state.allPapers, thisMonth);
 
