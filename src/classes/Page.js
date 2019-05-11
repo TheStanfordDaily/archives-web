@@ -2,10 +2,13 @@ import parseXML from 'jquery';
 import { STRINGS } from '../helpers/constants';
 
 class Page {
-  constructor(date, pageNumber, folderPath, altoFilePath, imageFilePath) {
+  constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath) {
     this.date = date;
     // `pageNumber` is 1-based (because the filename convention).
     this.pageNumber = pageNumber;
+    // From the attribute `ORDERLABEL=""` in "Physical Structure"
+    this.pageLabel = pageLabel;
+
     this.folderPath = folderPath;
     this.altoFilePath = altoFilePath;
     this.imageFilePath = imageFilePath;

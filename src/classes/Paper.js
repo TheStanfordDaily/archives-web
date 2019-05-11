@@ -23,6 +23,16 @@ class Paper {
     //console.log(altoFiles);
     for (var i = 0; i < altoFiles.length; i++) {
       let altoFileTag = altoFiles[i];
+      let altoFileID = altoFileTag.attributes["ID"].nodeValue;
+      console.log(altoFileID);
+
+      let pageInfo = xmlResults.find("structMap[TYPE='PHYSICAL'] area[FILEID='" + altoFileID + "']").parent().parent().parent()[0];
+      let pageNumber = Number(pageInfo.attributes["ORDER"].nodeValue);
+      // Note that it seems `ALTO00001` does not have `LABEL="..."`, so we have to use `ORDERLABEL`.
+      let pageLabel = pageInfo.attributes["ORDERLABEL"].nodeValue;
+      console.log(pageNumber);
+      console.log(pageLabel);
+
       let altoFilename = altoFileTag.children[0].attributes["xlink:href"].nodeValue;
       altoFilename = altoFilename.replace("file://./", "");
       console.log(altoFilename);
@@ -33,7 +43,7 @@ class Paper {
       console.log(imageFilename);
 
       // `+1` because `pageNumber` is 1-based.
-      let eachPage = new Page(this.date, i + 1, this.folderPath, altoFilename, imageFilename);
+      let eachPage = new Page(this.date, pageNumber, pageLabel, this.folderPath, altoFilename, imageFilename);
       this.pages.push(eachPage);
     }
 
