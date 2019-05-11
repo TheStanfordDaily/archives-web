@@ -36,7 +36,7 @@ class PaperView extends React.Component {
 
     var allTileSources = [];
     for (let eachPage of results) {
-      allTileSources.push(eachPage.getTileSource());
+      allTileSources.push(await eachPage.getTileSource());
     }
     console.log(allTileSources);
 
