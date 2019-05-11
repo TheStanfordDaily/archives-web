@@ -28,7 +28,7 @@ class Page {
 
   getBlockPositionAndSize(id) {
     // Based on testing. See https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491481280.
-    const scaleFactor = 0.0003;
+    const scaleFactor = 0.000299;
 
     // Find tag with `ID="{id}"`
     // https://stackoverflow.com/a/17268477/2603230
@@ -56,25 +56,30 @@ class Page {
 
     let overlays = [];
 
-    let overlayIDs = ["P1_TB00011", "P1_TB00012", "P1_TB00013", "P1_TB00014", "P1_TB00015", "P1_TB00016", "P1_TB00017", "P1_CB00002", "P1_TB00018"];
-    for (let eachID of overlayIDs) {
-      let overlayPos = this.getBlockPositionAndSize(eachID);
-      let overlay = {
-        // TODO: ADD `id`
-        x: overlayPos.x,
-        y: overlayPos.y,
-        width: overlayPos.width,
-        height: overlayPos.height,
-        className: 'highlight'
-      };
-      overlays.push(overlay);
+    for (let eachSection of this.sections) {
+      let overlayIDs = eachSection.areaIDs;
+      for (let eachID of overlayIDs) {
+        let overlayPos = this.getBlockPositionAndSize(eachID);
+        let overlay = {
+          // TODO: ADD `id`
+          x: overlayPos.x,
+          y: overlayPos.y,
+          width: overlayPos.width,
+          height: overlayPos.height,
+          className: 'highlight'
+        };
+        overlays.push(overlay);
+      }
     }
 
     let tileSource = {
       "@context": "http://iiif.io/api/image/2/context.json",
       "@id": imageURL,
-      "height": 7200,
-      "width": 5233,
+      // TODO: different pages seem to have different height and width
+      // See 1999-12-01 later pages (e.g. Stanford_Daily_19991201_0001_0001.jp2/info.json vs Stanford_Daily_19991201_0001_0064.jp2/info.json)
+      // Can we simply use `/info.json` like before AND `overlays`?
+      "height": 8471,
+      "width": 5276,
       "profile": ["http://iiif.io/api/image/2/level2.json"],
       "protocol": "http://iiif.io/api/image",
       "tiles": [{
