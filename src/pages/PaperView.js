@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import OpenSeadragon from 'openseadragon';
+import moment from 'moment'
 import queryString from 'query-string';
 import NotFound from './NotFound';
 import { fetchPaper } from '../helpers/papers';
@@ -26,13 +28,13 @@ class PaperView extends React.Component {
     //let allPapers = await fetchAllPapers();
     //let paper = allPapers[10000];
     let matchParams = this.props.match.params;
-    let paper = await fetchPaper(matchParams.year, matchParams.month, matchParams.day);
-    if (paper === null) {
+    this.paper = await fetchPaper(matchParams.year, matchParams.month, matchParams.day);
+    if (this.paper === null) {
       this.setState({ paperNotFound: true });
       return;
     }
 
-    this.allPages = await paper.getPages();
+    this.allPages = await this.paper.getPages();
     console.log(this.allPages);
 
     var allTileSources = [];
@@ -150,6 +152,7 @@ class PaperView extends React.Component {
 
     return (
       <div className="PaperView">
+        <Link to={"/calendar/" + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
         <div id="openseadragon1" style={{ "width": 800, "height": 600 }} />
       </div>
     );
