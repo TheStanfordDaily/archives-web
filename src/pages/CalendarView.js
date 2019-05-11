@@ -12,12 +12,10 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarNotFound: false, allPapers: [], currentMonth: null };
+    this.state = { calendarNotFound: false, allPapers: [] };
   }
 
   async componentDidMount() {
-    this.updateCurrentMonth();
-
     let allPapers = await fetchMetadata();
     this.setState({ allPapers: allPapers });
 
@@ -33,20 +31,6 @@ class CalendarView extends React.Component {
   componentWillUnmount() {
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params.year !== prevProps.match.params.year ||
-      this.props.match.params.month !== prevProps.match.params.month) {
-      this.updateCurrentMonth();
-    }
-  }
-
-  updateCurrentMonth() {
-    let yearString = this.props.match.params.year;
-    let monthString = this.props.match.params.month;
-    let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
-    this.setState({ currentMonth: thisMonth });
-  }
-
   render() {
     if (this.state.calendarNotFound) {
       return (
@@ -54,16 +38,21 @@ class CalendarView extends React.Component {
       );
     }
 
-    if (this.state.allPapers.length === 0 || this.state.currentMonth === null) {
+    if (this.state.allPapers.length === 0) {
       return (
         <div>Loading...</div>
       );
     }
 
+
+    let yearString = this.props.match.params.year;
+    let monthString = this.props.match.params.month;
+    let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
+
     let allEvents = [];
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone().subtract(1, "months")));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone()));
-    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, this.state.currentMonth.clone().add(1, "months")));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().subtract(1, "months")));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone()));
+    allEvents = allEvents.concat(getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone().add(1, "months")));
     return (
       <div className="CalendarView">
         CalendarView{this.props.match.params.year}, {this.props.match.params.month}
@@ -71,7 +60,7 @@ class CalendarView extends React.Component {
           <BigCalendar
             localizer={localizer}
             events={allEvents}
-            date={new Date(this.state.currentMonth)}
+            date={new Date(thisMonth)}
             startAccessor="start"
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
