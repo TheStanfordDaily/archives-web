@@ -69,7 +69,7 @@ class PaperView extends React.Component {
     }
     return (
       <div className="PaperView">
-        <div id="openseadragon1" style={{ "width": 800, "height": 600}} />
+        <div id="openseadragon1" style={{ "width": 800, "height": 600 }} />
       </div>
     );
   }

@@ -55,13 +55,13 @@ class CalendarView extends React.Component {
             endAccessor="end"
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
             views={{ month: true, notfound: CalendarNotFoundComponent }}
-            view={ calendarNotFound ? "notfound" : "month" }
+            view={calendarNotFound ? "notfound" : "month"}
             components={{ toolbar: CalendarToolbar }}
             style={{ "height": 500 }}
             onNavigate={(date) => {
               this.goToNewDate(date);
             }}
-            onView={() => {}} // Do nothing (to suppress the warning)
+            onView={() => { }} // Do nothing (to suppress the warning)
           />
         </div>
       </div>
