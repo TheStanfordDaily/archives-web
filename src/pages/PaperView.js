@@ -118,8 +118,7 @@ class PaperView extends React.Component {
           let overlayPos = thisPage.getBlockPositionAndSize(eachID);
 
           var elt = document.createElement("div");
-          // TODO: set unique ID
-          //elt.id = "runtime-overlay";
+          elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
           elt.className = "highlight";
           this.viewer.addOverlay({
             element: elt,
