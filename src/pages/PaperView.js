@@ -32,12 +32,12 @@ class PaperView extends React.Component {
       return;
     }
 
-    let results = await paper.getPages();
-    console.log(results);
+    this.allPages = await paper.getPages();
+    console.log(this.allPages);
 
     var allTileSources = [];
-    for (let eachPage of results) {
-      allTileSources.push(await eachPage.getTileSource());
+    for (let eachPage of this.allPages) {
+      allTileSources.push(eachPage.getTileSource());
     }
     console.log(allTileSources);
     this.setState({ loading: false });
@@ -81,12 +81,13 @@ class PaperView extends React.Component {
     console.log(hashValue);
 
     let pageNumber = Number(hashValue.page);
-    if (!isNaN(pageNumber) && pageNumber > 0) {
+    if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= this.allPages.length) {
       console.log("Going to page " + pageNumber);
       // `goToPage` is 0-indexed.
       this.viewer.goToPage(pageNumber - 1);
     } else {
-      // By default, go to page 1.
+      // By default (and when the input is not a valid page number), go to page 1.
+      // This is also used to trigger `onPageChange` (and `addOverlay` even by default).
       this.viewer.goToPage(0);
     }
   }
@@ -103,6 +104,30 @@ class PaperView extends React.Component {
       hashValue.page = pageNumber;
       this.props.history.push("#" + queryString.stringify(hashValue));
     }
+
+    let thisPage = this.allPages[page];
+    console.log(thisPage);
+
+    thisPage.getAltoData().then((results) => {
+      console.log("finished getAltoData");
+      console.log(results);
+
+      for (let eachSection of thisPage.sections) {
+        let overlayIDs = eachSection.areaIDs;
+        for (let eachID of overlayIDs) {
+          let overlayPos = thisPage.getBlockPositionAndSize(eachID);
+
+          var elt = document.createElement("div");
+          // TODO: set unique ID
+          //elt.id = "runtime-overlay";
+          elt.className = "highlight";
+          this.viewer.addOverlay({
+            element: elt,
+            location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
+          });
+        }
+      }
+    });
   }
 
   // TODO: Do we need this?

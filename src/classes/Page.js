@@ -17,17 +17,21 @@ class Page {
     this.sections = sections;
   }
 
-  async getAltoData() {
+  getAltoData() {
     if (this.altoData) {
-      return this.altoData;
+      return new Promise((resolve, reject) => { resolve(this.altoData) });
     }
 
-    this.altoData = await fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath).then(e => e.text()).then(e => parseXML(e));
-    return this.altoData;
+    return fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath)
+      .then(e => e.text())
+      .then(e => parseXML(e))
+      .then(e => this.altoData = e);
   }
 
   getBlockPositionAndSize(id) {
     // Based on testing. See https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491481280.
+    // TODO: This factor seems to be wrong for certain pages. See 1999-12-01#page=64 as an example.
+    // Maybe need to with respect to the width/height?
     const scaleFactor = 0.000299;
 
     // Find tag with `ID="{id}"`
@@ -44,51 +48,11 @@ class Page {
       width: width,
       height: height
     };
-    console.log(results);
     return results;
   }
 
-  async getTileSource() {
-    let imageURL = STRINGS.IMAGE_SERVER_URL + this.folderPath + this.imageFilePath;
-
-
-    await this.getAltoData();
-
-    let overlays = [];
-
-    for (let eachSection of this.sections) {
-      let overlayIDs = eachSection.areaIDs;
-      for (let eachID of overlayIDs) {
-        let overlayPos = this.getBlockPositionAndSize(eachID);
-        let overlay = {
-          // TODO: ADD `id`
-          x: overlayPos.x,
-          y: overlayPos.y,
-          width: overlayPos.width,
-          height: overlayPos.height,
-          className: 'highlight'
-        };
-        overlays.push(overlay);
-      }
-    }
-
-    let tileSource = {
-      "@context": "http://iiif.io/api/image/2/context.json",
-      "@id": imageURL,
-      // TODO: different pages seem to have different height and width
-      // See 1999-12-01 later pages (e.g. Stanford_Daily_19991201_0001_0001.jp2/info.json vs Stanford_Daily_19991201_0001_0064.jp2/info.json)
-      // Can we simply use `/info.json` like before AND `overlays`?
-      "height": 8471,
-      "width": 5276,
-      "profile": ["http://iiif.io/api/image/2/level2.json"],
-      "protocol": "http://iiif.io/api/image",
-      "tiles": [{
-        "scaleFactors": [1, 2, 4, 8, 16, 32],
-        "width": 1024
-      }],
-      "overlays": overlays,
-    };
-    return tileSource;
+  getTileSource() {
+    return STRINGS.IMAGE_SERVER_URL + this.folderPath + this.imageFilePath + "/info.json";
   }
 }
 
