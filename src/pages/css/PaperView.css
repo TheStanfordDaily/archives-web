@@ -1,0 +1,6 @@
+.highlight {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  /*outline: 12px auto #0A7EbE;*/
+  background-color: yellowgreen;
+}

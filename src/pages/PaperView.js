@@ -3,6 +3,8 @@ import OpenSeadragon from 'openseadragon';
 import NotFound from './NotFound';
 import { fetchPaper } from '../helpers/papers';
 
+import "./css/PaperView.css"
+
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
