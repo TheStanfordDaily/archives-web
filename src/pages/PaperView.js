@@ -55,6 +55,8 @@ class PaperView extends React.Component {
       tileSources: allTileSources
     });
 
+    this.viewer.addHandler("page", (e) => { this.onPageChange(e.page) });
+
 
     // Go to the page number given by the hash.
     this.onHashChange();
@@ -87,6 +89,12 @@ class PaperView extends React.Component {
       // `goToPage` is 0-indexed.
       this.viewer.goToPage(pageNumber - 1);
     }
+  }
+
+  onPageChange(page) {
+    // `page` is 0-indexed.
+    let pageNumber = page + 1;
+    this.props.history.push("#page=" + pageNumber.toString());
   }
 
   // TODO: Do we need this?
