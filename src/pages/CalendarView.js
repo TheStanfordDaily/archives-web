@@ -32,15 +32,15 @@ class CalendarView extends React.Component {
   }
 
   render() {
-    if (this.state.calendarNotFound) {
-      return (
-        <NotFound />
-      );
-    }
-
     if (this.state.allPapers.length === 0) {
       return (
         <div>Loading...</div>
+      );
+    }
+
+    if (this.state.calendarNotFound) {
+      return (
+        <NotFound />
       );
     }
 
