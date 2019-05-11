@@ -29,18 +29,27 @@ class Page {
   }
 
   getBlockPositionAndSize(id) {
-    // Based on testing. See https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491481280.
-    // TODO: This factor seems to be wrong for certain pages. See 1999-12-01#page=64 as an example.
-    // Maybe need to with respect to the width/height?
-    const scaleFactor = 0.000299;
+    // https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491546127
+    let pageSize;
+    if (this.pageSize) {
+      pageSize = this.pageSize;
+    } else {
+      let pageTag = this.altoData.find("Page")[0];
+      pageSize = {
+        height: pageTag.attributes["HEIGHT"].nodeValue,
+        width: pageTag.attributes["WIDTH"].nodeValue,
+      };
+      this.pageSize = pageSize;
+    }
+    const heightScaleFactor = pageSize.height / pageSize.width;
 
     // Find tag with `ID="{id}"`
     // https://stackoverflow.com/a/17268477/2603230
     let textBlock = this.altoData.find("[ID='" + id + "']")[0];
-    let xPos = textBlock.attributes["hpos"].nodeValue * scaleFactor;
-    let yPos = textBlock.attributes["vpos"].nodeValue * scaleFactor;
-    let width = textBlock.attributes["width"].nodeValue * scaleFactor;
-    let height = textBlock.attributes["height"].nodeValue * scaleFactor;
+    let xPos = textBlock.attributes["hpos"].nodeValue / pageSize.width;
+    let yPos = textBlock.attributes["vpos"].nodeValue / pageSize.height * heightScaleFactor;
+    let width = textBlock.attributes["width"].nodeValue / pageSize.width;
+    let height = textBlock.attributes["height"].nodeValue / pageSize.height * heightScaleFactor;
     let results = {
       id: id,
       x: xPos,
