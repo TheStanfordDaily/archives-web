@@ -8,7 +8,7 @@ import "./css/PaperView.css"
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false };
+    this.state = { paperNotFound: false, loading: true };
   }
 
   async componentDidMount() {
@@ -39,6 +39,7 @@ class PaperView extends React.Component {
       allTileSources.push(await eachPage.getTileSource());
     }
     console.log(allTileSources);
+    this.setState({ loading: false });
 
     var viewer = new OpenSeadragon({
       id: "openseadragon1",
@@ -70,6 +71,13 @@ class PaperView extends React.Component {
         <NotFound />
       );
     }
+
+    if (this.state.loading) {
+      return (
+        <div>Loading...</div>
+      );
+    }
+
     return (
       <div className="PaperView">
         <div id="openseadragon1" style={{ "width": 800, "height": 600 }} />
