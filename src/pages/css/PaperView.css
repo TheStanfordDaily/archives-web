@@ -25,7 +25,10 @@
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 0 0 auto;
 }
-.PaperTitleBar a {
+.PaperTitleBar .BackToCalendarButton {
+  margin: 0;
+}
+.PaperTitleBar .BackToCalendarButton a {
   color: white;
   text-decoration: underline;
 }
@@ -55,6 +58,21 @@
   .NavigationSection {
     height: 30%;
     width: 100%;
+  }
+  .PaperTitleBar {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .PaperTitleBar h1 {
+    font-size: 1rem;
+    line-height: inherit;
+    float: left;
+    margin: 0;
+  }
+  .PaperTitleBar .BackToCalendarButton {
+    float: right;
   }
   .PaperSection {
     height: 70%;

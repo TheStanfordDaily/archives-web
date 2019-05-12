@@ -156,7 +156,7 @@ class PaperView extends React.Component {
         <div className="NavigationSection">
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
-            <Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
+            <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
           </div>
           <div className="PaperNavigationItems">
             {this.allPages.map((page) =>
