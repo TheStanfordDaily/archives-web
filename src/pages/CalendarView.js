@@ -54,9 +54,9 @@ class CalendarView extends React.Component {
     }
 
     return (
-      <>
+      <div className="CalendarMainView">
         <div className="CalendarTitle">
-          CalendarView{this.props.match.params.year}, {this.props.match.params.month}
+          <h1>{thisMonth.format("MMMM YYYY")}</h1>
         </div>
         <div className="CalendarContent">
           <BigCalendar
@@ -87,7 +87,7 @@ class CalendarView extends React.Component {
             }}
           />
         </div>
-      </>
+      </div>
     );
   }
 

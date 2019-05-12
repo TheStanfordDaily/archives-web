@@ -35,7 +35,7 @@
   flex: 1 1 auto;
   position: relative;/* need this to position inner content */
 
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .PaperNavigationItems ul li span {
   text-decoration: underline;
@@ -48,7 +48,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  .MainView {
+  .PaperMainView {
     flex-direction: column;
   }
   .NavigationSection {

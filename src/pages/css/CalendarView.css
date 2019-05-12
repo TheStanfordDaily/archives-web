@@ -1,7 +1,21 @@
-.MainView {
+.CalendarMainView {
   flex-direction: column;
 }
 
+.CalendarTitle {
+  background-color: #544948;
+  color: white;
+}
+
+.CalendarTitle h1 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+
 .CalendarContent {
-  height: 100%;
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
 }

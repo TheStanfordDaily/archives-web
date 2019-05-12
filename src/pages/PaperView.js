@@ -153,7 +153,7 @@ class PaperView extends React.Component {
     }
 
     return (
-      <>
+      <div className="PaperMainView">
         <div className="NavigationSection">
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
@@ -173,7 +173,7 @@ class PaperView extends React.Component {
           </div>
         </div>
         <div className="PaperSection" id="openseadragon1" />
-      </>
+      </div>
     );
   }
 }
