@@ -2,6 +2,7 @@ import React from 'react';
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import NotFound from './NotFound'
+import Loading from './components/Loading';
 import CalendarToolbar from './components/CalendarToolbar';
 import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
@@ -28,7 +29,7 @@ class CalendarView extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 

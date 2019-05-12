@@ -4,6 +4,7 @@ import OpenSeadragon from 'openseadragon';
 import moment from 'moment'
 import queryString from 'query-string';
 import NotFound from './NotFound';
+import Loading from './components/Loading';
 import { fetchPaper } from '../helpers/papers';
 import { STRINGS } from '../helpers/constants'
 
@@ -147,7 +148,7 @@ class PaperView extends React.Component {
 
     if (this.state.loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 
