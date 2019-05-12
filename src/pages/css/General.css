@@ -38,7 +38,7 @@ html, body {
 }
 
 /* https://stackoverflow.com/a/46130505/2603230 */
-.MainView {
+.MainView, .CalendarMainView, .PaperMainView {
   flex: 1;
   min-height: 0;
   width: 100%;

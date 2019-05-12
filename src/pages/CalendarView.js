@@ -54,7 +54,7 @@ class CalendarView extends React.Component {
     }
 
     return (
-      <>
+      <div className="CalendarMainView">
         <div className="CalendarTitle">
           <h1>{thisMonth.format("MMMM YYYY")}</h1>
         </div>
@@ -87,7 +87,7 @@ class CalendarView extends React.Component {
             }}
           />
         </div>
-      </>
+      </div>
     );
   }
 
