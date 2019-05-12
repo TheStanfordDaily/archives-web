@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "babel src --out-dir dist"
+    "postinstall": "npx babel src --out-dir dist"
   },
   "eslintConfig": {
     "extends": "react-app"
