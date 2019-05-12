@@ -161,11 +161,11 @@ class PaperView extends React.Component {
           </div>
           <div className="PaperNavigationItems">
             {this.allPages.map((page) =>
-              <div>
+              <div key={page.pageLabel}>
                 <h3 className="PageLabel">Page {page.pageLabel}</h3>
                 <ul>
                   {page.sections.map((section) =>
-                    <li key={section.title} onClick={() => this.viewer.goToPage(page.pageNumber - 1) /* `- 1` because `goToPage` is 0-based. */}><span>{section.title}</span></li>
+                    <li key={page.pageLabel + "-" + section.sectionID} onClick={() => this.viewer.goToPage(page.pageNumber - 1) /* `- 1` because `goToPage` is 0-based. */}><span>{section.title}</span></li>
                   )}
                 </ul>
               </div>
