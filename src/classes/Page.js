@@ -14,7 +14,6 @@ class Page {
     this.altoFilePath = altoFilePath;
     this.imageFilePath = imageFilePath;
 
-    // Format: [{type: "", title: "", sectionID: "", areaIDs: ["", ...]}, ...]
     this.sections = sections;
   }
 

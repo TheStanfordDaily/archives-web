@@ -1,5 +1,6 @@
 import parseXML from 'jquery';
 import Page from './Page';
+import PageSection from './PageSection';
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
 
@@ -69,12 +70,7 @@ class Paper {
         }
         //console.log(areaIDs);
 
-        let sectionInfo = {
-          type: type,
-          title: title,
-          sectionID: sectionID,
-          areaIDs: areaIDs
-        }
+        let sectionInfo = new PageSection(type, title, sectionID, areaIDs);
         //console.log(sectionInfo);
 
         sections.push(sectionInfo);
