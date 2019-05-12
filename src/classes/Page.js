@@ -1,6 +1,6 @@
-import parseXML from 'jquery';
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
+const parseXML = require('jquery')(typeof window === 'undefined' ? (new (require("jsdom").JSDOM)() ).window : window).parseXML;
 
 class Page {
   constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath, sections) {

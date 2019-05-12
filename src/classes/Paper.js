@@ -1,8 +1,8 @@
-import parseXML from 'jquery';
 import Page from './Page';
 import PageSection from './PageSection';
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
+const parseXML = require('jquery')(typeof window === 'undefined' ? (new (require("jsdom").JSDOM)() ).window : window).parseXML;
 
 class Paper {
   constructor(year, month, day, folderPath, metsFilePath) {
