@@ -153,16 +153,16 @@ class PaperView extends React.Component {
 
     return (
       <div className="PaperView">
-        <Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
-        <div className="PaperMain">
-          <div className="NavigationSection">{this.allPages.map((page) => {
+        <div className="NavigationSection">
+          <Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link>
+          {this.allPages.map((page) => {
             // `- 1` because `goToPage` is 0-based.
             return page.sections.map((section) =>
               <p><button key={section.title} onClick={() => this.viewer.goToPage(page.pageNumber - 1)}>{section.title} (Page {page.pageLabel})</button></p>
             )
-          })}</div>
-          <div className="PaperSection" id="openseadragon1" />
+          })}
         </div>
+        <div className="PaperSection" id="openseadragon1" />
       </div>
     );
   }
