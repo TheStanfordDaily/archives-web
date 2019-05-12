@@ -1,37 +1,31 @@
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
+/* https://stackoverflow.com/a/46130505/2603230 */
+.PaperView {
+  flex: 1;
+  min-height: 0;
+  display: flex;
 }
 
 .NavigationSection {
   width: 30%;
-  height: 100vh;
-  float: left;
   background-color: #f1f1f1;
   padding: 20px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .PaperSection {
   width: 70%;
-  height: 100vh;
-  float: right;
 }
 
 @media screen and (max-width: 700px) {
+  .PaperView {
+    flex-direction: column;
+  }
   .NavigationSection {
-    float: none;
-    height: 30vh;
+    height: 30%;
     width: 100%;
   }
   .PaperSection {
-    float: none;
-    height: 70vh;
+    height: 70%;
     width: 100%;
   }
 }

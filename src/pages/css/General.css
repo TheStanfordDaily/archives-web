@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+}
+
+/* https://stackoverflow.com/a/46130505/2603230 */
+.App {
+  height: 100vh;
+  /* It should never be necessary to scroll the whole page. */
+  margin: 0;
+  /* Nothing should get added to the 100vh. */
+  display: flex;
+  flex-direction: column;
+}
+
+.searchbar {
+  background-color: transparent;
+  color: white;
+}
