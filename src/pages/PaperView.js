@@ -85,15 +85,18 @@ class PaperView extends React.Component {
     console.log(hashValue);
 
     let pageNumber = Number(hashValue.page);
+
+    // By default (and when the input is not a valid page number), go to page 1.
+    // This is also used to trigger `onPageChange` (and `addOverlay` even by default).
+    let pageIndex = 0;
     if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= this.allPages.length) {
-      console.log("Going to page " + pageNumber);
       // `goToPage` is 0-indexed.
-      this.viewer.goToPage(pageNumber - 1);
-    } else {
-      // By default (and when the input is not a valid page number), go to page 1.
-      // This is also used to trigger `onPageChange` (and `addOverlay` even by default).
-      this.viewer.goToPage(0);
+      pageIndex = pageNumber - 1;
     }
+    console.log("Going to page " + pageIndex);
+    this.viewer.goToPage(pageIndex);
+
+    this.setOverlays(pageIndex);
   }
 
   onPageChange(page) {
@@ -106,31 +109,56 @@ class PaperView extends React.Component {
     if (Number(hashValue.page) !== pageNumber) {
       console.log("Number(hashValue.page) !== pageNumber");
       hashValue.page = pageNumber;
+      // Note that this seems NOT to call `onHashChange()`, so we want to call `setOverlays` here manually.
       this.props.history.push("#" + queryString.stringify(hashValue));
+      this.setOverlays(page);
     }
+  }
 
-    let thisPage = this.allPages[page];
-    console.log(thisPage);
+  setOverlays(pageIndex) {
+    this.viewer.clearOverlays();
 
-    thisPage.getAltoData().then((results) => {
-      console.log("finished getAltoData");
-      console.log(results);
+    let hashValue = queryString.parse(this.props.location.hash);
+    // https://stackoverflow.com/a/9176496/2603230
+    let displayingSections = hashValue["section[]"];
+    if (displayingSections) {
+      let thisPage = this.allPages[pageIndex];
+      console.log(thisPage.sections);
+      thisPage.getAltoData().then((results) => {
+        console.log("finished getAltoData");
+        console.log(results);
 
-      for (let eachSection of thisPage.sections) {
-        let overlayIDs = eachSection.areaIDs;
-        for (let eachID of overlayIDs) {
-          let overlayPos = thisPage.getBlockPositionAndSize(eachID);
-
-          var elt = document.createElement("div");
-          elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
-          elt.className = "highlight";
-          this.viewer.addOverlay({
-            element: elt,
-            location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
-          });
+        // If input has only one section. (i.e. "section[]=...")
+        if (!Array.isArray(displayingSections)) {
+          displayingSections = [displayingSections];
         }
-      }
-    });
+
+        for (let eachSectionID of displayingSections) {
+          let eachSection = thisPage.sections.find(obj => {
+            return obj.sectionID === eachSectionID
+          })
+          console.log(eachSection);
+
+          if (eachSection === undefined) {
+            // It means that this section is probably not on this page.
+            continue;
+          }
+
+          let overlayIDs = eachSection.areaIDs;
+          for (let eachID of overlayIDs) {
+            let overlayPos = thisPage.getBlockPositionAndSize(eachID);
+
+            var elt = document.createElement("div");
+            elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
+            elt.className = "highlight";
+            this.viewer.addOverlay({
+              element: elt,
+              location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
+            });
+          }
+        }
+      });
+    }
   }
 
   // TODO: Do we need this?
