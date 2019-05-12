@@ -1,6 +1,7 @@
 import moment from 'moment'
 import Paper from '../classes/Paper';
 import { STRINGS } from '../helpers/constants';
+import fetch from "cross-fetch";
 
 export async function fetchMetadata() {
   let allPapers = await fetch(STRINGS.FILE_SERVER_URL + "metadata.json").then(e => e.json());

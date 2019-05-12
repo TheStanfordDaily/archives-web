@@ -1,7 +1,7 @@
 import parseXML from 'jquery';
 import Page from './Page';
 import { STRINGS } from '../helpers/constants';
-
+import fetch from "cross-fetch";
 class Paper {
   constructor(year, month, day, folderPath, metsFilePath) {
     // The argument monthIndex is 0-based. Hence the `-1`.
