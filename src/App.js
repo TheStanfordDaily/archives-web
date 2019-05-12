@@ -39,7 +39,7 @@ class App extends React.Component {
               </Nav>
             </Navbar.Collapse>
             <div className="mx-auto order-0">
-              <Navbar.Brand href={STRINGS.ROUTE_ROOT} className="mx-auto">{/* TODO: use TSD logo */}The Stanford Daily Archive</Navbar.Brand>
+              <Navbar.Brand className="mx-auto"><Link to={STRINGS.ROUTE_ROOT}>{/* TODO: use TSD logo */}The Stanford Daily Archive</Link></Navbar.Brand>
             </div>
             <Navbar.Collapse className="justify-content-end w-100 order-3 dual-collapse2">
               <Form inline className="ml-auto">
@@ -47,12 +47,14 @@ class App extends React.Component {
               </Form>
             </Navbar.Collapse>
           </Navbar>
-          <Switch>
-            <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
-            <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
-            <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
-            <Route component={NotFound} />
-          </Switch>
+          <div className="MainView">
+            <Switch>
+              <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
+              <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
+              <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
+              <Route component={NotFound} />
+            </Switch>
+          </div>
         </div>
       </Router>
     );
