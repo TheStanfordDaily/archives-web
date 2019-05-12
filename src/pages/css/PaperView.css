@@ -7,9 +7,41 @@
 
 .NavigationSection {
   width: 30%;
-  background-color: #f1f1f1;
+  background-color: #F9F6EF;
+  text-align: left;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  display: flex;
+  flex-direction: column;
+}
+
+.PaperTitleBar {
+  background-color: #544948;
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  flex: 0 0 auto;
+}
+.PaperTitleBar a {
+  color: white;
+  text-decoration: underline;
+}
+
+.PaperNavigationItems {
   padding: 20px;
-  overflow-y: scroll;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  flex: 1 1 auto;
+  position: relative;/* need this to position inner content */
+  overflow-y: auto;
+}
+.PaperNavigationItems ul li span {
+  text-decoration: underline;
+  color: #B1040E;
+  cursor: pointer;
 }
 
 .PaperSection {
