@@ -2,7 +2,6 @@
   "name": "archives-web",
   "version": "0.1.0",
   "private": true,
-  "postinstall": "babel src --out-dir dist",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "cross-fetch": "^3.0.2",
@@ -21,7 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "babel src --out-dir dist",
   },
   "eslintConfig": {
     "extends": "react-app"
