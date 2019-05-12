@@ -17,7 +17,18 @@ html, body {
   flex-direction: column;
 }
 
+.navbar {
+  background-color: #8c1515 !important;
+}
+
 .searchbar {
+  background-color: transparent;
+  color: white;
+}
+.searchbar::placeholder {
+  color: lightgray;
+}
+.searchbar:focus {
   background-color: transparent;
   color: white;
 }
