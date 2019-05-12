@@ -1,7 +1,7 @@
 {
-  "name": "archives-web",
+  "name": "@thestanforddaily/archives-web",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "bootstrap": "^4.3.1",
     "cross-fetch": "^3.0.2",
@@ -16,12 +16,15 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0"
   },
+  "files": [
+    "/lib"
+  ],
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "./node_modules/.bin/babel src --out-dir dist"
+    "prepublish": "babel src --out-dir lib"
   },
   "eslintConfig": {
     "extends": "react-app"
