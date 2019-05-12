@@ -21,6 +21,10 @@ html, body {
   background-color: #8c1515 !important;
 }
 
+.site-title a {
+  color: white;
+}
+
 .searchbar {
   background-color: transparent;
   color: white;
