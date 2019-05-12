@@ -6,6 +6,8 @@
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   display: flex;
   flex-direction: column;
+
+  overflow: auto;
 }
 
 .PaperTitleBar {
@@ -32,7 +34,8 @@
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 1 1 auto;
   position: relative;/* need this to position inner content */
-  overflow-y: auto;
+
+  overflow-y: scroll;
 }
 .PaperNavigationItems ul li span {
   text-decoration: underline;
