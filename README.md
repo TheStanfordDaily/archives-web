@@ -3,13 +3,13 @@ Helper functions (and web app) for METS/ALTO archive viewing.
 
 ## Usage
 ```
-npm install
+npm install @thestanforddaily/archives-web
 ```
 
 Use utility functions
 
 ```
-const {fetchAllPapers} = require("archives-web/dist/helpers/papers");
+const {fetchAllPapers} = require("@thestanforddaily/archives-web/dist/helpers/papers");
 ```
 
 ## Publishing new version
