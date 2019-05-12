@@ -9,7 +9,7 @@ npm install @thestanforddaily/archives-web
 Use utility functions
 
 ```
-const {fetchAllPapers} = require("@thestanforddaily/archives-web/dist/helpers/papers");
+const {fetchAllPapers} = require("@thestanforddaily/archives-web/lib/helpers/papers");
 ```
 
 ## Publishing new version
