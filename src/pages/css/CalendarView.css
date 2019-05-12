@@ -1,0 +1,7 @@
+.MainView {
+  flex-direction: column;
+}
+
+.CalendarContent {
+  height: 100%;
+}

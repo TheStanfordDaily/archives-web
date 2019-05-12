@@ -8,6 +8,7 @@ import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
 import { STRINGS } from '../helpers/constants'
 
+import "./css/CalendarView.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = BigCalendar.momentLocalizer(moment);
@@ -53,9 +54,11 @@ class CalendarView extends React.Component {
     }
 
     return (
-      <div className="CalendarView">
-        CalendarView{this.props.match.params.year}, {this.props.match.params.month}
-        <div>
+      <>
+        <div className="CalendarTitle">
+          CalendarView{this.props.match.params.year}, {this.props.match.params.month}
+        </div>
+        <div className="CalendarContent">
           <BigCalendar
             localizer={localizer}
             events={allEvents}
@@ -66,14 +69,25 @@ class CalendarView extends React.Component {
             views={{ month: true, notfound: CalendarNotFoundComponent }}
             view={calendarNotFound ? "notfound" : "month"}
             components={{ toolbar: CalendarToolbar }}
-            style={{ "height": 500 }}
             onNavigate={(date) => {
               this.goToNewDate(date);
             }}
             onView={() => { }} // Do nothing (to suppress the warning)
+            eventPropGetter={(event, start, end, isSelected) => {
+              let style = {
+                backgroundColor: "#544948",
+                borderRadius: '0px',
+                color: 'white',
+                border: '0px',
+                display: 'block'
+              };
+              return {
+                style: style
+              };
+            }}
           />
         </div>
-      </div>
+      </>
     );
   }
 
