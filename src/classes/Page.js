@@ -27,6 +27,29 @@ class Page {
       .then(e => this.altoData = e);
   }
 
+  getBlockText(id) {
+    let textBlock = this.altoData.getElementById(id);
+    let text = "";
+    for (let line of textBlock.getElementsByTagName("textline")) {
+      // console.log(line.id); // todo: use this to match with the text corrections we have.
+      for (let word of line.getElementsByTagName("string")) {
+        text += word.attributes["content"].value + " ";
+      }
+      text = text.slice(0, -1);
+      text += "\n";
+    }
+    return text;
+  }
+
+  getSectionText(section) {
+    let text = "";
+    for (let id of section.areaIDs) {
+
+     text += " " + this.getBlockText(id);
+    }
+    return text;
+  }
+
   getBlockPositionAndSize(id) {
     // https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491546127
     let pageSize;
@@ -42,8 +65,6 @@ class Page {
     }
     const heightScaleFactor = pageSize.height / pageSize.width;
 
-    // Find tag with `ID="{id}"`
-    // https://stackoverflow.com/a/17268477/2603230
     let textBlock = this.altoData.getElementById(id);
     let xPos = textBlock.attributes["hpos"].nodeValue / pageSize.width;
     let yPos = textBlock.attributes["vpos"].nodeValue / pageSize.height * heightScaleFactor;

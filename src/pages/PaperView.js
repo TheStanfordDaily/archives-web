@@ -118,6 +118,7 @@ class PaperView extends React.Component {
 
       for (let eachSection of thisPage.sections) {
         let overlayIDs = eachSection.areaIDs;
+        console.log(thisPage.getSectionText(eachSection));
         for (let eachID of overlayIDs) {
           let overlayPos = thisPage.getBlockPositionAndSize(eachID);
 
