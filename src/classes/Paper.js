@@ -25,22 +25,22 @@ class Paper {
     //console.log(altoFiles);
     for (var i = 0; i < altoFiles.length; i++) {
       let altoFileTag = altoFiles[i];
-      let altoFileID = altoFileTag.attributes["ID"].nodeValue;
+      let altoFileID = altoFileTag.getAttribute("ID");
       //console.log(altoFileID);
 
       let pageInfo = xmlResults.querySelector("structMap[TYPE='PHYSICAL'] area[FILEID='" + altoFileID + "']").parentElement.parentElement.parentElement;
-      let pageNumber = Number(pageInfo.attributes["ORDER"].nodeValue);
+      let pageNumber = Number(pageInfo.getAttribute("ORDER"));
       // Note that it seems `ALTO00001` does not have `LABEL="..."`, so we have to use `ORDERLABEL`.
-      let pageLabel = pageInfo.attributes["ORDERLABEL"].nodeValue;
+      let pageLabel = pageInfo.getAttribute("ORDERLABEL");
       //console.log(pageNumber);
       //console.log(pageLabel);
 
-      let altoFilename = altoFileTag.children[0].attributes["xlink:href"].nodeValue;
+      let altoFilename = altoFileTag.children[0].getAttribute("xlink:href");
       altoFilename = altoFilename.replace("file://./", "");
       //console.log(altoFilename);
 
       let imageFileTag = xmlResults.querySelector("fileGrp[ID='IMGGRP']").children[i];
-      let imageFilename = imageFileTag.children[0].attributes["xlink:href"].nodeValue;
+      let imageFilename = imageFileTag.children[0].getAttribute("xlink:href");
       imageFilename = imageFilename.replace("file://./", "");
       //console.log(imageFilename);
 
@@ -56,19 +56,19 @@ class Paper {
         if (!eachSection.querySelector("area[FILEID='" + altoFileID + "']")) {
           continue;
         }
-        let type = eachSection.attributes["TYPE"].nodeValue;
+        let type = eachSection.getAttribute("TYPE");
         //console.log(type);
 
-        let title = eachSection.attributes["LABEL"] ? eachSection.attributes["LABEL"].nodeValue : "Untitled";
+        let title = eachSection.getAttribute("LABEL") || "Untitled";
         //console.log(title);
 
-        let sectionID = eachSection.attributes["DMDID"] ? eachSection.attributes["DMDID"].nodeValue : eachSection.attributes["ID"].nodeValue;
+        let sectionID = eachSection.getAttribute("DMDID") || eachSection.getAttribute("ID");
 
         let areaIDs = [];
         let rawAreas = eachSection.querySelectorAll("area[FILEID='" + altoFileID + "']");
         //console.log(rawAreas);
         for (let eachArea of rawAreas) {
-          areaIDs.push(eachArea.attributes["BEGIN"].nodeValue);
+          areaIDs.push(eachArea.getAttribute("BEGIN"));
         }
         //console.log(areaIDs);
 
