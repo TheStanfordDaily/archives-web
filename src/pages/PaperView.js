@@ -59,7 +59,13 @@ class PaperView extends React.Component {
       tileSources: allTileSources
     });
 
-    this.viewer.addHandler("page", (e) => { this.onPageChange(e.page) });
+    this.viewer.addHandler('page', (e) => { this.onPageChange(e.page) });
+    this.viewer.addHandler('open', () => {
+      // https://github.com/openseadragon/openseadragon/issues/979#issue-164517414
+      var currentBounds = this.viewer.viewport.getBounds();
+      var newBounds = new OpenSeadragon.Rect(0, 0, 1, currentBounds.height / currentBounds.width);
+      this.viewer.viewport.fitBounds(newBounds, true);
+    });
 
 
     // Go to the page number given by the hash.
