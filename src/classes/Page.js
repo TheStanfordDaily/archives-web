@@ -25,7 +25,8 @@ class Page {
     return fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.altoFilePath)
       .then(e => e.text())
       .then(e => parseXML(e))
-      .then(e => this.altoData = e);
+      .then(e => this.altoData = e)
+      .then(e => this.altoData);
   }
 
   getBlockPositionAndSize(id) {
