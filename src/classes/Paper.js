@@ -31,7 +31,7 @@ class Paper {
       let pageInfo = xmlResults.querySelector("structMap[TYPE='PHYSICAL'] area[FILEID='" + altoFileID + "']").parentElement.parentElement.parentElement;
       let pageNumber = Number(pageInfo.getAttribute("ORDER"));
       // Note that it seems `ALTO00001` does not have `LABEL="..."`, so we have to use `ORDERLABEL`.
-      let pageLabel = pageInfo.getAttribute("ORDERLABEL");
+      let pageLabel = pageInfo.getAttribute("ORDERLABEL") || pageNumber.toString();
       //console.log(pageNumber);
       //console.log(pageLabel);
 
