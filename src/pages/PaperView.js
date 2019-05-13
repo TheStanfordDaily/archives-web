@@ -206,7 +206,7 @@ class PaperView extends React.Component {
           </div>
           <div className="PaperNavigationItems">
             {this.allPages.map((page) =>
-              <div key={page.pageLabel}>
+              <div key={page.pageNumber}>
                 <h3 className="PageLabel">Page {page.pageLabel}</h3>
                 <ul>
                   {page.sections.map((section) =>

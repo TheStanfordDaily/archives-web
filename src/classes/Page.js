@@ -59,18 +59,18 @@ class Page {
     } else {
       let pageTag = this.altoData.getElementsByTagName("Page")[0];
       pageSize = {
-        height: pageTag.attributes["HEIGHT"].nodeValue,
-        width: pageTag.attributes["WIDTH"].nodeValue,
+        height: pageTag.getAttribute("HEIGHT"),
+        width: pageTag.getAttribute("WIDTH"),
       };
       this.pageSize = pageSize;
     }
     const heightScaleFactor = pageSize.height / pageSize.width;
 
     let textBlock = this.altoData.getElementById(id);
-    let xPos = textBlock.attributes["hpos"].nodeValue / pageSize.width;
-    let yPos = textBlock.attributes["vpos"].nodeValue / pageSize.height * heightScaleFactor;
-    let width = textBlock.attributes["width"].nodeValue / pageSize.width;
-    let height = textBlock.attributes["height"].nodeValue / pageSize.height * heightScaleFactor;
+    let xPos = textBlock.getAttribute("hpos") / pageSize.width;
+    let yPos = textBlock.getAttribute("vpos") / pageSize.height * heightScaleFactor;
+    let width = textBlock.getAttribute("width") / pageSize.width;
+    let height = textBlock.getAttribute("height") / pageSize.height * heightScaleFactor;
     let results = {
       id: id,
       x: xPos,
