@@ -1,11 +1,12 @@
 {
   "name": "@thestanforddaily/archives-web",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": false,
   "dependencies": {
+    "@babel/runtime": "^7.4.4",
     "bootstrap": "^4.3.1",
     "cross-fetch": "^3.0.2",
-    "jquery": "^3.4.1",
+    "jsdom": "^15.1.0",
     "moment": "^2.24.0",
     "openseadragon": "^2.4.0",
     "query-string": "^6.5.0",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0"
   }

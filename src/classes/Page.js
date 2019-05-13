@@ -1,7 +1,6 @@
-import parseXML from 'jquery';
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
-
+import parseXML from "../helpers/parseXML";
 class Page {
   constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath, sections) {
     this.date = date;
@@ -29,13 +28,36 @@ class Page {
       .then(e => this.altoData);
   }
 
+  getBlockText(id) {
+    let textBlock = this.altoData.getElementById(id);
+    let text = "";
+    for (let line of textBlock.getElementsByTagName("textline")) {
+      // console.log(line.id); // todo: use this to match with the text corrections we have.
+      for (let word of line.getElementsByTagName("string")) {
+        text += word.attributes["content"].value + " ";
+      }
+      text = text.slice(0, -1);
+      text += "\n";
+    }
+    return text;
+  }
+
+  getSectionText(section) {
+    let text = "";
+    for (let id of section.areaIDs) {
+
+     text += " " + this.getBlockText(id);
+    }
+    return text;
+  }
+
   getBlockPositionAndSize(id) {
     // https://github.com/TheStanfordDaily/archives/issues/2#issuecomment-491546127
     let pageSize;
     if (this.pageSize) {
       pageSize = this.pageSize;
     } else {
-      let pageTag = this.altoData.find("Page")[0];
+      let pageTag = this.altoData.getElementsByTagName("Page")[0];
       pageSize = {
         height: pageTag.attributes["HEIGHT"].nodeValue,
         width: pageTag.attributes["WIDTH"].nodeValue,
@@ -44,9 +66,7 @@ class Page {
     }
     const heightScaleFactor = pageSize.height / pageSize.width;
 
-    // Find tag with `ID="{id}"`
-    // https://stackoverflow.com/a/17268477/2603230
-    let textBlock = this.altoData.find("[ID='" + id + "']")[0];
+    let textBlock = this.altoData.getElementById(id);
     let xPos = textBlock.attributes["hpos"].nodeValue / pageSize.width;
     let yPos = textBlock.attributes["vpos"].nodeValue / pageSize.height * heightScaleFactor;
     let width = textBlock.attributes["width"].nodeValue / pageSize.width;
