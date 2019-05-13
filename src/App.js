@@ -4,6 +4,7 @@ import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home'
+import Search from './pages/Search'
 import CalendarView from './pages/CalendarView'
 import PaperView from './pages/PaperView'
 import NotFound from './pages/NotFound'
@@ -28,7 +29,8 @@ class App extends React.Component {
             <Navbar.Collapse id="basic-navbar-nav" className="w-100 order-1 order-md-0 dual-collapse2">
               <Nav className="mr-auto">
                 <Nav.Link href="/calendar">Home</Nav.Link>
-                <Nav.Link href="#link" className="active">Link</Nav.Link>
+                <Nav.Link href="/link" className="active">Link</Nav.Link>
+                <Nav.Link href="/search">Search</Nav.Link>
                 {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -52,7 +54,9 @@ class App extends React.Component {
               <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
               <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
               <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
+              <Route path="/search" component={Search}/>
               <Route component={NotFound} />
+
             </Switch>
           </div>
         </div>

@@ -31,3 +31,14 @@
     transform: rotate(360deg);
   }
 }
+
+/* select.form-control{
+  width: 200px
+} */
+
+.list-inline>li {
+  display:inline-block;
+}
+.btn-now, .btn-clear {
+  display: none
+}

@@ -13,6 +13,7 @@
     "react-big-calendar": "^0.20.4",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
+    "react-jsonschema-form": "^1.5.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0"
   },
