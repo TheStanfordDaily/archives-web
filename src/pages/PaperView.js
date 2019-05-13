@@ -47,7 +47,7 @@ class PaperView extends React.Component {
     this.setState({ loading: false });
 
     this.viewer = new OpenSeadragon({
-      id: "openseadragon1",
+      id: "paper-openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
       preserveViewport: true,
       visibilityRatio: 0.75,
@@ -161,7 +161,7 @@ class PaperView extends React.Component {
 
             var elt = document.createElement("div");
             elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
-            elt.className = "highlight";
+            elt.className = "SectionHighlight";
             this.viewer.addOverlay({
               element: elt,
               location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
@@ -225,7 +225,7 @@ class PaperView extends React.Component {
             )}
           </div>
         </div>
-        <div className="PaperSection" id="openseadragon1" />
+        <div className="PaperSection" id="paper-openseadragon" />
       </div>
     );
   }
