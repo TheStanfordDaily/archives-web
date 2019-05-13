@@ -50,8 +50,7 @@ class PaperView extends React.Component {
       id: "openseadragon1",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
       preserveViewport: true,
-      visibilityRatio: 1,
-      minZoomLevel: 1,
+      visibilityRatio: 0.75,
       defaultZoomLevel: 1,
       sequenceMode: true,
       showReferenceStrip: false,
@@ -60,12 +59,6 @@ class PaperView extends React.Component {
     });
 
     this.viewer.addHandler('page', (e) => { this.onPageChange(e.page) });
-    this.viewer.addHandler('open', () => {
-      // https://github.com/openseadragon/openseadragon/issues/979#issue-164517414
-      var currentBounds = this.viewer.viewport.getBounds();
-      var newBounds = new OpenSeadragon.Rect(0, 0, 1, currentBounds.height / currentBounds.width);
-      this.viewer.viewport.fitBounds(newBounds, true);
-    });
 
 
     // Go to the page number given by the hash.
@@ -106,6 +99,13 @@ class PaperView extends React.Component {
   }
 
   onPageChange(page) {
+    // TODO: Not working for the initial view of the paper.
+    // By default view the top of the page.
+    var currentBounds = this.viewer.viewport.getBounds();
+    var newBounds = new OpenSeadragon.Rect(0, 0, 1, currentBounds.height / currentBounds.width);
+    this.viewer.viewport.fitBounds(newBounds, true);
+
+
     // `page` is 0-indexed.
     let pageNumber = page + 1;
 
@@ -134,11 +134,12 @@ class PaperView extends React.Component {
         console.log("finished getAltoData");
         console.log(results);
 
+        let firstOverlayY = null;
+
         // If input has only one section. (i.e. "section[]=...")
         if (!Array.isArray(displayingSections)) {
           displayingSections = [displayingSections];
         }
-
         for (let eachSectionID of displayingSections) {
           let eachSection = thisPage.sections.find(obj => {
             return obj.sectionID === eachSectionID
@@ -154,6 +155,10 @@ class PaperView extends React.Component {
           for (let eachID of overlayIDs) {
             let overlayPos = thisPage.getBlockPositionAndSize(eachID);
 
+            if (firstOverlayY === null) {
+              firstOverlayY = overlayPos.y;
+            }
+
             var elt = document.createElement("div");
             elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
             elt.className = "highlight";
@@ -162,6 +167,12 @@ class PaperView extends React.Component {
               location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
             });
           }
+        }
+
+        if (firstOverlayY) {
+          let currentBounds = this.viewer.viewport.getBounds();
+          var newBounds = new OpenSeadragon.Rect(0, firstOverlayY - 0.1, 1, currentBounds.height / currentBounds.width);
+          this.viewer.viewport.fitBounds(newBounds, true);
         }
       });
     }
