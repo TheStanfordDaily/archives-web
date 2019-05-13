@@ -76,9 +76,8 @@
   }
 }
 
-.highlight {
-  opacity: 0.4;
-  filter: alpha(opacity=40);
+.SectionHighlight {
+  opacity: 0.25;
   /*outline: 12px auto #0A7EbE;*/
-  background-color: yellowgreen;
+  background-color: #d2c295;
 }

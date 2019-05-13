@@ -95,7 +95,7 @@ class CalendarView extends React.Component {
     let selectedDate = event.start;
     let selectedDateString = moment(selectedDate).format('YYYY-MM-DD');
     console.log(selectedDateString);
-    this.props.history.push(STRINGS.ROUTE_PAPER_PREFIX + selectedDateString);
+    this.props.history.push(STRINGS.ROUTE_PAPER_PREFIX + selectedDateString + "#page=1");
   }
 
   goToNewDate(newDate) {
