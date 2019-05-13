@@ -1,7 +1,6 @@
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
-const parseXML = require('jquery')(typeof window === 'undefined' ? (new (require("jsdom").JSDOM)() ).window : window).parseXML;
-
+import parseXML from "../helpers/parseXML";
 class Page {
   constructor(date, pageNumber, pageLabel, folderPath, altoFilePath, imageFilePath, sections) {
     this.date = date;
@@ -34,7 +33,7 @@ class Page {
     if (this.pageSize) {
       pageSize = this.pageSize;
     } else {
-      let pageTag = this.altoData.find("Page")[0];
+      let pageTag = this.altoData.getElementsByTagName("Page")[0];
       pageSize = {
         height: pageTag.attributes["HEIGHT"].nodeValue,
         width: pageTag.attributes["WIDTH"].nodeValue,
@@ -45,7 +44,7 @@ class Page {
 
     // Find tag with `ID="{id}"`
     // https://stackoverflow.com/a/17268477/2603230
-    let textBlock = this.altoData.find("[ID='" + id + "']")[0];
+    let textBlock = this.altoData.getElementById(id);
     let xPos = textBlock.attributes["hpos"].nodeValue / pageSize.width;
     let yPos = textBlock.attributes["vpos"].nodeValue / pageSize.height * heightScaleFactor;
     let width = textBlock.attributes["width"].nodeValue / pageSize.width;
