@@ -1,6 +1,6 @@
 {
   "name": "@thestanforddaily/archives-web",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": false,
   "dependencies": {
     "@babel/runtime": "^7.4.4",
