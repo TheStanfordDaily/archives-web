@@ -90,12 +90,11 @@ class Paper {
         }
 
         let areaIDs = [];
-        let rawAreas = eachSection.querySelectorAll("area[FILEID='" + altoFileID + "']");
+        let rawAreas = eachSection.querySelectorAll("div[TYPE='BODY'] area[FILEID='" + altoFileID + "']");
         //console.log(rawAreas);
         for (let eachArea of rawAreas) {
           areaIDs.push(eachArea.getAttribute("BEGIN"));
         }
-        //console.log(areaIDs);
 
         let sectionInfo = new PageSection(type, title, subtitle, author, sectionID, areaIDs);
         //console.log(sectionInfo);
