@@ -57,26 +57,56 @@ class Paper {
           continue;
         }
         let type = eachSection.getAttribute("TYPE").toLowerCase();
-        //console.log(type);
+
+        let sectionID = eachSection.getAttribute("ID");
+        let dmdID = eachSection.getAttribute("DMDID");
 
         let title = eachSection.getAttribute("LABEL") || "Untitled";
+        let subtitle = "";
+        let author = "";
+        if (dmdID) {
+          let titleObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:titleInfo");
+          if (titleObjs.length >= 1) {
+            title = titleObjs[0].textContent.trim() || "Untitled";
+          }
+          if (titleObjs.length >= 2) {
+            for (let i = 1; i < titleObjs.length; i++) {
+              subtitle += titleObjs[i].textContent.trim();
+              if (i < (titleObjs.length - 1)) {
+                subtitle += " ";
+              }
+            }
+          }
+          let authorObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:namePart");
+          if (authorObjs.length) {
+            for (let i = 0; i < authorObjs.length; i++) {
+              let authorObj = authorObjs[i];
+              author += authorObj.textContent;
+              if (i < (authorObjs.length - 1)) {
+                author += " ";
+              }
+            }
+          }
+          sectionID = dmdID;
+        }
+
+
         // We do `if` here because `LABEL` attribute could be "Untitled" too.
         if (title === "Untitled") {
           title = "Untitled " + type[0].toUpperCase() + type.slice(1); // Capitalize first letter
         }
-        //console.log(title);
 
-        let sectionID = eachSection.getAttribute("DMDID") || eachSection.getAttribute("ID");
-
-        let areaIDs = [];
-        let rawAreas = eachSection.querySelectorAll("area[FILEID='" + altoFileID + "']");
-        //console.log(rawAreas);
-        for (let eachArea of rawAreas) {
-          areaIDs.push(eachArea.getAttribute("BEGIN"));
+        let areaIDs = {};
+        let areaTypes = ["title", "author", "body"];
+        for (let eachAreaType of areaTypes) {
+          let rawAreas = eachSection.querySelectorAll("div[TYPE='" + eachAreaType + "'] area[FILEID='" + altoFileID + "']");
+          areaIDs[eachAreaType] = [];
+          for (let eachBodyArea of rawAreas) {
+            areaIDs[eachAreaType].push(eachBodyArea.getAttribute("BEGIN"));
+          }
         }
-        //console.log(areaIDs);
 
-        let sectionInfo = new PageSection(type, title, sectionID, areaIDs);
+        let sectionInfo = new PageSection(type, title, subtitle, author, sectionID, areaIDs);
         //console.log(sectionInfo);
 
         sections.push(sectionInfo);

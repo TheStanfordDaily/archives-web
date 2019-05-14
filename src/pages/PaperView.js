@@ -151,21 +151,24 @@ class PaperView extends React.Component {
             continue;
           }
 
-          let overlayIDs = eachSection.areaIDs;
-          for (let eachID of overlayIDs) {
-            let overlayPos = thisPage.getBlockPositionAndSize(eachID);
+          let allOverlays = eachSection.areaIDs;
+          for (let eachOverlayType in allOverlays) {
+            let overlayIDs = allOverlays[eachOverlayType];
+            for (let eachID of overlayIDs) {
+              let overlayPos = thisPage.getBlockPositionAndSize(eachID);
 
-            if (firstOverlayY === null) {
-              firstOverlayY = overlayPos.y;
+              if (firstOverlayY === null) {
+                firstOverlayY = overlayPos.y;
+              }
+
+              var elt = document.createElement("div");
+              elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
+              elt.className = "SectionHighlight";
+              this.viewer.addOverlay({
+                element: elt,
+                location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
+              });
             }
-
-            var elt = document.createElement("div");
-            elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
-            elt.className = "SectionHighlight";
-            this.viewer.addOverlay({
-              element: elt,
-              location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
-            });
           }
         }
 
