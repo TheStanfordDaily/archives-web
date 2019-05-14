@@ -59,10 +59,25 @@ class Paper {
         let type = eachSection.getAttribute("TYPE");
         //console.log(type);
 
-        let title = eachSection.getAttribute("LABEL") || "Untitled";
-        //console.log(title);
+        let sectionID = eachSection.getAttribute("ID");
+        let dmdID = eachSection.getAttribute("DMDID");
 
-        let sectionID = eachSection.getAttribute("DMDID") || eachSection.getAttribute("ID");
+        let title = eachSection.getAttribute("LABEL");
+        let subtitle = "";
+        if (dmdID) {
+          let titleObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:titleInfo");
+          if (titleObjs.length >= 1) {
+            title = titleObjs[0].textContent.trim();
+          }
+          if (titleObjs.length >= 2) {
+            for (let i = 1; i < titleObjs.length; i++) {
+              subtitle += titleObjs[i].textContent.trim() + " ";
+            }
+          }
+          sectionID = dmdID;
+        }
+        
+        console.log(title, subtitle);
 
         let areaIDs = [];
         let rawAreas = eachSection.querySelectorAll("area[FILEID='" + altoFileID + "']");
@@ -72,7 +87,7 @@ class Paper {
         }
         //console.log(areaIDs);
 
-        let sectionInfo = new PageSection(type, title, sectionID, areaIDs);
+        let sectionInfo = new PageSection(type, title, subtitle, sectionID, areaIDs);
         //console.log(sectionInfo);
 
         sections.push(sectionInfo);
