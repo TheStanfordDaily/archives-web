@@ -63,6 +63,7 @@ class Paper {
 
         let title = eachSection.getAttribute("LABEL") || "Untitled";
         let subtitle = "";
+        let author = "";
         if (dmdID) {
           let titleObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:titleInfo");
           if (titleObjs.length >= 1) {
@@ -73,8 +74,15 @@ class Paper {
               subtitle += titleObjs[i].textContent.trim() + " ";
             }
           }
+          let authorObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:namePart");
+          if (authorObjs.length) {
+            for (let authorObj of authorObjs) {
+              author += authorObj.textContent + " ";
+            }
+          }
           sectionID = dmdID;
         }
+        
         
         // We do `if` here because `LABEL` attribute could be "Untitled" too.
         if (title === "Untitled") {
@@ -89,7 +97,7 @@ class Paper {
         }
         //console.log(areaIDs);
 
-        let sectionInfo = new PageSection(type, title, subtitle, sectionID, areaIDs);
+        let sectionInfo = new PageSection(type, title, subtitle, author, sectionID, areaIDs);
         //console.log(sectionInfo);
 
         sections.push(sectionInfo);
