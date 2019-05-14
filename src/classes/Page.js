@@ -45,7 +45,7 @@ class Page {
   getSectionText(section) {
     let text = "";
     for (let id of section.areaIDs) {
-     text += " " + this.getBlockText(id) + "\n";
+     text += this.getBlockText(id) + "\n";
     }
     text = text.slice(0, -1);
     return text;
