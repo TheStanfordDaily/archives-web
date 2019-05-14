@@ -56,10 +56,14 @@ class Paper {
         if (!eachSection.querySelector("area[FILEID='" + altoFileID + "']")) {
           continue;
         }
-        let type = eachSection.getAttribute("TYPE");
+        let type = eachSection.getAttribute("TYPE").toLowerCase();
         //console.log(type);
 
         let title = eachSection.getAttribute("LABEL") || "Untitled";
+        // We do `if` here because `LABEL` attribute could be "Untitled" too.
+        if (title === "Untitled") {
+          title = "Untitled " + type[0].toUpperCase() + type.slice(1); // Capitalize first letter
+        }
         //console.log(title);
 
         let sectionID = eachSection.getAttribute("DMDID") || eachSection.getAttribute("ID");
