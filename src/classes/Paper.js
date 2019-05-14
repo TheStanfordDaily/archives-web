@@ -71,13 +71,20 @@ class Paper {
           }
           if (titleObjs.length >= 2) {
             for (let i = 1; i < titleObjs.length; i++) {
-              subtitle += titleObjs[i].textContent.trim() + " ";
+              subtitle += titleObjs[i].textContent.trim();
+              if (i < (titleObjs.length - 1)) {
+                subtitle += " ";
+              }
             }
           }
           let authorObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:namePart");
           if (authorObjs.length) {
-            for (let authorObj of authorObjs) {
-              author += authorObj.textContent + " ";
+            for (let i = 0; i < authorObjs.length; i++) {
+              let authorObj = authorObjs[i];
+              author += authorObj.textContent;
+              if (i < (authorObjs.length - 1)) {
+                author += " ";
+              }
             }
           }
           sectionID = dmdID;
