@@ -56,18 +56,17 @@ class Paper {
         if (!eachSection.querySelector("area[FILEID='" + altoFileID + "']")) {
           continue;
         }
-        let type = eachSection.getAttribute("TYPE");
-        //console.log(type);
+        let type = eachSection.getAttribute("TYPE").toLowerCase();
 
         let sectionID = eachSection.getAttribute("ID");
         let dmdID = eachSection.getAttribute("DMDID");
 
-        let title = eachSection.getAttribute("LABEL");
+        let title = eachSection.getAttribute("LABEL") || "Untitled";
         let subtitle = "";
         if (dmdID) {
           let titleObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:titleInfo");
           if (titleObjs.length >= 1) {
-            title = titleObjs[0].textContent.trim();
+            title = titleObjs[0].textContent.trim() || "Untitled";
           }
           if (titleObjs.length >= 2) {
             for (let i = 1; i < titleObjs.length; i++) {
@@ -77,7 +76,10 @@ class Paper {
           sectionID = dmdID;
         }
         
-        console.log(title, subtitle);
+        // We do `if` here because `LABEL` attribute could be "Untitled" too.
+        if (title === "Untitled") {
+          title = "Untitled " + type[0].toUpperCase() + type.slice(1); // Capitalize first letter
+        }
 
         let areaIDs = [];
         let rawAreas = eachSection.querySelectorAll("area[FILEID='" + altoFileID + "']");

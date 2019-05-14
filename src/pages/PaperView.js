@@ -210,14 +210,14 @@ class PaperView extends React.Component {
                 <h3 className="PageLabel">Page {page.pageLabel}</h3>
                 <ul>
                   {page.sections.map((section) =>
-                    <li key={page.pageLabel + "-" + section.sectionID} onClick={() => {
-                      this.props.history.push("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
-                      // TODO: directly calling `onHashChange` cause delay. Have to do this.
-                      setTimeout(function () {
-                        this.onHashChange();  // Because `history.push` does not call `onHashChange`.
-                      }.bind(this), 0);
-                    }}>
-                      <span>{section.title}</span>
+                    <li key={page.pageLabel + "-" + section.sectionID}>
+                      <span onClick={() => {
+                        this.props.history.push("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
+                        // TODO: directly calling `onHashChange` cause delay. Have to do this.
+                        setTimeout(function () {
+                          this.onHashChange();  // Because `history.push` does not call `onHashChange`.
+                        }.bind(this), 0);
+                      }}>{section.title}</span>
                     </li>
                   )}
                 </ul>
