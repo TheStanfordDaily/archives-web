@@ -82,18 +82,21 @@ class Paper {
           }
           sectionID = dmdID;
         }
-        
-        
+
+
         // We do `if` here because `LABEL` attribute could be "Untitled" too.
         if (title === "Untitled") {
           title = "Untitled " + type[0].toUpperCase() + type.slice(1); // Capitalize first letter
         }
 
-        let areaIDs = [];
-        let rawAreas = eachSection.querySelectorAll("div[TYPE='BODY'] area[FILEID='" + altoFileID + "']");
-        //console.log(rawAreas);
-        for (let eachArea of rawAreas) {
-          areaIDs.push(eachArea.getAttribute("BEGIN"));
+        let areaIDs = {};
+        let areaTypes = ["title", "author", "body"];
+        for (let eachAreaType of areaTypes) {
+          let rawAreas = eachSection.querySelectorAll("div[TYPE='" + eachAreaType + "'] area[FILEID='" + altoFileID + "']");
+          areaIDs[eachAreaType] = [];
+          for (let eachBodyArea of rawAreas) {
+            areaIDs[eachAreaType].push(eachBodyArea.getAttribute("BEGIN"));
+          }
         }
 
         let sectionInfo = new PageSection(type, title, subtitle, author, sectionID, areaIDs);
