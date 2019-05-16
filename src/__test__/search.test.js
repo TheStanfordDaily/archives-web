@@ -71,7 +71,9 @@ describe("createSearchQuery", () => {
         test("year + century + decade", () => {
 
         });
-        // expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/*.txt NOT path:/19xx/190x/1909y/*.txt hi");
+        test("year with NOT", () => {
+            expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/*.txt NOT path:/19xx/190x/1909y/*.txt hi");
+        });
     });
     test.skip("search query with combinations of date ranges with single years", () => {
         expect(createSearchQuery({year_start: 1900, year_end: 1920, query: "hi"})).toEqual("path:/19xx/190x/*.txt path:/19xx/191x/*.txt path:/19xx/192x/1920y/*.txt hi");
