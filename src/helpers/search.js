@@ -1,5 +1,5 @@
 
-function createPath({century, decade, year, month, day, pathSuffix}) {
+function createPath({ century, decade, year, month, day, pathSuffix }) {
     let pathPrefix = "";
     if (century) {
         pathPrefix += `/${century}xx`;
@@ -29,37 +29,41 @@ function roundToNearest(i, n) {
     return Math.round(i / n) * n;
 }
 
-export function createSearchQuery({year_start, year_end, year, month, day, type, query}) {
+export function createSearchQuery({ year_start, year_end, year, month, day, type, query }) {
     let pathSuffix = "*.txt";
     if (type) {
         pathSuffix = `*.${type}.txt`;
     }
     let path;
     if (year) {
-        path = createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, month, day, pathSuffix});
+        path = createPath({ century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, month, day, pathSuffix });
     }
     else if (year_start && year_end) {
         let paths = [];
         let nearest_start = roundToNearest(year_start, 100);
         let nearest_end = roundToNearest(year_end, 100);
-        if (nearest_end - nearest_start === 100) {
-            paths.push(
-                createPath({century: String(nearest_start).substr(0, 2), pathSuffix})
-            );
+        if (nearest_end - nearest_start > 0) {
+            for (let i = nearest_start; i < nearest_end; i += 100) {
+                paths.push(
+                    createPath({ century: String(i).substr(0, 2), pathSuffix })
+                );
+            }
         }
         else {
             let nearest_start = roundToNearest(year_start, 10);
             let nearest_end = roundToNearest(year_end, 10);
-            if (nearest_end - nearest_start === 10) {
-                paths.push(
-                    createPath({century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix})
-                );
+            if (nearest_end - nearest_start > 0) {
+                for (let i = nearest_start; i < nearest_end; i += 10) {
+                    paths.push(
+                        createPath({ century: String(i).substr(0, 2), decade: String(i).substr(0, 3), pathSuffix })
+                    );
+                }
             }
         }
         path = paths.join(" ");
     }
     else {
-        path = createPath({year, month, day, pathSuffix});
+        path = createPath({ year, month, day, pathSuffix });
     }
     return `${path} ${query}`;
 }
