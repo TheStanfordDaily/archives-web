@@ -50,7 +50,7 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
 
         nearest_start = roundToNearest(year_start, 10);
         nearest_end = roundDownToNearest(roundDownToNearest(year_end + 1, 100) + 1, 10);
-        console.error(year_start, year_end, nearest_start, nearest_end);
+        // console.error(year_start, year_end, nearest_start, nearest_end);
         if (nearest_end - nearest_start > 0) {
             for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
                 paths.push(
