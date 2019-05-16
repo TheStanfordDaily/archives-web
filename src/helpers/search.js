@@ -23,13 +23,6 @@ function createPath({ century, decade, year, month, day, pathSuffix }) {
 }
 
 function createRangePath(year_start, year_end, pathSuffix) {
-    if (year_start > year_end) {
-        return "";
-    }
-    else if (year_start === year_end) {
-        let year = year_start;
-        return createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, pathSuffix})
-    }
     for (let i of [100, 10]) {
         let nearest_start = roundUpToNearest(year_start, i);
         let nearest_end = roundDownToNearest(year_end + 1, i) - 1;

@@ -72,7 +72,9 @@ describe("createSearchQuery", () => {
 
         });
         test("year with NOT", () => {
-            expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/*.txt NOT path:/19xx/190x/1909y/*.txt hi");
+            expect(createSearchQuery({year_start: 1906, year_end: 1914, query: "hi"})).toEqual("path:/19xx/190x/1906y/*.txt path:/19xx/190x/1907y/*.txt path:/19xx/190x/1908y/*.txt path:/19xx/190x/1909y/*.txt path:/19xx/191x/1910y/*.txt path:/19xx/191x/1911y/*.txt path:/19xx/191x/1912y/*.txt path:/19xx/191x/1913y/*.txt path:/19xx/191x/1914y/*.txt hi");
+            expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/1900y/*.txt path:/19xx/190x/1901y/*.txt path:/19xx/190x/1902y/*.txt path:/19xx/190x/1903y/*.txt path:/19xx/190x/1904y/*.txt path:/19xx/190x/1905y/*.txt path:/19xx/190x/1906y/*.txt path:/19xx/190x/1907y/*.txt path:/19xx/190x/1908y/*.txt hi");
+            // expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/*.txt NOT path:/19xx/190x/1909y/*.txt hi");
         });
     });
     test.skip("search query with combinations of date ranges with single years", () => {
