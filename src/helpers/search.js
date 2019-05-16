@@ -22,12 +22,43 @@ function createPath({ century, decade, year, month, day, pathSuffix }) {
     return `path:${pathPrefix}${pathSuffix}`;
 }
 
+function createRangePath(year_start, year_end, pathSuffix) {
+    if (year_start >= year_end) {
+        return "";
+    }
+    for (let i of [100, 10]) {
+        let nearest_start = roundUpToNearest(year_start, i);
+        let nearest_end = roundDownToNearest(year_end + 1, i) - 1;
+        if ((nearest_start !== year_start || nearest_end !== year_end) && nearest_start < nearest_end) {
+            let first = createRangePath(year_start, nearest_start - 1, pathSuffix);
+            let second = createRangePath(nearest_start, nearest_end, pathSuffix);
+            let third = createRangePath(nearest_end + 1, year_end, pathSuffix);
+            return [first, second, third].filter(e => e && e.trim()).join(" ");
+        }
+    }
+    let paths = [];
+    if ((year_end + 1 - year_start) % 100 === 0) {
+        for (let year = year_start; year <= year_end; year += 100) {
+            paths.push(createPath({century: String(year).substr(0, 2), pathSuffix}))
+        }
+    }
+    else if ((year_end + 1 - year_start) % 10 === 0) {
+        for (let year = year_start; year <= year_end; year += 10) {
+            paths.push(createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), pathSuffix}))
+        }
+    }
+    else {
+        for (let year = year_start; year <= year_end; year += 1) {
+            paths.push(createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, pathSuffix}))
+        }
+    }
+    console.error(year_start, year_end, "returning", paths.join(" "));
+    return paths.join(" ");
+}
+
 /*
  * Rounds *i* to the nearest *n*.
  */
-function roundToNearest(i, n) {
-    return Math.round(i / n) * n;
-}
 function roundDownToNearest(i, n) {
     return Math.floor(i / n) * n;
 }
@@ -45,54 +76,7 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
         path = createPath({ century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, month, day, pathSuffix });
     }
     else if (year_start && year_end) {
-        let paths = [];
-        let nearest_start, nearest_end;
-
-        nearest_start = roundToNearest(year_start, 10);
-        nearest_end = roundDownToNearest(roundDownToNearest(year_end + 1, 100) + 1, 10);
-        // console.error(year_start, year_end, nearest_start, nearest_end);
-        if (nearest_end - nearest_start > 0) {
-            for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
-                paths.push(
-                    createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
-                );
-            }
-            year_start = nearest_start;
-        }
-        
-        nearest_start = roundToNearest(year_start, 100);
-        nearest_end = roundDownToNearest(year_end + 1, 100);
-        // console.error(year_start, year_end, nearest_start, nearest_end);
-        if (nearest_end - nearest_start > 0) {
-            for (; nearest_start < nearest_end; nearest_start += 100) {
-                paths.push(
-                    createPath({ century: String(nearest_start).substr(0, 2), pathSuffix })
-                );
-            }
-            year_start = nearest_start;
-        }
-
-        nearest_start = roundToNearest(year_start, 10);
-        nearest_end = roundDownToNearest(year_end + 1, 10);
-        // console.error(year_start, year_end, nearest_start, nearest_end);
-        if (nearest_end - nearest_start > 0) {
-            for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
-                paths.push(
-                    createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
-                );
-            }
-            year_start = nearest_start;
-        }
-
-        // if (year_end - year_start > 0) {
-        //     for (; nearest_start < nearest_end; nearest_start++) {
-        //         paths.push(
-        //             createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), year: String(nearest_start), pathSuffix })
-        //         )
-        //     }
-        // }
-
-        path = paths.join(" ");
+        path = createRangePath(year_start, year_end, pathSuffix);
     }
     else {
         path = createPath({ year, month, day, pathSuffix });

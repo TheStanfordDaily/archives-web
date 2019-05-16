@@ -43,7 +43,7 @@ describe("createSearchQuery", () => {
         });
     });
     // console.error(year_start, year_end, nearest_start, nearest_end);
-    describe.skip("search query with a date range with single years", () => {
+    describe("search query with a date range with single years", () => {
         test("year + year + year", () => {
             expect(createSearchQuery({year_start: 1900, year_end: 1902, query: "hi"})).toEqual("path:/19xx/190x/1900y/*.txt path:/19xx/190x/1901y/*.txt path:/19xx/190x/1902y/*.txt hi");
         });
