@@ -1,11 +1,8 @@
-export function createSearchQuery({year_start, year_end, year, month, day, type, query}) {
-    let pathSuffix = "*.txt";
-    if (type) {
-        pathSuffix = `*.${type}.txt`;
-    }
+
+function createPath({century, decade, year, month, day, pathSuffix}) {
     let pathPrefix = "";
     if (year) {
-        pathPrefix += `/${String(year).substr(0, 2)}xx/${String(year).substr(0, 3)}x/${year}y`;
+        pathPrefix += `/${century}xx/${decade}x/${year}y`;
     }
     if (month) {
         pathPrefix += `/${month}m`;
@@ -16,5 +13,14 @@ export function createSearchQuery({year_start, year_end, year, month, day, type,
     if (pathPrefix) {
         pathPrefix += "/";
     }
-    return `path:${pathPrefix}${pathSuffix} ${query}`;
+    return `path:${pathPrefix}${pathSuffix}`;
+}
+
+export function createSearchQuery({year_start, year_end, year, month, day, type, query}) {
+    let pathSuffix = "*.txt";
+    if (type) {
+        pathSuffix = `*.${type}.txt`;
+    }
+    let path = createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, month, day, pathSuffix});
+    return `${path} ${query}`;
 }
