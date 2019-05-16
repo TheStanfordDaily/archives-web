@@ -1,24 +1,14 @@
 
-function createPath({ century, decade, year, month, day, pathSuffix }) {
+function createPath({ century, decade, year, pathSuffix }) {
     let pathPrefix = "";
     if (year) {
-        pathPrefix += `${year}y`;
+        pathPrefix += `${year}y/`;
     }
     else if (decade) {
-        pathPrefix += `${decade}x`;
+        pathPrefix += `${decade}x/*/`;
     }
     else if (century) {
-        pathPrefix += `${century}xx`;
-    }
-
-    if (month) {
-        pathPrefix += `/${month}m`;
-    }
-    if (day) {
-        pathPrefix += `/${day}d`;
-    }
-    if (pathPrefix) {
-        pathPrefix += "/";
+        pathPrefix += `${century}xx/*/`;
     }
     return `path:${pathPrefix}${pathSuffix}`;
 }
@@ -68,15 +58,22 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
     if (type) {
         pathSuffix = `*.${type}.txt`;
     }
+    if (day) {
+        pathSuffix = `${day}d/${pathSuffix}`;
+    }
+    if (month) {
+        pathSuffix = `${month}m/${pathSuffix}`;
+    }
     let path;
     if (year) {
-        path = createPath({ year, month, day, pathSuffix });
+        path = createPath({ year, pathSuffix });
     }
     else if (year_start && year_end) {
         path = createRangePath(year_start, year_end, pathSuffix);
     }
     else {
-        path = createPath({ year, month, day, pathSuffix });
+        path = createPath({ pathSuffix });
     }
+    path = path.replace(/\/\*\/\*/g, "/*");
     return `${path} ${query}`;
 }

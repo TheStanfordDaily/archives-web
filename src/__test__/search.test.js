@@ -40,6 +40,39 @@ describe("createSearchQuery", () => {
       ).toMatchInlineSnapshot(`"path:190x/*.txt hi"`);
     });
   });
+  describe("date ranges with months / days", () => {
+    test("century with month", () => {
+      expect(
+        createSearchQuery({
+          year_start: 1900,
+          year_end: 1999,
+          month: 10,
+          query: "hi"
+        })
+      ).toMatchInlineSnapshot(`"path:19xx/*/10m/*.txt hi"`);
+    });
+    test("century with day", () => {
+      expect(
+        createSearchQuery({
+          year_start: 1900,
+          year_end: 1999,
+          day: 15,
+          query: "hi"
+        })
+      ).toMatchInlineSnapshot(`"path:19xx/*/15d/*.txt hi"`);
+    });
+    test("century with month + day", () => {
+      expect(
+        createSearchQuery({
+          year_start: 1900,
+          year_end: 1999,
+          month: 10,
+          day: 15,
+          query: "hi"
+        })
+      ).toMatchInlineSnapshot(`"path:19xx/*/10m/15d/*.txt hi"`);
+    });
+  });
   describe("search query with combinations of date ranges", () => {
     test("two centuries", () => {
       expect(
