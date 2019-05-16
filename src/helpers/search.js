@@ -1,14 +1,16 @@
 
 function createPath({ century, decade, year, month, day, pathSuffix }) {
     let pathPrefix = "";
-    if (century) {
-        pathPrefix += `/${century}xx`;
-    }
-    if (decade) {
-        pathPrefix += `/${decade}x`;
-    }
     if (year) {
-        pathPrefix += `/${year}y`;
+        pathPrefix += `${year}y`;
+    }
+    else {
+        if (century) {
+            pathPrefix += `/${century}xx`;
+        }
+        if (decade) {
+            pathPrefix += `/${decade}x`;
+        }
     }
     if (month) {
         pathPrefix += `/${month}m`;
