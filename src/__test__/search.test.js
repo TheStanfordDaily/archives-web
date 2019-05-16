@@ -30,10 +30,19 @@ describe("createSearchQuery", () => {
             expect(createSearchQuery({year_start: 1900, year_end: 1919, query: "hi"})).toEqual("path:/19xx/190x/*.txt path:/19xx/191x/*.txt hi");
         });
         test("century plus decade", () => {
-            expect(createSearchQuery({year_start: 1900, year_end: 2009, query: "hi"})).toEqual("path:/19xx/*.txt path:/20xx/201x/*.txt hi");
+            expect(createSearchQuery({year_start: 1900, year_end: 2009, query: "hi"})).toEqual("path:/19xx/*.txt path:/20xx/200x/*.txt hi");
+            expect(createSearchQuery({year_start: 1900, year_end: 2019, query: "hi"})).toEqual("path:/19xx/*.txt path:/20xx/200x/*.txt path:/20xx/201x/*.txt hi");
         });
-        
+        test("decade plus century", () => {
+            expect(createSearchQuery({year_start: 1890, year_end: 1999, query: "hi"})).toEqual("path:/18xx/189x/*.txt path:/19xx/*.txt hi");
+            expect(createSearchQuery({year_start: 1880, year_end: 1999, query: "hi"})).toEqual("path:/18xx/188x/*.txt path:/18xx/189x/*.txt path:/19xx/*.txt hi");
+        });
+        test("decade plus century plus decade", () => {
+            expect(createSearchQuery({year_start: 1890, year_end: 2009, query: "hi"})).toEqual("path:/18xx/189x/*.txt path:/19xx/*.txt path:/20xx/200x/*.txt hi");
+            expect(createSearchQuery({year_start: 1880, year_end: 2019, query: "hi"})).toEqual("path:/18xx/188x/*.txt path:/18xx/189x/*.txt path:/19xx/*.txt path:/20xx/200x/*.txt path:/20xx/201x/*.txt hi");
+        });
     });
+    // console.error(year_start, year_end, nearest_start, nearest_end);
     test.skip("search query with a date range with single years", () => {
         expect(createSearchQuery({year_start: 1900, year_end: 1902, query: "hi"})).toEqual("path:/19xx/190x/1900y/*.txt path:/19xx/190x/1901y/*.txt path:/19xx/190x/1902y/*.txt hi");
         expect(createSearchQuery({year_start: 1900, year_end: 1908, query: "hi"})).toEqual("path:/19xx/190x/*.txt NOT path:/19xx/190x/1909y/*.txt hi");

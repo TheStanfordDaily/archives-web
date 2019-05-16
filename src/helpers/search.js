@@ -28,6 +28,12 @@ function createPath({ century, decade, year, month, day, pathSuffix }) {
 function roundToNearest(i, n) {
     return Math.round(i / n) * n;
 }
+function roundDownToNearest(i, n) {
+    return Math.floor(i / n) * n;
+}
+function roundUpToNearest(i, n) {
+    return Math.ceil(i / n) * n;
+}
 
 export function createSearchQuery({ year_start, year_end, year, month, day, type, query }) {
     let pathSuffix = "*.txt";
@@ -40,26 +46,52 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
     }
     else if (year_start && year_end) {
         let paths = [];
-        let nearest_start = roundToNearest(year_start, 100);
-        let nearest_end = roundToNearest(year_end, 100);
-        if (nearest_end - nearest_start > 0) {
-            for (let i = nearest_start; i < nearest_end; i += 100) {
+        let nearest_start, nearest_end;
+
+        nearest_start = roundToNearest(year_start, 10);
+        nearest_end = roundDownToNearest(year_end + 1, 10);
+        // console.error(year_start, year_end, nearest_start, nearest_end);
+        if (nearest_end - nearest_start > 0 && (nearest_end - nearest_start < 100 || nearest_start % 100 !== 0)) {
+            for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
                 paths.push(
-                    createPath({ century: String(i).substr(0, 2), pathSuffix })
+                    createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
                 );
             }
+            year_start = nearest_start;
         }
-        else {
-            let nearest_start = roundToNearest(year_start, 10);
-            let nearest_end = roundToNearest(year_end, 10);
-            if (nearest_end - nearest_start > 0) {
-                for (let i = nearest_start; i < nearest_end; i += 10) {
-                    paths.push(
-                        createPath({ century: String(i).substr(0, 2), decade: String(i).substr(0, 3), pathSuffix })
-                    );
-                }
+        
+        nearest_start = roundToNearest(year_start, 100);
+        nearest_end = roundToNearest(year_end, 100);
+        // console.error(year_start, year_end, nearest_start, nearest_end);
+        if (nearest_end - nearest_start > 0) {
+            for (; nearest_start < nearest_end; nearest_start += 100) {
+                paths.push(
+                    createPath({ century: String(nearest_start).substr(0, 2), pathSuffix })
+                );
             }
+            year_start = nearest_start;
         }
+
+        nearest_start = roundToNearest(year_start, 10);
+        nearest_end = roundToNearest(year_end, 10);
+        // console.error(year_start, year_end, nearest_start, nearest_end);
+        if (nearest_end - nearest_start > 0 && (nearest_end - nearest_start < 100 || nearest_start % 100 !== 0)) {
+            for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
+                paths.push(
+                    createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
+                );
+            }
+            year_start = nearest_start;
+        }
+
+        // if (year_end - year_start > 0) {
+        //     for (; nearest_start < nearest_end; nearest_start++) {
+        //         paths.push(
+        //             createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), year: String(nearest_start), pathSuffix })
+        //         )
+        //     }
+        // }
+
         path = paths.join(" ");
     }
     else {
