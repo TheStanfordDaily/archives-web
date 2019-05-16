@@ -75,5 +75,9 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
         path = createPath({ pathSuffix });
     }
     path = path.replace(/\/\*\/\*/g, "/*");
-    return `${path} ${query}`;
+    let finalQuery = `${path} ${query}`;
+    if (finalQuery.length > 250) {
+        throw new Error("Queries can be up to 250 characters in length.");
+    }
+    return finalQuery;
 }

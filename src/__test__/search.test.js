@@ -1,7 +1,10 @@
 import { createSearchQuery } from "../helpers/search";
 
 describe("createSearchQuery", () => {
-  test("search query with text", () => {
+    test("search query too long - length exception", () => {
+        expect(createSearchQuery({ query: "12345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451" })).toThrowError("Queries can be up to 250 characters in length.");
+      });
+    test("search query with text", () => {
     expect(createSearchQuery({ query: "hi" })).toMatchInlineSnapshot(
       `"path:*.txt hi"`
     );
