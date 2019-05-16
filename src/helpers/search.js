@@ -4,14 +4,13 @@ function createPath({ century, decade, year, month, day, pathSuffix }) {
     if (year) {
         pathPrefix += `${year}y`;
     }
-    else {
-        if (century) {
-            pathPrefix += `/${century}xx`;
-        }
-        if (decade) {
-            pathPrefix += `/${decade}x`;
-        }
+    else if (decade) {
+        pathPrefix += `${decade}x`;
     }
+    else if (century) {
+        pathPrefix += `${century}xx`;
+    }
+
     if (month) {
         pathPrefix += `/${month}m`;
     }
@@ -43,12 +42,12 @@ function createRangePath(year_start, year_end, pathSuffix) {
     }
     else if ((year_end + 1 - year_start) % 10 === 0) {
         for (let year = year_start; year <= year_end; year += 10) {
-            paths.push(createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), pathSuffix}))
+            paths.push(createPath({decade: String(year).substr(0, 3), pathSuffix}))
         }
     }
     else {
         for (let year = year_start; year <= year_end; year += 1) {
-            paths.push(createPath({century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, pathSuffix}))
+            paths.push(createPath({year, pathSuffix}))
         }
     }
     return paths.join(" ");
@@ -71,7 +70,7 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
     }
     let path;
     if (year) {
-        path = createPath({ century: String(year).substr(0, 2), decade: String(year).substr(0, 3), year, month, day, pathSuffix });
+        path = createPath({ year, month, day, pathSuffix });
     }
     else if (year_start && year_end) {
         path = createRangePath(year_start, year_end, pathSuffix);

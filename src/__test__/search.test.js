@@ -32,57 +32,55 @@ describe("createSearchQuery", () => {
     test("century", () => {
       expect(
         createSearchQuery({ year_start: 1900, year_end: 1999, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:/19xx/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:19xx/*.txt hi"`);
     });
     test("decade", () => {
       expect(
         createSearchQuery({ year_start: 1900, year_end: 1909, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:/19xx/190x/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:190x/*.txt hi"`);
     });
   });
   describe("search query with combinations of date ranges", () => {
     test("two centuries", () => {
       expect(
         createSearchQuery({ year_start: 1800, year_end: 1999, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:/18xx/*.txt path:/19xx/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:18xx/*.txt path:19xx/*.txt hi"`);
     });
     test("two decades", () => {
       expect(
         createSearchQuery({ year_start: 1900, year_end: 1919, query: "hi" })
-      ).toMatchInlineSnapshot(
-        `"path:/19xx/190x/*.txt path:/19xx/191x/*.txt hi"`
-      );
+      ).toMatchInlineSnapshot(`"path:190x/*.txt path:191x/*.txt hi"`);
     });
     test("century + decade", () => {
       expect(
         createSearchQuery({ year_start: 1900, year_end: 2009, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:/19xx/*.txt path:/20xx/200x/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:19xx/*.txt path:200x/*.txt hi"`);
       expect(
         createSearchQuery({ year_start: 1900, year_end: 2019, query: "hi" })
       ).toMatchInlineSnapshot(
-        `"path:/19xx/*.txt path:/20xx/200x/*.txt path:/20xx/201x/*.txt hi"`
+        `"path:19xx/*.txt path:200x/*.txt path:201x/*.txt hi"`
       );
     });
     test("decade + century", () => {
       expect(
         createSearchQuery({ year_start: 1890, year_end: 1999, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:/18xx/189x/*.txt path:/19xx/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:189x/*.txt path:19xx/*.txt hi"`);
       expect(
         createSearchQuery({ year_start: 1880, year_end: 1999, query: "hi" })
       ).toMatchInlineSnapshot(
-        `"path:/18xx/188x/*.txt path:/18xx/189x/*.txt path:/19xx/*.txt hi"`
+        `"path:188x/*.txt path:189x/*.txt path:19xx/*.txt hi"`
       );
     });
     test("decade + century + decade", () => {
       expect(
         createSearchQuery({ year_start: 1890, year_end: 2009, query: "hi" })
       ).toMatchInlineSnapshot(
-        `"path:/18xx/189x/*.txt path:/19xx/*.txt path:/20xx/200x/*.txt hi"`
+        `"path:189x/*.txt path:19xx/*.txt path:200x/*.txt hi"`
       );
       expect(
         createSearchQuery({ year_start: 1880, year_end: 2019, query: "hi" })
       ).toMatchInlineSnapshot(
-        `"path:/18xx/188x/*.txt path:/18xx/189x/*.txt path:/19xx/*.txt path:/20xx/200x/*.txt path:/20xx/201x/*.txt hi"`
+        `"path:188x/*.txt path:189x/*.txt path:19xx/*.txt path:200x/*.txt path:201x/*.txt hi"`
       );
     });
   });
@@ -98,7 +96,7 @@ describe("createSearchQuery", () => {
     test("year + decade", () => {
       expect(
         createSearchQuery({ year_start: 1909, year_end: 1919, query: "hi" })
-      ).toMatchInlineSnapshot(`"path:1909y/*.txt path:/19xx/191x/*.txt hi"`);
+      ).toMatchInlineSnapshot(`"path:1909y/*.txt path:191x/*.txt hi"`);
     });
     test("decade + year", () => {});
     test("year + decade + year", () => {});
@@ -125,7 +123,7 @@ describe("createSearchQuery", () => {
     expect(
       createSearchQuery({ year_start: 1900, year_end: 1920, query: "hi" })
     ).toMatchInlineSnapshot(
-      `"path:/19xx/190x/*.txt path:/19xx/191x/*.txt path:1920y/*.txt hi"`
+      `"path:190x/*.txt path:191x/*.txt path:1920y/*.txt hi"`
     );
   });
 });
