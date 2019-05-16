@@ -49,9 +49,9 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
         let nearest_start, nearest_end;
 
         nearest_start = roundToNearest(year_start, 10);
-        nearest_end = roundDownToNearest(year_end + 1, 10);
-        // console.error(year_start, year_end, nearest_start, nearest_end);
-        if (nearest_end - nearest_start > 0 && (nearest_end - nearest_start < 100 || nearest_start % 100 !== 0)) {
+        nearest_end = roundDownToNearest(roundDownToNearest(year_end + 1, 100) + 1, 10);
+        console.error(year_start, year_end, nearest_start, nearest_end);
+        if (nearest_end - nearest_start > 0) {
             for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
                 paths.push(
                     createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
@@ -61,7 +61,7 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
         }
         
         nearest_start = roundToNearest(year_start, 100);
-        nearest_end = roundToNearest(year_end, 100);
+        nearest_end = roundDownToNearest(year_end + 1, 100);
         // console.error(year_start, year_end, nearest_start, nearest_end);
         if (nearest_end - nearest_start > 0) {
             for (; nearest_start < nearest_end; nearest_start += 100) {
@@ -73,9 +73,9 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
         }
 
         nearest_start = roundToNearest(year_start, 10);
-        nearest_end = roundToNearest(year_end, 10);
+        nearest_end = roundDownToNearest(year_end + 1, 10);
         // console.error(year_start, year_end, nearest_start, nearest_end);
-        if (nearest_end - nearest_start > 0 && (nearest_end - nearest_start < 100 || nearest_start % 100 !== 0)) {
+        if (nearest_end - nearest_start > 0) {
             for (; nearest_start < nearest_end && (nearest_end - nearest_start) % 100 !== 0; nearest_start += 10) {
                 paths.push(
                     createPath({ century: String(nearest_start).substr(0, 2), decade: String(nearest_start).substr(0, 3), pathSuffix })
