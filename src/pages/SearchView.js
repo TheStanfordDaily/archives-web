@@ -29,6 +29,7 @@ function CustomFieldTemplate(props) {
     </div>
   );
 }
+
 function CustomButtonWidget(props) {
   const classNames = props.options.classNames || "";
   const buttonText = props.options.buttonText || "Untitled Button";
@@ -70,6 +71,9 @@ class SearchView extends React.Component {
       properties: {
         "first_row": {
           type: "object",
+          required: [
+            "keyword"
+          ],
           properties: {
             "keyword": {
               title: "Search",
