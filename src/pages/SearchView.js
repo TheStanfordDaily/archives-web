@@ -11,13 +11,13 @@ function ObjectFieldTemplate(props) {
   );
 }
 
-class Search extends React.Component {
+class SearchView extends React.Component {
   // componentDidMount() {
   // }
 
   // componentWillUnmount() {
   // }
- 
+
 
   render() {
 
@@ -93,17 +93,17 @@ class Search extends React.Component {
           "results_per_page":{
             "classNames": "col-md-4"
           }
-      }, 
+      },
       "from" : {
         "classNames": "row col-12",
         "ui:widget":"alt-date"
-      }, 
+      },
       "to" : {
         "classNames": "row col-12",
           "ui:widget":"alt-date"
-      }, 
+      },
     }
-    return (<div className = "container"> 
+    return (<div className = "container">
     <div><h2>Filter Archived Articles:</h2>
       <Form schema={schema} uiSchema={uiSchema}  ObjectFieldTemplate={ObjectFieldTemplate}
       onSubmit={e => console.log(e.formData)} />
@@ -113,5 +113,5 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+export default SearchView;
 
