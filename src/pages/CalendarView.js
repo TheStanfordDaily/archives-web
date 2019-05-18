@@ -3,7 +3,6 @@ import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import NotFound from './NotFound'
 import Loading from './components/Loading';
-import CalendarToolbar from './components/CalendarToolbar';
 import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
 import { STRINGS } from '../helpers/constants'
@@ -56,10 +55,13 @@ class CalendarView extends React.Component {
     return (
       <div className="CalendarMainView">
         <div className="CalendarTitle">
+          <button type="button" onClick={() => this.calendar.handleNavigate('PREV')}>back</button>
           <h1>{thisMonth.format("MMMM YYYY")}</h1>
+          <button type="button" onClick={() => this.calendar.handleNavigate('NEXT')}>next</button>
         </div>
         <div className="CalendarContent">
           <BigCalendar
+            ref={(calendar) => { this.calendar = calendar; }}
             localizer={localizer}
             events={allEvents}
             date={new Date(thisMonth)}
@@ -68,7 +70,7 @@ class CalendarView extends React.Component {
             onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
             views={{ month: true, notfound: CalendarNotFoundComponent }}
             view={calendarNotFound ? "notfound" : "month"}
-            components={{ toolbar: CalendarToolbar }}
+            components={{ toolbar: () => { return <></> } }}
             onNavigate={(date) => {
               this.goToNewDate(date);
             }}
