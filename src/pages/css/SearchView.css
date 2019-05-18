@@ -1,0 +1,51 @@
+.SearchMainView {
+  flex-direction: column;
+}
+
+.SearchFilterSection {
+  padding: 20px;
+  background-color: #c7d1c5;
+}
+
+.SearchContent {
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+}
+
+.SearchNavigationSection {
+  width: 30%;
+  background-color: #F9F6EF;
+  text-align: left;
+  padding: 20px;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  display: flex;
+  flex-direction: column;
+
+  overflow: auto;
+
+}
+
+.SearchResultSection {
+  width: 70%;
+}
+
+
+
+.SearchFilterSection .form-row {
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.SearchFilterSection .list-inline > li {
+  display: inline-block;
+}
+.SearchFilterSection .list-inline > li:not(:last-of-type) {
+  margin-right: 5px;
+}
