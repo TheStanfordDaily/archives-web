@@ -65,6 +65,14 @@ const widgets = {
 
 class SearchView extends React.Component {
   render() {
+    let searchParameters = queryString.parse(this.props.location.search);
+    console.log(searchParameters);
+    if (searchParameters.q) {
+      const q = searchParameters.q;
+      this.searchFor({ keyword: q, results_per_page: 100 });
+    }
+
+
     const widgets = {
       customDateWidget: CustomDateWidget,
       customButtonWidget: CustomButtonWidget
@@ -82,6 +90,7 @@ class SearchView extends React.Component {
             "keyword": {
               title: "Search",
               type: "string",
+              default: searchParameters.q
             },
             "search_within": {
               title: "within",
@@ -184,14 +193,6 @@ class SearchView extends React.Component {
         }
       }
     };
-
-
-    let searchParameters = queryString.parse(this.props.location.search);
-    console.log(searchParameters);
-    if (searchParameters.q) {
-      const q = searchParameters.q;
-      this.searchFor({ keyword: q, results_per_page: 100 });
-    }
 
     return (
       <div className="SearchMainView">
