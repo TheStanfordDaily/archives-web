@@ -1,6 +1,10 @@
 import React from 'react';
 import Form from "react-jsonschema-form";
+import queryString from 'query-string';
+import fetch from "cross-fetch";
 import CustomDateWidget from "./components/form/CustomDateWidget";
+import { createSearchQuery } from "../helpers/search";
+import { STRINGS } from "../helpers/constants";
 
 import "./css/SearchView.css";
 
@@ -21,7 +25,7 @@ function CustomFieldTemplate(props) {
   const hideLabel = props.uiSchema.hideLabel;
   return (
     <div className={classNames}>
-      {(label && !hideLabel) && <label className={labelClassNames} htmlFor={id}>{label}{required ? "*" : null}</label>}
+      {(label && !hideLabel) && <label className={labelClassNames} htmlFor={id}>{label}</label>}
       {description}
       {childrenClassNames ? <div className={childrenClassNames}>{children}</div> : children}
       {errors}
@@ -181,6 +185,14 @@ class SearchView extends React.Component {
       }
     };
 
+
+    let searchParameters = queryString.parse(this.props.location.search);
+    console.log(searchParameters);
+    if (searchParameters.q) {
+      const q = searchParameters.q;
+      this.searchFor({ keyword: q, results_per_page: 100 });
+    }
+
     return (
       <div className="SearchMainView">
         <div className="SearchFilterSection">
@@ -191,7 +203,7 @@ class SearchView extends React.Component {
             FieldTemplate={CustomFieldTemplate}
             widgets={widgets}
             ref={(form) => { this.form = form; }}
-            onSubmit={e => console.log(e.formData)}>
+            onSubmit={(e) => console.log(e.formData)}>
             <>{/* Handle submission using the `search_button` button above. */}</>
           </Form>
         </div>
@@ -205,6 +217,25 @@ class SearchView extends React.Component {
         </div>
       </div>
     );
+  }
+
+  searchFor({ keyword, search_within, search_summaries, results_per_page = 20, page_number = 1, date_from, date_to }) {
+    const search_query = createSearchQuery({ query: keyword });
+    console.log(search_query);
+
+    const serverSearchParameters = {
+      search_query: search_query,
+      pagelen: results_per_page,
+      page: page_number
+    }
+
+    // https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
+    const serverSearchURL = STRINGS.SEARCH_SERVER_URL + "?" + queryString.stringify(serverSearchParameters);
+    console.log(serverSearchURL);
+    fetch(serverSearchURL).then(e => e.json()).then(e => {
+      console.log(e);
+      // TODO: set state
+    });
   }
 }
 
