@@ -29,6 +29,16 @@ function CustomFieldTemplate(props) {
     </div>
   );
 }
+function CustomButtonWidget(props) {
+  const classNames = props.options.classNames || "";
+  const buttonText = props.options.buttonText || "Untitled Button";
+  const onClick = props.options.onClick || (() => {});
+  return (
+    <>
+      <button type="submit" className={"btn btn-primary" + (classNames && " " + classNames)} onClick={(e) => onClick(e)}>{buttonText}</button>
+    </>
+  )
+}
 
 /*const CustomTextInputWidget = (props) => {
   console.log(props);
@@ -51,7 +61,8 @@ const widgets = {
 class SearchView extends React.Component {
   render() {
     const widgets = {
-      customDateWidget: CustomDateWidget
+      customDateWidget: CustomDateWidget,
+      customButtonWidget: CustomButtonWidget
     };
 
     const schema = {
@@ -94,6 +105,10 @@ class SearchView extends React.Component {
             "date_to": {
               title: "To",
               type: "string",
+            },
+            "search_button": {
+              title: "Search",
+              type: "string",
             }
           }
         }
@@ -130,7 +145,7 @@ class SearchView extends React.Component {
         classNames: "form-row",
         hideLabel: true,
         "date_from": {
-          classNames: "col-md-5 form-row",
+          classNames: "col-lg-4 col-md-5 form-row",
           labelClassNames: "col-form-label",
           childrenClassNames: "col",
           "ui:widget": "customDateWidget",
@@ -141,7 +156,7 @@ class SearchView extends React.Component {
           }
         },
         "date_to": {
-          classNames: "col-md-5 form-row",
+          classNames: "col-lg-3 col-md-5 form-row",
           labelClassNames: "col-form-label",
           childrenClassNames: "col",
           "ui:widget": "customDateWidget",
@@ -149,6 +164,14 @@ class SearchView extends React.Component {
             yearsRange: [1892, 2014], // TODO: should we hardcode this?
             hideNowButton: true,
             hideClearButton: true
+          }
+        },
+        "search_button": {
+          classNames: "col-lg-5 col-md-2",
+          hideLabel: true,
+          "ui:widget": "customButtonWidget",
+          "ui:options": {
+            buttonText: "Search",
           }
         }
       }
@@ -163,7 +186,10 @@ class SearchView extends React.Component {
             ObjectFieldTemplate={PlainFormTemplate}
             FieldTemplate={CustomFieldTemplate}
             widgets={widgets}
-            onSubmit={e => console.log(e.formData)} />
+            ref={(form) => { this.form = form; }}
+            onSubmit={e => console.log(e.formData)}>
+            <>{/* Handle submission using the `search_button` button above. */}</>
+          </Form>
         </div>
         <div className="SearchContent">
           <div className="SearchNavigationSection">
