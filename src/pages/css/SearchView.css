@@ -38,11 +38,18 @@
 
 
 
+.SearchFilterSection .form-group {
+  margin-bottom: 0;
+}
 .SearchFilterSection .form-row {
   margin: 0 auto;
+}
+.SearchFilterSection .form-row:not(:last-of-type) {
   margin-bottom: 10px;
 }
-
+.SearchFilterSection .list-inline {
+  margin-bottom: 0;
+}
 .SearchFilterSection .list-inline > li {
   display: inline-block;
 }
