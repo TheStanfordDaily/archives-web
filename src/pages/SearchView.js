@@ -10,6 +10,11 @@ import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
 
+export function getSearchURL({ keyword, searchWithin, searchSummaries, resultsPerPage, pageNumber, dateFrom, dateTo }) {
+  console.log(keyword);
+  return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify({ q: keyword, page: pageNumber, pagelen: resultsPerPage });
+}
+
 // To avoid the use of `<fieldset>`.
 function PlainFormTemplate(props) {
   return (
@@ -225,7 +230,12 @@ class SearchView extends React.Component {
             FieldTemplate={CustomFieldTemplate}
             widgets={widgets}
             ref={(form) => { this.form = form; }}
-            onSubmit={(e) => console.log(e.formData)}>
+            onSubmit={(e) => {
+              const formData = e.formData;
+              console.log(formData);
+              const keyword = formData.first_row.keyword;
+              this.props.history.push(getSearchURL({ keyword: keyword }));
+            }}>
             <>{/* Handle submission using the `search_button` button above. */}</>
           </Form>
         </div>
