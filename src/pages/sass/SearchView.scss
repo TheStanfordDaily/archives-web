@@ -4,7 +4,7 @@
 
 .SearchFilterSection {
   padding: 20px;
-  background-color: #c7d1c5;
+  background-color: $color__light-sage;
 }
 
 .SearchContent {
@@ -20,7 +20,7 @@
 
 .SearchNavigationSection {
   width: 30%;
-  background-color: #F9F6EF;
+  background-color: $color__light-sandstone;
   text-align: left;
   padding: 20px;
 
@@ -43,19 +43,16 @@
 .EachResult:not(:last-of-type) {
   border-bottom: 1px solid black;
 }
-.EachResultTitle a {
-  color: #820000;
-}
 .EachResultDate {
   float: right;
-  color: #b26f16;
+  color: $color__gold;
   font-weight: normal;
 }
 .EachResultEachText:last-of-type {
   margin-bottom: 0;
 }
 .EachResultEachText b {
-  color: #8d3c1e;
+  color: $color__redwood;
 }
 
 

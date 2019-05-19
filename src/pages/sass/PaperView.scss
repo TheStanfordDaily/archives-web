@@ -1,6 +1,6 @@
 .NavigationSection {
   width: 30%;
-  background-color: #F9F6EF;
+  background-color: $color__light-sandstone;
   text-align: left;
 
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
@@ -38,8 +38,8 @@
   overflow-y: auto;
 }
 .PaperNavigationItems ul li span {
+  @extend a;
   text-decoration: underline;
-  color: #820000;
   cursor: pointer;
 }
 
@@ -79,5 +79,5 @@
 .SectionHighlight {
   opacity: 0.25;
   /*outline: 12px auto #0A7EbE;*/
-  background-color: #d2c295;
+  background-color: $color__sandstone;
 }

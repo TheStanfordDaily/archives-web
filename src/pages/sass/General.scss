@@ -10,7 +10,24 @@ html, body {
 }
 
 a {
-  color: #820000;
+  color: $color__link;
+  text-decoration: none;
+
+  &:visited {
+    color: $color__link-visited;
+  }
+  &:hover,
+  &:focus,
+  &:active {
+    color: $color__link-hover;
+  }
+  &:focus {
+    outline: thin dotted;
+  }
+  &:hover,
+  &:active {
+    outline: 0;
+  }
 }
 
 /* https://stackoverflow.com/a/46130505/2603230 */
@@ -25,7 +42,7 @@ a {
 }
 
 .navbar {
-  background-color: #8c1515 !important;
+  background-color: $color__cardinal-red;
 }
 
 .site-title a {
@@ -37,7 +54,7 @@ a {
   color: white;
 }
 .searchbar::placeholder {
-  color: lightgray;
+  color: $color__light-sandstone;
 }
 .searchbar:focus {
   background-color: transparent;
