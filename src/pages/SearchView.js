@@ -71,12 +71,16 @@ class SearchView extends React.Component {
     super(props);
 
     this.state = { loading: true, searchResults: [] };
+  }
 
+  componentDidMount() {
     this.searchParameters = queryString.parse(this.props.location.search);
     console.log(this.searchParameters);
     if (this.searchParameters.q) {
       const q = this.searchParameters.q;
       this.searchFor({ keyword: q, results_per_page: 100 });
+    } else {
+      this.setState({ loading: false });
     }
   }
 
