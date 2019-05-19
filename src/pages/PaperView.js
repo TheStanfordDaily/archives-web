@@ -91,12 +91,24 @@ class PaperView extends React.Component {
     if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= this.allPages.length) {
       // `goToPage` is 0-indexed.
       pageIndex = pageNumber - 1;
+    } else if (hashValue["section[]"]) {
+      // If `#page` is not specified but `#section[]` is, then directly go to the page that contains the first `section`.
+
+      let sectionID = hashValue["section[]"];
+      // If input has only one section. (i.e. "section[]=...")
+      if (!Array.isArray(sectionID)) {
+        sectionID = [sectionID];
+      }
+
+      let pageNumberForSection = this.paper.getPageNumberFromSectionID(sectionID[0]);
+      if (pageNumberForSection !== -1) {
+        pageIndex = pageNumberForSection - 1;
+      }
+      console.log(sectionID[0] + " is on " + pageNumberForSection);
     }
     console.log("Going to page " + pageIndex);
     this.viewer.goToPage(pageIndex);
 
-    // TODO: set page number to the page that contains the first element given by `#section` (This is for going in from search results).
-    // Or even maybe add a #ref=search?
     this.setOverlays(pageIndex);
   }
 
@@ -207,7 +219,6 @@ class PaperView extends React.Component {
         <div className="NavigationSection">
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
-            {/* TODO: add a back to search page button? */}
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
           </div>
           <div className="PaperNavigationItems">

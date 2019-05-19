@@ -118,6 +118,18 @@ class Paper {
 
     return this.pages;
   }
+
+  getPageNumberFromSectionID(sectionID) {
+    for (let eachPage of this.pages) {
+      for (let eachSection of eachPage.sections) {
+        //console.log(eachSection.sectionID + " on " + eachPage.pageNumber.toString());
+        if (eachSection.sectionID === sectionID) {
+          return eachPage.pageNumber;
+        }
+      }
+    }
+    return -1;
+  }
 }
 
 export default Paper;
