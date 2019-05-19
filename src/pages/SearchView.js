@@ -229,12 +229,14 @@ class SearchView extends React.Component {
         <div className="SearchContent">
           <div className="SearchNavigationSection">
             Navigate me!
+            {/* TODO: add a collapse content button - only show title and date */}
           </div>
           <div className="SearchResultSection">
             {this.state.searchResults.length ?
               this.state.searchResults.map((eachResult, index) =>
                 <div className="EachResult" key={index}>
                   <h4 className="EachResultTitle">
+                    {/* TODO: should we use link here or use onClick and pass some prop to PaperView? */}
                     {/* TODO: add an icon before title to indicate ads or article */}
                     <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#section[]=" + eachResult.id}>{eachResult.title}</Link></span>
                     <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
