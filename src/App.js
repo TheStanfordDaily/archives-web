@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import Home from './pages/Home'
 import TSDNavbar from './pages/components/TSDNavbar'
 import SearchView from './pages/SearchView'
+import AllYearView from './pages/AllYearView'
 import CalendarView from './pages/CalendarView'
 import PaperView from './pages/PaperView'
 import NotFound from './pages/NotFound'
@@ -27,6 +28,7 @@ class App extends React.Component {
           <div className="MainView">
             <Switch>
               <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
+              <Route path={STRINGS.ROUTE_CALENDAR_PREFIX} strict exact component={AllYearView} />
               <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
               <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
               <Route path={STRINGS.ROUTE_SEARCH_PREFIX} strict exact component={SearchView}/>

@@ -53,9 +53,8 @@
       .SectionTitle {
         display: table-cell;
         .SectionTitleLink {
-          @extend a;
+          @extend %link;
           text-decoration: underline;
-          cursor: pointer;
         }
       }
     }

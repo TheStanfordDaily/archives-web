@@ -1,0 +1,46 @@
+.AllYearMainView {
+  @extend .MainView;
+  flex-direction: column;
+
+  .AllYears {
+    max-width: 1000px;
+    width: 70%;
+    margin: 0 auto;
+
+    //background-color: yellow;
+
+    .EachYear {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+
+      &:not(:last-of-type) {
+        border-bottom: 1px solid black;
+      }
+
+      .YearName {
+        width: 30%;
+        margin: 0;
+        border-right: 1px solid black;
+        //background-color: lightblue;
+      }
+
+      .YearMonths {
+        width: 70%;
+        //background-color: lightgreen;
+        .EachMonth {
+          display: inline-block;
+          margin-right: 20px;
+
+          .EachMonthNoLink {
+            color: $color__cool-grey;
+          }
+          .EachMonthLink {
+            @extend %link;
+          }
+        }
+      }
+    }
+  }
+}

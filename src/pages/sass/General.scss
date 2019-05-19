@@ -20,6 +20,7 @@ a {
   &:focus,
   &:active {
     color: $color__link-hover;
+    text-decoration: underline;
   }
   &:focus {
     outline: thin dotted;
@@ -68,9 +69,11 @@ a {
   min-height: 0;
   width: 100%;
   display: flex;
+  overflow-y: auto;
 }
 
 @import "Loading";
+@import "AllYearView";
 @import "CalendarView";
 @import "PaperView";
 @import "SearchView";

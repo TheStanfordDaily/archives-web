@@ -2,6 +2,7 @@
 $color__cardinal-red: #8C1515;
 $color__cardinal-dark-red: #820000;
 $color__cardinal-bright-red: #B1040E;
+$color__cool-grey: #4D4F53;
 $color__stone: #544948;
 $color__sandstone: #D2C295;
 $color__light-sandstone: #F9F6EF;
@@ -12,3 +13,8 @@ $color__redwood: #8D3C1E;
 $color__link: $color__cardinal-dark-red;
 $color__link-visited: $color__cardinal-dark-red;
 $color__link-hover: $color__cardinal-bright-red;
+
+%link {
+  @extend a;
+  cursor: pointer;
+}
