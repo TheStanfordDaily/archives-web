@@ -95,6 +95,8 @@ class PaperView extends React.Component {
     console.log("Going to page " + pageIndex);
     this.viewer.goToPage(pageIndex);
 
+    // TODO: set page number to the page that contains the first element given by `#section` (This is for going in from search results).
+    // Or even maybe add a #ref=search?
     this.setOverlays(pageIndex);
   }
 
@@ -205,6 +207,7 @@ class PaperView extends React.Component {
         <div className="NavigationSection">
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
+            {/* TODO: add a back to search page button? */}
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
           </div>
           <div className="PaperNavigationItems">

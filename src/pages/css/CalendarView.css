@@ -13,6 +13,32 @@
   margin: 0;
 }
 
+.CalendarNavigationButton {
+  height: 100%;
+  background-color: transparent;
+  border: 0;
+  color: white;
+  font-size: 130%;
+}
+
+.CalendarNavigationPrevButton {
+  float: left;
+  margin-left: 20px;
+}
+.CalendarNavigationPrevButton::before {
+  content: "\2190";
+  margin-right: 5px;
+}
+
+.CalendarNavigationNextButton {
+  float: right;
+  margin-right: 20px;
+}
+.CalendarNavigationNextButton::after {
+  content: "\2192";
+  margin-left: 5px;
+}
+
 .CalendarContent {
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 1 1 auto;

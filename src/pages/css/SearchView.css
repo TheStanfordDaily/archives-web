@@ -1,0 +1,80 @@
+.SearchMainView {
+  flex-direction: column;
+}
+
+.SearchFilterSection {
+  padding: 20px;
+  background-color: #c7d1c5;
+}
+
+.SearchContent {
+  min-height: 0;
+  width: 100%;
+  display: flex;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  flex: 1 1 auto;
+  position: relative;
+  overflow-y: auto;
+}
+
+.SearchNavigationSection {
+  width: 30%;
+  background-color: #F9F6EF;
+  text-align: left;
+  padding: 20px;
+
+  /* https://codepen.io/anthonyLukes/pen/DLBeE */
+  display: flex;
+  flex-direction: column;
+
+  overflow-y: auto;
+}
+
+.SearchResultSection {
+  width: 70%;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.EachResult {
+  padding: 20px;
+}
+.EachResult:not(:last-of-type) {
+  border-bottom: 1px solid black;
+}
+.EachResultTitle a {
+  color: #820000;
+}
+.EachResultDate {
+  float: right;
+  color: #b26f16;
+  font-weight: normal;
+}
+.EachResultEachText:last-of-type {
+  margin-bottom: 0;
+}
+.EachResultEachText b {
+  color: #8d3c1e;
+}
+
+
+
+.SearchFilterSection .form-group {
+  margin-bottom: 0;
+}
+.SearchFilterSection .form-row {
+  margin: 0 auto;
+}
+.SearchFilterSection .form-row:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+.SearchFilterSection .list-inline {
+  margin-bottom: 0;
+}
+.SearchFilterSection .list-inline > li {
+  display: inline-block;
+}
+.SearchFilterSection .list-inline > li:not(:last-of-type) {
+  margin-right: 5px;
+}

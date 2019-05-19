@@ -4,7 +4,7 @@ import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home'
-import Search from './pages/Search'
+import SearchView from './pages/SearchView'
 import CalendarView from './pages/CalendarView'
 import PaperView from './pages/PaperView'
 import NotFound from './pages/NotFound'
@@ -54,9 +54,8 @@ class App extends React.Component {
               <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
               <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
               <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
-              <Route path="/search" component={Search}/>
+              <Route path="/search" strict exact component={SearchView}/>
               <Route component={NotFound} />
-
             </Switch>
           </div>
         </div>
