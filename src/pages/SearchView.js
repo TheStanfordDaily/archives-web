@@ -70,6 +70,7 @@ class SearchView extends React.Component {
   constructor(props) {
     super(props);
 
+    // TODO: add an error state
     this.state = { loading: true, searchResults: [] };
   }
 
@@ -78,7 +79,10 @@ class SearchView extends React.Component {
     console.log(this.searchParameters);
     if (this.searchParameters.q) {
       const q = this.searchParameters.q;
-      this.searchFor({ keyword: q, results_per_page: 100 });
+      // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
+      const pageNumber = this.searchParameters.page || 1;
+      const resultsPerPage = this.searchParameters.pagelen || 20;
+      this.searchFor({ keyword: q, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
     } else {
       this.setState({ loading: false });
     }
@@ -256,7 +260,7 @@ class SearchView extends React.Component {
     );
   }
 
-  searchFor({ keyword, searchWithin, searchSummaries, resultsPerPage = 500, pageNumber = 1, dateFrom, dateTo }) {
+  searchFor({ keyword, searchWithin, searchSummaries, resultsPerPage = 20, pageNumber = 1, dateFrom, dateTo }) {
     const searchQuery = createSearchQuery({ query: keyword });
     console.log(searchQuery);
 
@@ -270,6 +274,7 @@ class SearchView extends React.Component {
     const serverSearchURL = STRINGS.SEARCH_SERVER_URL + "?" + queryString.stringify(serverSearchParameters);
     console.log(serverSearchURL);
     fetch(serverSearchURL).then(e => e.json()).then(e => {
+      // TODO: handle error
       console.log(e);
       const resultsSize = e.size;
       let results = [];
@@ -329,8 +334,8 @@ class SearchView extends React.Component {
         });
       }
       console.log(results);
+      // TODO: sort results by `matchCount`?
       this.setState({ searchResults: results, loading: false });
-      // TODO: set state
     });
   }
 }
