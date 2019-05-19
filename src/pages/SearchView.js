@@ -11,7 +11,7 @@ import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
 
 export function getSearchURL({ keyword, searchWithin, searchSummaries, resultsPerPage, pageNumber, dateFrom, dateTo }) {
-  console.log(keyword);
+  //console.log(keyword);
   return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify({ q: keyword, page: pageNumber, pagelen: resultsPerPage });
 }
 
@@ -79,6 +79,19 @@ class SearchView extends React.Component {
   }
 
   componentDidMount() {
+    this.startSearchFromQuery();
+  }
+
+  // https://reactjs.org/docs/react-component.html#componentdidupdate
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.startSearchFromQuery();
+    }
+  }
+
+  startSearchFromQuery() {
+    this.setState({ loading: true });
+
     this.searchParameters = queryString.parse(this.props.location.search);
     console.log(this.searchParameters);
     if (this.searchParameters.q) {
