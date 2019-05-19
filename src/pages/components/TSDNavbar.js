@@ -6,14 +6,26 @@ import { STRINGS } from '../../helpers/constants'
 
 class TSDNavbar extends React.Component {
   render() {
+    console.log(this.props.location);
+
+    let navItems = { "Home": STRINGS.ROUTE_ROOT, "Calendar": STRINGS.ROUTE_CALENDAR_PREFIX, "Search": STRINGS.ROUTE_SEARCH_PREFIX };
+    let navLinks = [];
+    for (let navItemName in navItems) {
+      let classNames = "nav-link";
+      if (this.props.location.pathname === navItems[navItemName]) {
+        classNames += " active";
+      }
+      navLinks.push(
+        <Link to={navItems[navItemName]} className={classNames} key={navItems[navItemName]}>{navItemName}</Link>
+      );
+    }
+
     return (
       <Navbar expand="md" variant="dark" className="navbar">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="w-100 order-1 order-md-0 dual-collapse2">
           <Nav className="mr-auto">
-            <Nav.Link href="/calendar">Home</Nav.Link>
-            <Nav.Link href="/link" className="active">Link</Nav.Link>
-            <Nav.Link href={STRINGS.ROUTE_SEARCH_PREFIX}>Search</Nav.Link>
+            {navLinks}
             {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
