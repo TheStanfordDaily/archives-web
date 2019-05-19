@@ -75,15 +75,8 @@ class CalendarView extends React.Component {
             }}
             onView={() => { }} // Do nothing (to suppress the warning)
             eventPropGetter={(event, start, end, isSelected) => {
-              let style = {
-                backgroundColor: "#544948",
-                borderRadius: '0px',
-                color: 'white',
-                border: '0px',
-                display: 'block'
-              };
               return {
-                style: style
+                className: "CalendarContentEvent"
               };
             }}
           />

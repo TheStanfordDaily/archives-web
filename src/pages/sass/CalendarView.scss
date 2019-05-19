@@ -45,3 +45,10 @@
   position: relative;
   overflow-y: auto;
 }
+
+.CalendarContentEvent {
+  background-color: $color__stone;
+  border-radius: 0px;
+  color: white;
+  border: 0px;
+}
