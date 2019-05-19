@@ -28,12 +28,12 @@
   display: flex;
   flex-direction: column;
 
-  overflow: auto;
-
+  overflow-y: auto;
 }
 
 .SearchResultSection {
   width: 70%;
+  overflow-y: auto;
 }
 
 

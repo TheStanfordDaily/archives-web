@@ -2,6 +2,7 @@ import React from 'react';
 import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
+import Loading from './components/Loading';
 import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
@@ -64,14 +65,25 @@ const widgets = {
 };*/
 
 class SearchView extends React.Component {
-  render() {
-    let searchParameters = queryString.parse(this.props.location.search);
-    console.log(searchParameters);
-    if (searchParameters.q) {
-      const q = searchParameters.q;
+  constructor(props) {
+    super(props);
+
+    this.state = { loading: true, searchResults: [] };
+
+    this.searchParameters = queryString.parse(this.props.location.search);
+    console.log(this.searchParameters);
+    if (this.searchParameters.q) {
+      const q = this.searchParameters.q;
       this.searchFor({ keyword: q, results_per_page: 100 });
     }
+  }
 
+  render() {
+    if (this.state.loading) {
+      return (
+        <Loading />
+      );
+    }
 
     const widgets = {
       customDateWidget: CustomDateWidget,
@@ -90,7 +102,7 @@ class SearchView extends React.Component {
             "keyword": {
               title: "Search",
               type: "string",
-              default: searchParameters.q
+              default: this.searchParameters.q
             },
             "search_within": {
               title: "within",
@@ -213,21 +225,28 @@ class SearchView extends React.Component {
             Navigate me!
           </div>
           <div className="SearchResultSection">
-            Hello World!
+            {this.state.searchResults.length ?
+              this.state.searchResults.map((eachResult, index) =>
+                <div key={index}>
+                  {eachResult.title}
+                </div>
+              ) :
+              <div>No results!</div>
+            }
           </div>
         </div>
       </div>
     );
   }
 
-  searchFor({ keyword, search_within, search_summaries, results_per_page = 20, page_number = 1, date_from, date_to }) {
-    const search_query = createSearchQuery({ query: keyword });
-    console.log(search_query);
+  searchFor({ keyword, searchWithin, searchSummaries, resultsPerPage = 500, pageNumber = 1, dateFrom, dateTo }) {
+    const searchQuery = createSearchQuery({ query: keyword });
+    console.log(searchQuery);
 
     const serverSearchParameters = {
-      search_query: search_query,
-      pagelen: results_per_page,
-      page: page_number
+      search_query: searchQuery,
+      pagelen: resultsPerPage,
+      page: pageNumber
     }
 
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
@@ -235,6 +254,65 @@ class SearchView extends React.Component {
     console.log(serverSearchURL);
     fetch(serverSearchURL).then(e => e.json()).then(e => {
       console.log(e);
+      const resultsSize = e.size;
+      let results = [];
+      for (let eachResultSection of e.values) {
+        const matchCount = eachResultSection.content_match_count;
+        const filepath = eachResultSection.file.path;
+        const filepathSplited = filepath.split("/");
+        console.log(filepathSplited);
+        if (filepathSplited.length !== 6) {
+          console.warn("filepathSplited = [" + filepathSplited.toString() + "] does not have exactly 6 elements! Ignoring it...");
+          continue;
+        }
+        const year = Number(filepathSplited[2].slice(0, -1));
+        const month = Number(filepathSplited[3].slice(0, -1));
+        const day = Number(filepathSplited[4].slice(0, -1));
+        const date = new Date(year, month - 1, day);
+        //console.log(date);
+        const rawFilename = filepathSplited[5];
+        const rawFilenameSplited = rawFilename.split(".");
+        console.log(rawFilenameSplited);
+        if (rawFilenameSplited.length !== 4) {
+          console.warn("rawFilenameSplited = [" + rawFilenameSplited.toString() + "] does not have exactly 4 elements! Ignoring it...");
+          continue;
+        }
+        const id = rawFilenameSplited[0];
+        // https://stackoverflow.com/a/25840184/2603230 We are using UTF-8 for base64.
+        const title = new Buffer(rawFilenameSplited[1], 'base64').toString();
+        const type = rawFilenameSplited[2];
+        //console.log(title);
+
+        let text = [];
+        for (let eachMatches of eachResultSection.content_matches) {
+          let thisLine = "&hellip; ";
+          for (let eachSubline of eachMatches.lines) {
+            for (let eachSegments of eachSubline.segments) {
+              if (eachSegments.match) {
+                thisLine += "<b>";
+              }
+              thisLine += eachSegments.text.trim();
+              if (eachSegments.match) {
+                thisLine += "</b>";
+              }
+              thisLine += " ";
+            }
+          }
+          thisLine = thisLine.trim() + " &hellip;";
+          text.push(thisLine);
+        }
+        console.log(text);
+        results.push({
+          date: date,
+          id: id,
+          title: title,
+          matchCount: matchCount,
+          type: type,
+          text: text
+        });
+      }
+      console.log(results);
+      this.setState({ searchResults: results, loading: false });
       // TODO: set state
     });
   }
