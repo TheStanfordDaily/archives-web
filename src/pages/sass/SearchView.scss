@@ -1,26 +1,10 @@
 .SearchMainView {
   @extend .MainView;
-  flex-direction: column;
 }
 
 .SearchFilterSection {
-  padding: 20px;
-  background-color: $color__light-sage;
-}
-
-.SearchContent {
-  min-height: 0;
-  width: 100%;
-  display: flex;
-
-  /* https://codepen.io/anthonyLukes/pen/DLBeE */
-  flex: auto;
-  overflow-y: auto;
-}
-
-.SearchNavigationSection {
   width: 30%;
-  background-color: $color__light-sandstone;
+  background-color: $color__light-sage;
   text-align: left;
   padding: 20px;
 

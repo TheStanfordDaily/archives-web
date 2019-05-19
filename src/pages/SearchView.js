@@ -236,7 +236,7 @@ class SearchView extends React.Component {
     return (
       <div className="SearchMainView">
         <div className="SearchFilterSection">
-          {/*<h2>Filter Archived Articles:</h2>*/}
+          <h2>Filter Archived Articles</h2>
           <Form schema={schema}
             uiSchema={uiSchema}
             ObjectFieldTemplate={PlainFormTemplate}
@@ -251,31 +251,26 @@ class SearchView extends React.Component {
             }}>
             <>{/* Handle submission using the `search_button` button above. */}</>
           </Form>
+          {/* TODO: add a collapse content button - only show title and date */}
         </div>
-        <div className="SearchContent">
-          <div className="SearchNavigationSection">
-            Navigate me!
-            {/* TODO: add a collapse content button - only show title and date */}
-          </div>
-          <div className="SearchResultSection">
-            {this.state.searchResults.length ?
-              this.state.searchResults.map((eachResult, index) =>
-                <div className="EachResult" key={index}>
-                  <h4 className="EachResultTitle">
-                    {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                    <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
-                    <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
-                  </h4>
-                  <div className="EachResultTexts">
-                    {eachResult.text.map((eachText, textIndex) =>
-                      <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{__html: eachText}} />
-                    )}
-                  </div>
+        <div className="SearchResultSection">
+          {this.state.searchResults.length ?
+            this.state.searchResults.map((eachResult, index) =>
+              <div className="EachResult" key={index}>
+                <h4 className="EachResultTitle">
+                  {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                  <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
+                  <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
+                </h4>
+                <div className="EachResultTexts">
+                  {eachResult.text.map((eachText, textIndex) =>
+                    <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
+                  )}
                 </div>
-              ) :
-              <div>No results!</div>
-            }
-          </div>
+              </div>
+            ) :
+            <div>No results!</div>
+          }
         </div>
       </div>
     );
