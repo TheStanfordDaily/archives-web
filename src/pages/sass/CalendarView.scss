@@ -11,12 +11,6 @@
   display: flex;
 }
 
-.CalendarTitle h1 {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin: 0;
-}
-
 .CalendarTitleLeft, .CalendarTitleRight {
   // https://stackoverflow.com/a/44348868/2603230
   flex: 1;
@@ -25,6 +19,12 @@
 .CalendarTitleCenter {
   display: inline-flex;
   align-items: center;
+
+  h1 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+  }
 }
 
 .CalendarNavigationButton {
@@ -38,22 +38,23 @@
 .CalendarNavigationBackButton {
   margin-left: 20px;
   float: left;
+  text-decoration: underline;
 }
 
 .CalendarNavigationPrevButton {
   margin-right: 20px;
-}
-.CalendarNavigationPrevButton::before {
-  content: "\2190";
-  margin-right: 5px;
+  &::before {
+    content: "\2190";
+    margin-right: 5px;
+  }
 }
 
 .CalendarNavigationNextButton {
   margin-left: 20px;
-}
-.CalendarNavigationNextButton::after {
-  content: "\2192";
-  margin-left: 5px;
+  &::after {
+    content: "\2192";
+    margin-left: 5px;
+  }
 }
 
 .CalendarContent {
