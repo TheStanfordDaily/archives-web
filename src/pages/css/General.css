@@ -7,6 +7,10 @@ html, body {
   margin: 0;
 }
 
+a {
+  color: #820000;
+}
+
 /* https://stackoverflow.com/a/46130505/2603230 */
 .App {
   height: 100vh;
