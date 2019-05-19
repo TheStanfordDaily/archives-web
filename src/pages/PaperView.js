@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import NotFound from './NotFound';
 import Loading from './components/Loading';
 import { fetchPaper } from '../helpers/papers';
+import { castArray } from "../helpers/util";
 import { STRINGS } from '../helpers/constants'
 
 class PaperView extends React.Component {
@@ -92,17 +93,12 @@ class PaperView extends React.Component {
     } else if (hashValue["section[]"]) {
       // If `#page` is not specified but `#section[]` is, then directly go to the page that contains the first `section`.
 
-      let sectionID = hashValue["section[]"];
-      // If input has only one section. (i.e. "section[]=...")
-      if (!Array.isArray(sectionID)) {
-        sectionID = [sectionID];
-      }
-
-      let pageNumberForSection = this.paper.getPageNumberFromSectionID(sectionID[0]);
+      let sectionIDs = castArray(hashValue["section[]"]);
+      let pageNumberForSection = this.paper.getPageNumberFromSectionID(sectionIDs[0]);
       if (pageNumberForSection !== -1) {
         pageIndex = pageNumberForSection - 1;
       }
-      console.log(sectionID[0] + " is on " + pageNumberForSection);
+      console.log(sectionIDs[0] + " is on " + pageNumberForSection);
     }
     console.log("Going to page " + pageIndex);
     this.viewer.goToPage(pageIndex);
@@ -137,9 +133,10 @@ class PaperView extends React.Component {
     this.viewer.clearOverlays();
 
     let hashValue = queryString.parse(this.props.location.hash);
-    // https://stackoverflow.com/a/9176496/2603230
-    let displayingSections = hashValue["section[]"];
-    if (displayingSections) {
+    // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
+    // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
+    let displayingSections = castArray(hashValue["section[]"]);
+    if (displayingSections.length) {
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
       thisPage.getAltoData().then((results) => {
@@ -148,10 +145,6 @@ class PaperView extends React.Component {
 
         let firstOverlayY = null;
 
-        // If input has only one section. (i.e. "section[]=...")
-        if (!Array.isArray(displayingSections)) {
-          displayingSections = [displayingSections];
-        }
         for (let eachSectionID of displayingSections) {
           let eachSection = thisPage.sections.find(obj => {
             return obj.sectionID === eachSectionID
