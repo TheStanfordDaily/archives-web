@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import OpenSeadragon from 'openseadragon';
 import moment from 'moment'
 import queryString from 'query-string';
+import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import NotFound from './NotFound';
 import Loading from './components/Loading';
 import { fetchPaper } from '../helpers/papers';
@@ -220,13 +221,17 @@ class PaperView extends React.Component {
                 <ul>
                   {page.sections.map((section) =>
                     <li key={page.pageLabel + "-" + section.sectionID}>
-                      <span onClick={() => {
-                        this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
-                        // TODO: directly calling `onHashChange` cause delay. Have to do this.
-                        setTimeout(function () {
-                          this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
-                        }.bind(this), 0);
-                      }}>{section.title}</span>
+                      {section.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                      <span className="SectionTitle">
+                        {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
+                        <span className="SectionTitleLink" onClick={() => {
+                          this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
+                          // TODO: directly calling `onHashChange` cause delay. Have to do this.
+                          setTimeout(function () {
+                            this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
+                          }.bind(this), 0);
+                        }}>{section.title}</span>
+                      </span>
                     </li>
                   )}
                 </ul>

@@ -39,11 +39,27 @@
   flex: 1;
 
   overflow-y: auto;
-}
-.PaperNavigationItems ul li span {
-  @extend a;
-  text-decoration: underline;
-  cursor: pointer;
+
+  ul {
+    list-style: none;
+    padding-left: 10px;
+
+    // https://stackoverflow.com/a/46379002/2603230
+    li {
+      display: table;
+      svg {
+        margin-right: 5px;
+      }
+      .SectionTitle {
+        display: table-cell;
+        .SectionTitleLink {
+          @extend a;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 .PaperSection {
