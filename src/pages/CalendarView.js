@@ -54,9 +54,15 @@ class CalendarView extends React.Component {
     return (
       <div className="CalendarMainView">
         <div className="CalendarTitle">
-          <button className="CalendarNavigationButton CalendarNavigationPrevButton" onClick={() => this.calendar.handleNavigate('PREV')}>Back</button>
-          <button className="CalendarNavigationButton CalendarNavigationNextButton" onClick={() => this.calendar.handleNavigate('NEXT')}>Next</button>
-          <h1>{thisMonth.format("MMMM YYYY")}</h1>
+          <div className="CalendarTitleLeft">
+            <button className="CalendarNavigationButton CalendarNavigationBackButton" onClick={() => this.props.history.push(STRINGS.ROUTE_CALENDAR_PREFIX)}>View All Years</button>
+          </div>
+          <div className="CalendarTitleCenter">
+            <button className="CalendarNavigationButton CalendarNavigationPrevButton" onClick={() => this.calendar.handleNavigate('PREV')} />
+            <h1>{thisMonth.format("MMMM YYYY")}</h1>
+            <button className="CalendarNavigationButton CalendarNavigationNextButton" onClick={() => this.calendar.handleNavigate('NEXT')} />
+          </div>
+          <div className="CalendarTitleRight">{/* Nothing here yet. */}</div>
         </div>
         <div className="CalendarContent">
           <BigCalendar

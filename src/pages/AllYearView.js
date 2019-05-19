@@ -44,7 +44,7 @@ class AllYearView extends React.Component {
         );
       }
       yearElements.push(
-        <div key={year} className="EachYear">
+        <div key={year} id={year} className="EachYear">
           <h2 className="YearName">{year}</h2>
           <div className="YearMonths">{monthsElements}</div>
         </div>
