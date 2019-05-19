@@ -2,6 +2,7 @@ import React from 'react';
 import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
+import moment from 'moment';
 import Loading from './components/Loading';
 import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
@@ -227,8 +228,17 @@ class SearchView extends React.Component {
           <div className="SearchResultSection">
             {this.state.searchResults.length ?
               this.state.searchResults.map((eachResult, index) =>
-                <div key={index}>
-                  {eachResult.title}
+                <div className="EachResult" key={index}>
+                  <h4 className="EachResultTitle">
+                    {/* TODO: add an icon before title to indicate ads or article */}
+                    {eachResult.title}
+                    <span className="EachResultDate">{moment(eachResult.date).format("MMMM DD, YYYY")}</span>
+                  </h4>
+                  <div className="EachResultTexts">
+                    {eachResult.text.map((eachText, textIndex) =>
+                      <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{__html: eachText}} />
+                    )}
+                  </div>
                 </div>
               ) :
               <div>No results!</div>
@@ -291,12 +301,12 @@ class SearchView extends React.Component {
               if (eachSegments.match) {
                 thisLine += "<b>";
               }
-              thisLine += eachSegments.text.trim();
+              thisLine += eachSegments.text;
               if (eachSegments.match) {
                 thisLine += "</b>";
               }
-              thisLine += " ";
             }
+            thisLine = thisLine.trim() + " ";
           }
           thisLine = thisLine.trim() + " &hellip;";
           text.push(thisLine);

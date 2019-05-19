@@ -34,6 +34,20 @@
 .SearchResultSection {
   width: 70%;
   overflow-y: auto;
+  text-align: left;
+}
+
+.EachResult {
+  border-bottom: 1px solid black;
+  padding: 20px;
+}
+.EachResultDate {
+  float: right;
+  color: #b26f16;
+  font-weight: normal;
+}
+.EachResultEachText b {
+  color: #8d3c1e;
 }
 
 
