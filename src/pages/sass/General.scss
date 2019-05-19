@@ -62,7 +62,7 @@ a {
 }
 
 /* https://stackoverflow.com/a/46130505/2603230 */
-.MainView, .CalendarMainView, .PaperMainView, .SearchMainView {
+.MainView {
   flex: 1;
   min-height: 0;
   width: 100%;

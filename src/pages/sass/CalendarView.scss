@@ -1,4 +1,5 @@
 .CalendarMainView {
+  @extend .MainView;
   flex-direction: column;
 }
 

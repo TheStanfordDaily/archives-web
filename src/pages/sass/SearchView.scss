@@ -1,4 +1,5 @@
 .SearchMainView {
+  @extend .MainView;
   flex-direction: column;
 }
 

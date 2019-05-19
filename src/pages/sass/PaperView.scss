@@ -1,3 +1,7 @@
+.PaperMainView {
+  @extend .MainView;
+}
+
 .NavigationSection {
   width: 30%;
   background-color: $color__light-sandstone;
