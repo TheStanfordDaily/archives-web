@@ -113,12 +113,12 @@ class PaperView extends React.Component {
 
     let hashValue = queryString.parse(this.props.location.hash);
     //console.log("hashValue.page is " + hashValue.page.toString() + "while pageNumber is " + pageNumber.toString());
-    // Only use `history.push` if current hash pageNumber is not equal to the new pageNumber.
+    // Only use `history.replace` if current hash pageNumber is not equal to the new pageNumber.
     if (Number(hashValue.page) !== pageNumber) {
       console.log("Number(hashValue.page) !== pageNumber");
       hashValue.page = pageNumber;
       // Note that this seems NOT to call `onHashChange()`, so we want to call `setOverlays` here manually.
-      this.props.history.push("#" + queryString.stringify(hashValue));
+      this.props.history.replace("#" + queryString.stringify(hashValue));
       this.setOverlays(page);
     }
   }
@@ -211,6 +211,7 @@ class PaperView extends React.Component {
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
           </div>
           <div className="PaperNavigationItems">
+            {/* TODO: add support for displaying article content from GitHub text. */}
             {this.allPages.map((page) =>
               <div key={page.pageNumber}>
                 <h3 className="PageLabel">Page {page.pageLabel}</h3>
@@ -218,10 +219,10 @@ class PaperView extends React.Component {
                   {page.sections.map((section) =>
                     <li key={page.pageLabel + "-" + section.sectionID}>
                       <span onClick={() => {
-                        this.props.history.push("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
+                        this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
                         // TODO: directly calling `onHashChange` cause delay. Have to do this.
                         setTimeout(function () {
-                          this.onHashChange();  // Because `history.push` does not call `onHashChange`.
+                          this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
                         }.bind(this), 0);
                       }}>{section.title}</span>
                     </li>
