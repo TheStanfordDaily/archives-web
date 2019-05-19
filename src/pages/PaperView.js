@@ -8,7 +8,7 @@ import Loading from './components/Loading';
 import { fetchPaper } from '../helpers/papers';
 import { STRINGS } from '../helpers/constants'
 
-import "./css/PaperView.css"
+import "./sass/PaperView.scss"
 
 class PaperView extends React.Component {
   constructor(props) {
