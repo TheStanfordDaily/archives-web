@@ -9,7 +9,7 @@ import PaperView from './pages/PaperView'
 import NotFound from './pages/NotFound'
 import { STRINGS } from './helpers/constants'
 
-import "./pages/sass/General.scss"
+import "./pages/sass/General.scss";
 
 class App extends React.Component {
   componentDidMount() {

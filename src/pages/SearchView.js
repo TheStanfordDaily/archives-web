@@ -9,8 +9,6 @@ import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
 
-import "./sass/SearchView.scss";
-
 // To avoid the use of `<fieldset>`.
 function PlainFormTemplate(props) {
   return (

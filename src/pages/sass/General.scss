@@ -49,3 +49,8 @@ a {
   width: 100%;
   display: flex;
 }
+
+@import "Loading";
+@import "CalendarView";
+@import "PaperView";
+@import "SearchView";

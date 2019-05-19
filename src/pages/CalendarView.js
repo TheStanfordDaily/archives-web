@@ -7,7 +7,6 @@ import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
 import { STRINGS } from '../helpers/constants'
 
-import "./sass/CalendarView.scss";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = BigCalendar.momentLocalizer(moment);
