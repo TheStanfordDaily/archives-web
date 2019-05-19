@@ -22,7 +22,7 @@
   padding-bottom: 20px;
 
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
-  flex: 0 0 auto;
+  flex: 0;
 }
 .PaperTitleBar .BackToCalendarButton {
   margin: 0;
@@ -36,8 +36,7 @@
   padding: 20px;
 
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
-  flex: 1 1 auto;
-  position: relative;/* need this to position inner content */
+  flex: 1;
 
   overflow-y: auto;
 }

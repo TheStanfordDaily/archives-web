@@ -6,6 +6,7 @@
 .CalendarTitle {
   background-color: $color__stone;
   color: white;
+  flex: 0;
 }
 
 .CalendarTitle h1 {
@@ -42,8 +43,7 @@
 
 .CalendarContent {
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
-  flex: 1 1 auto;
-  position: relative;
+  flex: 1;
   overflow-y: auto;
 }
 
