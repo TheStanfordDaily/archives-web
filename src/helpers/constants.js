@@ -5,6 +5,7 @@ const STRINGS = {
   ROUTE_ROOT: "/",
   ROUTE_CALENDAR_PREFIX: "/calendar/",
   ROUTE_PAPER_PREFIX: "/paper/",
+  ROUTE_SEARCH_PREFIX: "/search",
 }
 
 module.exports = { STRINGS };

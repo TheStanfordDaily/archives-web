@@ -29,7 +29,7 @@ class App extends React.Component {
               <Nav className="mr-auto">
                 <Nav.Link href="/calendar">Home</Nav.Link>
                 <Nav.Link href="/link" className="active">Link</Nav.Link>
-                <Nav.Link href="/search">Search</Nav.Link>
+                <Nav.Link href={STRINGS.ROUTE_SEARCH_PREFIX}>Search</Nav.Link>
                 {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -53,7 +53,7 @@ class App extends React.Component {
               <Route path={STRINGS.ROUTE_ROOT} exact component={Home} />
               <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
               <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
-              <Route path="/search" strict exact component={SearchView}/>
+              <Route path={STRINGS.ROUTE_SEARCH_PREFIX} strict exact component={SearchView}/>
               <Route component={NotFound} />
             </Switch>
           </div>
