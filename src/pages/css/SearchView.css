@@ -41,6 +41,9 @@
   border-bottom: 1px solid black;
   padding: 20px;
 }
+.EachResultTitle a {
+  color: #820000;
+}
 .EachResultDate {
   float: right;
   color: #b26f16;

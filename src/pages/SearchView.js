@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
@@ -231,8 +232,8 @@ class SearchView extends React.Component {
                 <div className="EachResult" key={index}>
                   <h4 className="EachResultTitle">
                     {/* TODO: add an icon before title to indicate ads or article */}
-                    {eachResult.title}
-                    <span className="EachResultDate">{moment(eachResult.date).format("MMMM DD, YYYY")}</span>
+                    <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#section[]=" + eachResult.id}>{eachResult.title}</Link></span>
+                    <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
                   </h4>
                   <div className="EachResultTexts">
                     {eachResult.text.map((eachText, textIndex) =>
@@ -270,7 +271,7 @@ class SearchView extends React.Component {
         const matchCount = eachResultSection.content_match_count;
         const filepath = eachResultSection.file.path;
         const filepathSplited = filepath.split("/");
-        console.log(filepathSplited);
+        //console.log(filepathSplited);
         if (filepathSplited.length !== 6) {
           console.warn("filepathSplited = [" + filepathSplited.toString() + "] does not have exactly 6 elements! Ignoring it...");
           continue;
@@ -278,11 +279,11 @@ class SearchView extends React.Component {
         const year = Number(filepathSplited[2].slice(0, -1));
         const month = Number(filepathSplited[3].slice(0, -1));
         const day = Number(filepathSplited[4].slice(0, -1));
-        const date = new Date(year, month - 1, day);
+        const date = moment(new Date(year, month - 1, day));
         //console.log(date);
         const rawFilename = filepathSplited[5];
         const rawFilenameSplited = rawFilename.split(".");
-        console.log(rawFilenameSplited);
+        //console.log(rawFilenameSplited);
         if (rawFilenameSplited.length !== 4) {
           console.warn("rawFilenameSplited = [" + rawFilenameSplited.toString() + "] does not have exactly 4 elements! Ignoring it...");
           continue;
@@ -311,7 +312,7 @@ class SearchView extends React.Component {
           thisLine = thisLine.trim() + " &hellip;";
           text.push(thisLine);
         }
-        console.log(text);
+        //console.log(text);
         results.push({
           date: date,
           id: id,
