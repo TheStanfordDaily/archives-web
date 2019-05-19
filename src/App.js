@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Home from './pages/Home'
 import SearchView from './pages/SearchView'
 import CalendarView from './pages/CalendarView'
