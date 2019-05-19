@@ -43,10 +43,26 @@
 .EachResult:not(:last-of-type) {
   border-bottom: 1px solid black;
 }
-.EachResultDate {
-  float: right;
-  color: $color__gold;
-  font-weight: normal;
+// https://github.com/google/material-design-icons/issues/206#issuecomment-253966226
+.EachResultTitle {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+
+  svg {
+    flex: none;
+    margin-right: 5px;
+  }
+
+  .EachResultDate {
+    color: $color__gold;
+    font-weight: normal;
+
+    flex: none;
+
+    // https://stackoverflow.com/a/22429853/2603230
+    margin-left: auto;
+  }
 }
 .EachResultEachText:last-of-type {
   margin-bottom: 0;

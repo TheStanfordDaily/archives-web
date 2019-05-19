@@ -4,6 +4,7 @@ import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
 import moment from 'moment';
+import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import Loading from './components/Loading';
 import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
@@ -238,7 +239,7 @@ class SearchView extends React.Component {
               this.state.searchResults.map((eachResult, index) =>
                 <div className="EachResult" key={index}>
                   <h4 className="EachResultTitle">
-                    {/* TODO: add an icon before title to indicate ads or article */}
+                    {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
                     <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#section[]=" + eachResult.id}>{eachResult.title}</Link></span>
                     <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
                   </h4>
