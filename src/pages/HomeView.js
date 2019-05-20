@@ -32,7 +32,7 @@ class HomeView extends React.Component {
           </div>
           <div className="col-12 col-sm-4">
             <h2>Subscribe</h2>
-            Visit <a href="https://www.stanforddaily.com/email-digests/">https://www.stanforddaily.com/email-digests/</a> to receive top Stanford headlines in your inbox every morning. Our team of dedicated student journalists forms the hub of Stanford-related news, sports and arts content, and serves as the voice of the student body.
+            Visit <a href="https://www.stanforddaily.com/email-digests/" target="_blank">https://www.stanforddaily.com/email-digests/</a> to receive top Stanford headlines in your inbox every morning. Our team of dedicated student journalists forms the hub of Stanford-related news, sports and arts content, and serves as the voice of the student body.
           </div>
         </div>
       </div>
