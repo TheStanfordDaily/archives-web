@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
-import { getSearchURL } from '../SearchView'
+import { sendSearchFromForm } from '../SearchView';
 import { STRINGS } from '../../helpers/constants'
 
 class TSDNavbar extends React.Component {
@@ -39,20 +39,12 @@ class TSDNavbar extends React.Component {
           <Navbar.Brand className="mx-auto site-title"><Link to={STRINGS.ROUTE_ROOT}>{/* TODO: use TSD logo */}The Stanford Daily Archive</Link></Navbar.Brand>
         </div>
         <Navbar.Collapse className="justify-content-end w-100 order-3 dual-collapse2">
-          {this.props.location.pathname !== STRINGS.ROUTE_ROOT && <Form inline className="ml-auto" onSubmit={(e) => this.sendSearch(e)}>
+          {this.props.location.pathname !== STRINGS.ROUTE_ROOT && <Form inline className="ml-auto" onSubmit={(e) => sendSearchFromForm(e, this.props.history)}>
             <FormControl type="text" placeholder="Search&hellip;" className="mr-sm-2 searchbar" name="searchKeyword" />
           </Form>}
         </Navbar.Collapse>
       </Navbar>
     );
-  }
-
-  sendSearch(event) {
-    const searchKeyword = event.target.elements.searchKeyword.value;
-    if (searchKeyword) {
-      this.props.history.push(getSearchURL({ keyword: searchKeyword }));
-    }
-    event.preventDefault();
   }
 }
 

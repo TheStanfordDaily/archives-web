@@ -11,6 +11,14 @@ import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
 
+export function sendSearchFromForm(event, history) {
+  const searchKeyword = event.target.elements.searchKeyword.value;
+  if (searchKeyword) {
+    history.push(getSearchURL({ keyword: searchKeyword }));
+  }
+  event.preventDefault();
+}
+
 export function getSearchURL({ keyword, searchWithin, searchSummaries, resultsPerPage, pageNumber, dateFrom, dateTo }) {
   //console.log(keyword);
   return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify({ q: keyword, page: pageNumber, pagelen: resultsPerPage });
