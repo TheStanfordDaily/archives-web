@@ -1,5 +1,5 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IoMdPaper } from "react-icons/io";
 
 const Header = function () {
     return (
@@ -17,7 +17,7 @@ const Header = function () {
                   </mark>
                         </h3>
                         <div className="tsd-hidden-sm" style={{ textAlign: 'left' }}>
-                            <FontAwesomeIcon icon="newspaper" size="4x" style={{ float: 'left', margin: '5px 30px 0px 30px' }} />
+                            <IoMdPaper size="4em" style={{ float: 'left', margin: '5px 30px 0px 30px' }} />
                             Your support helps give staff members from all backgrounds the opportunity to conduct meaningful reporting on important issues at Stanford. All contributions are tax-deductible.
                 </div>
                     </div>

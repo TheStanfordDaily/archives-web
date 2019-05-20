@@ -1,5 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IoIosSearch } from "react-icons/io";
 
 class Home extends React.Component {
   componentDidMount() {
@@ -27,7 +27,7 @@ class Home extends React.Component {
               <div className="input-group">
                 <input type="text" class="form-control" name="q" required />
                 <div className="input-group-append">
-                  <button type="submit" class="form-control"><FontAwesomeIcon icon="search" /> </button>
+                  <button type="submit" className="form-control HomeSearchButton"><IoIosSearch /></button>
                 </div>
               </div>
             </form>
