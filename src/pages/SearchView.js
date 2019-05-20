@@ -334,11 +334,11 @@ class SearchView extends React.Component {
           for (let eachSubline of eachMatches.lines) {
             for (let eachSegments of eachSubline.segments) {
               if (eachSegments.match) {
-                thisLine += "<b>";
+                thisLine += "<mark>";
               }
               thisLine += eachSegments.text;
               if (eachSegments.match) {
-                thisLine += "</b>";
+                thisLine += "</mark>";
               }
             }
             thisLine = thisLine.trim() + " ";
