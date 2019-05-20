@@ -5,7 +5,7 @@ import MonthView from 'react-big-calendar/lib/Month'
 export default class CalendarNotFoundComponent extends React.Component {
   render() {
     return (
-      <div><i>There are no issues in the collection for this month.</i></div>
+      <div className="CalendarNotFound"><i>There are no issues in the collection for this month.</i></div>
     );
   }
 }
