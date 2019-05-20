@@ -39,9 +39,9 @@ class TSDNavbar extends React.Component {
           <Navbar.Brand className="mx-auto site-title"><Link to={STRINGS.ROUTE_ROOT}>{/* TODO: use TSD logo */}The Stanford Daily Archive</Link></Navbar.Brand>
         </div>
         <Navbar.Collapse className="justify-content-end w-100 order-3 dual-collapse2">
-          <Form inline className="ml-auto" onSubmit={(e) => this.sendSearch(e)}>
+          {this.props.location.pathname !== "/" && <Form inline className="ml-auto" onSubmit={(e) => this.sendSearch(e)}>
             <FormControl type="text" placeholder="Search&hellip;" className="mr-sm-2 searchbar" name="searchKeyword" />
-          </Form>
+          </Form>}
         </Navbar.Collapse>
       </Navbar>
     );
