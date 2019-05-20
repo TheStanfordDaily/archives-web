@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 @import "Variables";
 
 * {
@@ -7,7 +8,7 @@
 html, body {
   height: 100vh;
   margin: 0;
-  font-family: "PT Serif";
+  font-family: 'PT Serif', serif;
 }
 
 a {
