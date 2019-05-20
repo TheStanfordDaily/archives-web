@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import Form from "react-jsonschema-form";
+import BaseInput from "react-jsonschema-form/lib/components/widgets/BaseInput";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
 import moment from 'moment';
@@ -50,6 +51,17 @@ function CustomButtonWidget(props) {
       <button type="submit" className={"btn btn-primary" + (classNames && " " + classNames)} onClick={(e) => onClick(e)}>{buttonText}</button>
     </>
   )
+}
+
+function CustomInputWithMaxMinWidget(props) {
+  console.log(props);
+  return (
+    <BaseInput
+      min={props.schema.minimum}
+      max={props.schema.maximum}
+      {...props}
+    />
+  );
 }
 
 /*const CustomTextInputWidget = (props) => {
@@ -114,7 +126,8 @@ class SearchView extends React.Component {
 
     const widgets = {
       customDateWidget: CustomDateWidget,
-      customButtonWidget: CustomButtonWidget
+      customButtonWidget: CustomButtonWidget,
+      customInputWithMaxMinWidget: CustomInputWithMaxMinWidget
     };
 
     const schema = {
@@ -183,7 +196,8 @@ class SearchView extends React.Component {
       "results_per_page": {
         classNames: "col-lg-12 col-md-6 form-row",
         labelClassNames: "col-form-label",
-        childrenClassNames: "col"
+        childrenClassNames: "col",
+        "ui:widget": "customInputWithMaxMinWidget"
       },
       "date_from": {
         classNames: "col-lg-12 col-md-5 form-row",
