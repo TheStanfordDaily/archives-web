@@ -3,7 +3,7 @@ import { IoMdPaper } from "react-icons/io";
 
 const Header = function () {
   return (
-    <div className="tsd-donate-header">
+    <div className="DonateHeader">
       <div className="container">
         <div className="row DonateBannerRow">
           <h3 className="DonateBannerTitle">
