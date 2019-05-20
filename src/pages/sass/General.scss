@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
 @import "Variables";
 
 * {
@@ -7,6 +8,7 @@
 html, body {
   height: 100vh;
   margin: 0;
+  font-family: 'PT Serif', serif;
 }
 
 a {
@@ -26,6 +28,11 @@ a {
   &:active {
     outline: 0;
   }
+}
+
+mark {
+  background: $color__sun;
+  color: black;
 }
 
 /* https://stackoverflow.com/a/46130505/2603230 */
@@ -70,7 +77,9 @@ a {
 }
 
 @import "Loading";
+@import "HomeView";
 @import "AllYearView";
 @import "CalendarView";
 @import "PaperView";
 @import "SearchView";
+@import "Header";
