@@ -119,116 +119,100 @@ class SearchView extends React.Component {
 
     const schema = {
       type: "object",
+      required: [
+        "keyword"
+      ],
       properties: {
-        "first_row": {
-          type: "object",
-          required: [
-            "keyword"
-          ],
-          properties: {
-            "keyword": {
-              title: "Search",
-              type: "string",
-              default: this.searchParameters.q
-            },
-            "search_within": {
-              title: "within",
-              type: "string",
-              default: "Full text",
-              enum: ["Full text", "Article headlines"]
-            },
-            "search_summaries": {
-              title: "and show",
-              type: "string",
-              default: "None",
-              enum: ["None", "Text", "Images"]
-            },
-            "results_per_page": {
-              title: "Results per page",
-              type: "number",
-              default: 20,
-              enum: [10, 20, 50]
-            }
-          }
+        "keyword": {
+          title: "Search",
+          type: "string",
+          default: this.searchParameters.q
         },
-        "second_row": {
-          type: "object",
-          properties: {
-            "date_from": {
-              title: "From",
-              type: "string",
-            },
-            "date_to": {
-              title: "To",
-              type: "string",
-            },
-            "search_button": {
-              title: "Search",
-              type: "string",
-            }
-          }
+        "search_within": {
+          title: "within",
+          type: "string",
+          default: "Full text",
+          enum: ["Full text", "Article headlines"]
+        },
+        "search_summaries": {
+          title: "and show",
+          type: "string",
+          default: "None",
+          enum: ["None", "Text", "Images"]
+        },
+        "results_per_page": {
+          title: "Results per page",
+          type: "number",
+          default: 20,
+          enum: [10, 20, 50]
+        },
+        "date_from": {
+          title: "From",
+          type: "string",
+        },
+        "date_to": {
+          title: "To",
+          type: "string",
+        },
+        "search_button": {
+          title: "Search",
+          type: "string",
         }
       }
     };
 
     const uiSchema = {
-      "first_row": {
-        classNames: "form-row",
+      "keyword": {
+        classNames: "col-lg-12 col-md-6 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col",
         hideLabel: true,
-        "keyword": {
-          classNames: "col-lg-4 col-md-6 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col",
-          "ui:placeholder": "Enter keyword here"
-        },
-        "search_within": {
-          classNames: "col-lg-3 col-md-6 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col"
-        },
-        "search_summaries": {
-          classNames: "col-lg-2 col-md-6 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col"
-        },
-        "results_per_page": {
-          classNames: "col-lg-3 col-md-6 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col"
+        "ui:placeholder": "Enter keyword here"
+      },
+      "search_within": {
+        classNames: "col-lg-12 col-md-6 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col"
+      },
+      "search_summaries": {
+        classNames: "col-lg-12 col-md-6 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col"
+      },
+      "results_per_page": {
+        classNames: "col-lg-12 col-md-6 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col"
+      },
+      "date_from": {
+        classNames: "col-lg-12 col-md-5 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col text-right",
+        "ui:widget": "customDateWidget",
+        "ui:options": {
+          yearsRange: [1892, 2014], // TODO: should we hardcode this?
+          hideNowButton: true,
+          hideClearButton: true
         }
       },
-      "second_row": {
-        classNames: "form-row",
+      "date_to": {
+        classNames: "col-lg-12 col-md-5 form-row",
+        labelClassNames: "col-form-label",
+        childrenClassNames: "col text-right",
+        "ui:widget": "customDateWidget",
+        "ui:options": {
+          yearsRange: [1892, 2014], // TODO: should we hardcode this?
+          hideNowButton: true,
+          hideClearButton: true
+        }
+      },
+      "search_button": {
+        classNames: "col-lg-12 col-md-2 text-right",
         hideLabel: true,
-        "date_from": {
-          classNames: "col-lg-4 col-md-5 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col",
-          "ui:widget": "customDateWidget",
-          "ui:options": {
-            yearsRange: [1892, 2014], // TODO: should we hardcode this?
-            hideNowButton: true,
-            hideClearButton: true
-          }
-        },
-        "date_to": {
-          classNames: "col-lg-3 col-md-5 form-row",
-          labelClassNames: "col-form-label",
-          childrenClassNames: "col",
-          "ui:widget": "customDateWidget",
-          "ui:options": {
-            yearsRange: [1892, 2014], // TODO: should we hardcode this?
-            hideNowButton: true,
-            hideClearButton: true
-          }
-        },
-        "search_button": {
-          classNames: "col-lg-5 col-md-2",
-          hideLabel: true,
-          "ui:widget": "customButtonWidget",
-          "ui:options": {
-            buttonText: "Search",
-          }
+        "ui:widget": "customButtonWidget",
+        "ui:options": {
+          buttonText: "Search",
+          classNames: "btn-dark btn-lg btn-block searchButton"
         }
       }
     };
@@ -246,7 +230,7 @@ class SearchView extends React.Component {
             onSubmit={(e) => {
               const formData = e.formData;
               console.log(formData);
-              const keyword = formData.first_row.keyword;
+              const keyword = formData.keyword;
               this.props.history.push(getSearchURL({ keyword: keyword }));
             }}>
             <>{/* Handle submission using the `search_button` button above. */}</>
