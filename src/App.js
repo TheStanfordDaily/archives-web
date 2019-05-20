@@ -11,6 +11,13 @@ import NotFound from './pages/NotFound'
 import { STRINGS } from './helpers/constants'
 
 import "./pages/sass/General.scss";
+import Header from './pages/Header';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faNewspaper, faSearch } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faNewspaper);
+library.add(faSearch);
 
 class App extends React.Component {
   componentDidMount() {
@@ -24,6 +31,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
+          <Header />
           <TSDNavbar />
           <div className="MainView">
             <Switch>

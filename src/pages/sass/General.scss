@@ -7,6 +7,7 @@
 html, body {
   height: 100vh;
   margin: 0;
+  font-family: "PT Serif";
 }
 
 a {
@@ -74,3 +75,4 @@ a {
 @import "CalendarView";
 @import "PaperView";
 @import "SearchView";
+@import "Header.scss";
