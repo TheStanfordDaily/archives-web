@@ -276,7 +276,7 @@ class SearchView extends React.Component {
                 </div>
               </div>
             ) :
-            <div>No results!</div>
+            <div className="SearchResultNoResult">No results!</div>
           }
         </div>
       </div>

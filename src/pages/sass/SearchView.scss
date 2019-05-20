@@ -51,6 +51,12 @@
   width: 70%;
   overflow-y: auto;
   text-align: left;
+
+  .SearchResultNoResult {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 200%;
+  }
 }
 
 .EachResult {
