@@ -142,9 +142,10 @@ class SearchView extends React.Component {
         },
         "results_per_page": {
           title: "Results per page",
-          type: "number",
-          default: 20,
-          enum: [10, 20, 50]
+          type: "integer",
+          minimum: 1, // TODO: better style error
+          maximum: 1000,
+          default: 20
         },
         "date_from": {
           title: "From",
