@@ -5,22 +5,13 @@ const Header = function () {
   return (
     <div className="tsd-donate-header">
       <div className="container">
-        <div className="row">
-          <a className="tsd-donate-header-close" href="#">
-            <i className="fas fa-times" />
-          </a>
-          <div className="col-12 col-lg-8">
-            <h3 style={{ marginTop: '0px', textAlign: 'center' }}>
-              <mark style={{ color: 'black' }}>
-                Support independent, student-run journalism.
-                  </mark>
+        <div className="row DonateBannerRow">
+            <h3 className="DonateBannerTitle">
+              <IoMdPaper size="1.5em" className="DonateBannerTitleIcon" />
+              <mark>
+                Help us preserve <em>your</em> history today!
+              </mark>
             </h3>
-            <div className="tsd-hidden-sm" style={{ textAlign: 'left' }}>
-              <IoMdPaper size="4em" style={{ float: 'left', margin: '5px 30px 0px 30px' }} />
-              Your support helps give staff members from all backgrounds the opportunity to conduct meaningful reporting on important issues at Stanford. All contributions are tax-deductible.
-                </div>
-          </div>
-          <div className="col-12 col-lg-4">
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" className="tsd-donation-form">
               <input type="hidden" name="business" defaultValue="coo@stanforddaily.com" />
               <input type="hidden" name="cmd" defaultValue="_donations" />
@@ -57,7 +48,6 @@ const Header = function () {
               <input type="hidden" name="p3" defaultValue={1} />
               <input type="hidden" name="t3" defaultValue="M" />
             </form>
-          </div>
         </div>
       </div>
     </div>
