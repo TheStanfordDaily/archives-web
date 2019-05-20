@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepublish": "babel src --out-dir lib"
+    "prepare": "babel src --out-dir lib"
   },
   "eslintConfig": {
     "extends": "react-app"
