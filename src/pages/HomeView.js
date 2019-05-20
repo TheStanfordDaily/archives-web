@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoIosSearch } from "react-icons/io";
 
-class Home extends React.Component {
+class HomeView extends React.Component {
   componentDidMount() {
   }
 
@@ -10,7 +10,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="Home container mt-4 text-left">
+      <div className="HomeMainView container mt-4 text-left">
 
         <div className="row">
           <div className="col-12 col-sm-4">
@@ -42,4 +42,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default HomeView;
