@@ -118,6 +118,7 @@ class SearchView extends React.Component {
           type: "number",
           default: DEFAULTS_FORM_DATA.pagelen
         }
+        // TODO: add support for other search such as "section type"
       }
     };
 
@@ -164,6 +165,7 @@ class SearchView extends React.Component {
                     <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
                   )}
                 </div>
+                {/* TODO: add pagination; TODO: decompose this component */}
               </div>
             ) :
             <div className="SearchResultNoResult">No results!</div>
