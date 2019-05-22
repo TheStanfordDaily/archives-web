@@ -34,24 +34,8 @@ class SearchView extends React.Component {
   constructor(props) {
     super(props);
 
-    let { q, year_start, year_end, page, pagelen } = queryString.parse(window.location.search);
-    // https://stackoverflow.com/a/4564199/2603230
-    year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
-    year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
-    page = Number(page) || DEFAULTS_FORM_DATA.page;
-    pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
     // TODO: add an error state
-    this.state = {
-      loading: true,
-      searchResults: [],
-      formData: {
-        q,
-        year_start,
-        year_end,
-        page,
-        pagelen
-      }
-    };
+    this.state = { loading: true, searchResults: [], formData: {} };
   }
 
   componentDidMount() {
@@ -66,12 +50,25 @@ class SearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    this.setState({ loading: true });
+    let { q, year_start, year_end, page, pagelen } = queryString.parse(window.location.search);
+    // https://stackoverflow.com/a/4564199/2603230
+    year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
+    year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
+    page = Number(page) || DEFAULTS_FORM_DATA.page;
+    pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
+    this.setState({
+      loading: true,
+      formData: {
+        q,
+        year_start,
+        year_end,
+        page,
+        pagelen
+      }
+    });
 
-    console.log(this.state.formData);
-    if (this.state.formData.q) {
+    if (q) {
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      const { q, year_start, year_end, page, pagelen } = this.state.formData;
       this.searchFor({ q, year_start, year_end, resultsPerPage: pagelen, pageNumber: page });
     } else {
       this.setState({ loading: false });
