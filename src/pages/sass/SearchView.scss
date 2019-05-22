@@ -42,8 +42,9 @@
 
   .searchButton {
     margin-top: 20px;
+    margin-bottom: 20px;
   }
-  .rjsf label[for=root_q] {
+  .rjsf label[for=search_q] {
     display: none;
   }
 }

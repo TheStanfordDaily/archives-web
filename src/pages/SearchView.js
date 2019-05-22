@@ -139,6 +139,7 @@ class SearchView extends React.Component {
           <h2>Filter Archived Articles</h2>
           <Form schema={schema}
             uiSchema={uiSchema}
+            idPrefix="search"
             formData={this.state.formData}
             onChange={e => this.setState({formData: e.formData})}
             onSubmit={(e) => {
