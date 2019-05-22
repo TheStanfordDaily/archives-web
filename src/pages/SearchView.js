@@ -22,14 +22,24 @@ export function getSearchURL(formData) {
   return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
+const DEFAULTS_FORM_DATA = {
+  q: "",
+  year_start: 1892,
+  year_end: 1904, // TODO: should default to 2014
+  page: 1,
+  pagelen: 20,
+}
 
 class SearchView extends React.Component {
   constructor(props) {
     super(props);
-    let {q, year_start, year_end} = queryString.parse(window.location.search);
+
+    let { q, year_start, year_end, page, pagelen } = queryString.parse(window.location.search);
     // https://stackoverflow.com/a/4564199/2603230
-    year_start = Number(year_start) || 1892;
-    year_end = Number(year_end) || 1904;
+    year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
+    year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
+    page = Number(page) || DEFAULTS_FORM_DATA.page;
+    pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
     // TODO: add an error state
     this.state = {
       loading: true,
@@ -37,7 +47,9 @@ class SearchView extends React.Component {
       formData: {
         q,
         year_start,
-        year_end
+        year_end,
+        page,
+        pagelen
       }
     };
   }
@@ -56,15 +68,11 @@ class SearchView extends React.Component {
   startSearchFromQuery() {
     this.setState({ loading: true });
 
-    const searchParameters = this.state.formData;
-    console.log(searchParameters);
-    if (searchParameters.q) {
-      const q = searchParameters.q;
+    console.log(this.state.formData);
+    if (this.state.formData.q) {
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      const pageNumber = searchParameters.page || 1;
-      const resultsPerPage = searchParameters.pagelen || 20;
-      const {year_start, year_end} = searchParameters;
-      this.searchFor({ q, year_start, year_end, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
+      const { q, year_start, year_end, page, pagelen } = this.state.formData;
+      this.searchFor({ q, year_start, year_end, resultsPerPage: pagelen, pageNumber: page });
     } else {
       this.setState({ loading: false });
     }
@@ -87,17 +95,31 @@ class SearchView extends React.Component {
       properties: {
         "q": {
           title: "Search",
-          type: "string"
+          type: "string",
+          default: DEFAULTS_FORM_DATA.q
         },
         "year_start": {
           title: "From",
           type: "number",
-          enum: "range"
+          enum: range,
+          default: DEFAULTS_FORM_DATA.year_start
         },
         "year_end": {
           title: "To",
           type: "number",
-          enum: range
+          enum: range,
+          default: DEFAULTS_FORM_DATA.year_end
+        },
+        /** Hidden properties **/
+        "page": {
+          title: "Page Number",
+          type: "number",
+          default: DEFAULTS_FORM_DATA.page
+        },
+        "pagelen": {
+          title: "Results Per Page",
+          type: "number",
+          default: DEFAULTS_FORM_DATA.pagelen
         }
       }
     };
@@ -105,6 +127,12 @@ class SearchView extends React.Component {
     const uiSchema = {
       "q": {
         "ui:placeholder": "Enter keyword here"
+      },
+      "page": {
+        "ui:widget": "hidden"
+      },
+      "pagelen": {
+        "ui:widget": "hidden"
       }
     };
 
