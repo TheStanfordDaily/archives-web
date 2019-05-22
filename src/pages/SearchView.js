@@ -56,14 +56,14 @@ class SearchView extends React.Component {
   startSearchFromQuery() {
     this.setState({ loading: true });
 
-    this.searchParameters = this.state.formData;
-    console.log(this.searchParameters);
-    if (this.searchParameters.q) {
-      const q = this.searchParameters.q;
+    const searchParameters = this.state.formData;
+    console.log(searchParameters);
+    if (searchParameters.q) {
+      const q = searchParameters.q;
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      const pageNumber = this.searchParameters.page || 1;
-      const resultsPerPage = this.searchParameters.pagelen || 20;
-      const {year_start, year_end} = this.searchParameters;
+      const pageNumber = searchParameters.page || 1;
+      const resultsPerPage = searchParameters.pagelen || 20;
+      const {year_start, year_end} = searchParameters;
       this.searchFor({ q, year_start, year_end, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
     } else {
       this.setState({ loading: false });
@@ -87,25 +87,23 @@ class SearchView extends React.Component {
       properties: {
         "q": {
           title: "Search",
-          type: "string",
-          default: ""
+          type: "string"
         },
         "year_start": {
           title: "From",
-          "type": "number",
-          "enum": range
+          type: "number",
+          enum: "range"
         },
         "year_end": {
           title: "To",
-          "type": "number",
-          "enum": range
+          type: "number",
+          enum: range
         }
       }
     };
 
     const uiSchema = {
       "q": {
-        classNames: "col-lg-12 col-md-6 form-row",
         "ui:placeholder": "Enter keyword here"
       }
     };
