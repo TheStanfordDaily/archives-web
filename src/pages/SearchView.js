@@ -27,8 +27,9 @@ class SearchView extends React.Component {
   constructor(props) {
     super(props);
     let {q, year_start, year_end} = queryString.parse(window.location.search);
-    year_start = parseInt(year_start || 1892);
-    year_end = parseInt(year_end || 1904);
+    // https://stackoverflow.com/a/4564199/2603230
+    year_start = Number(year_start) || 1892;
+    year_end = Number(year_end) || 1904;
     // TODO: add an error state
     this.state = {
       loading: true,
