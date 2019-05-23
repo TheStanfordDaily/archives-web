@@ -4,6 +4,7 @@ import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
 import moment from 'moment';
+import { Pagination } from 'react-bootstrap';
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import Loading from './components/Loading';
 import { createSearchQuery } from "../helpers/search";
@@ -35,7 +36,7 @@ class SearchView extends React.Component {
     super(props);
 
     // TODO: add an error state
-    this.state = { loading: true, searchResults: [], formData: {} };
+    this.state = { loading: true, searchResults: [], searchResultsSize: -1, formData: {} };
   }
 
   componentDidMount() {
@@ -142,9 +143,9 @@ class SearchView extends React.Component {
             uiSchema={uiSchema}
             idPrefix="search"
             formData={this.state.formData}
-            onChange={e => this.setState({formData: e.formData})}
             onSubmit={(e) => {
               const formData = e.formData;
+              this.setState({ formData: formData })
               this.props.history.push(getSearchURL(formData));
             }}>
             <button type="submit" className="btn-dark btn-lg btn-block searchButton">Search</button>
@@ -153,21 +154,26 @@ class SearchView extends React.Component {
         </div>
         <div className="SearchResultSection">
           {this.state.searchResults.length ?
-            this.state.searchResults.map((eachResult, index) =>
-              <div className="EachResult" key={index}>
-                <h4 className="EachResultTitle">
-                  {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                  <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
-                  <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
-                </h4>
-                <div className="EachResultTexts">
-                  {eachResult.text.map((eachText, textIndex) =>
-                    <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
-                  )}
-                </div>
-                {/* TODO: add pagination; TODO: decompose this component */}
+            <>
+              <div className="SearchResultAllResultsContent">
+                <div className="EachResult ResultHeader">Your search for “{this.state.formData.q}” found {this.state.searchResultsSize} results. Showing results 1 to 20.{/* TODO: show actual results */}</div>
+                {this.state.searchResults.map((eachResult, index) =>
+                  <div className="EachResult" key={index}>
+                    <h4 className="EachResultTitle">
+                      {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                      <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
+                      <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
+                    </h4>
+                    <div className="EachResultTexts">
+                      {eachResult.text.map((eachText, textIndex) =>
+                        <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-            ) :
+            </>
+            :
             <div className="SearchResultNoResult">No results!</div>
           }
         </div>
@@ -250,7 +256,7 @@ class SearchView extends React.Component {
       }
       console.log(results);
       // TODO: sort results by `matchCount`?
-      this.setState({ searchResults: results, loading: false });
+      this.setState({ searchResults: results, searchResultsSize: resultsSize, loading: false });
     });
   }
 }

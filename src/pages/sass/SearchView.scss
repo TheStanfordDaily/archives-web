@@ -65,9 +65,15 @@
 
 .EachResult {
   padding: 20px;
-}
-.EachResult:not(:last-of-type) {
-  border-bottom: 1px solid black;
+
+  &.ResultHeader {
+    color: gray;
+    font-style: italic;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid black;
+  }
 }
 // https://github.com/google/material-design-icons/issues/206#issuecomment-253966226
 .EachResultTitle {
