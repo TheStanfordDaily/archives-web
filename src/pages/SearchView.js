@@ -4,11 +4,14 @@ import Form from "react-jsonschema-form";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
 import moment from 'moment';
-import { Pagination } from 'react-bootstrap';
+import Pagination from 'rc-pagination';
+import localeInfo from 'rc-pagination/lib/locale/en_US';
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import Loading from './components/Loading';
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
+
+import 'rc-pagination/assets/index.css';
 
 export function sendSearchFromForm(event, history) {
   const searchKeyword = event.target.elements.searchKeyword.value;
@@ -135,6 +138,20 @@ class SearchView extends React.Component {
       }
     };
 
+    const pagination = <Pagination
+      locale={localeInfo}
+      showQuickJumper
+      defaultPageSize={this.state.formData.pagelen}
+      defaultCurrent={this.state.formData.page}
+      total={Math.min(this.state.searchResultsSize, 1000) /* BitBucket cannot fetch results past result number 1000. */}
+      showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} results`}
+      onChange={(current, pageSize) => {
+        let newFormData = this.state.formData;
+        newFormData.page = current;
+        this.props.history.push(getSearchURL(newFormData));
+      }}
+    />;
+
     return (
       <div className="SearchMainView">
         <div className="SearchFilterSection">
@@ -145,7 +162,6 @@ class SearchView extends React.Component {
             formData={this.state.formData}
             onSubmit={(e) => {
               const formData = e.formData;
-              this.setState({ formData: formData })
               this.props.history.push(getSearchURL(formData));
             }}>
             <button type="submit" className="btn-dark btn-lg btn-block searchButton">Search</button>
@@ -156,7 +172,7 @@ class SearchView extends React.Component {
           {this.state.searchResults.length ?
             <>
               <div className="SearchResultAllResultsContent">
-                <div className="EachResult ResultHeader">Your search for “{this.state.formData.q}” found {this.state.searchResultsSize} results. Showing results 1 to 20.{/* TODO: show actual results */}</div>
+                <div className="EachResult SearchPagination">{pagination}</div>
                 {this.state.searchResults.map((eachResult, index) =>
                   <div className="EachResult" key={index}>
                     <h4 className="EachResultTitle">
@@ -171,6 +187,7 @@ class SearchView extends React.Component {
                     </div>
                   </div>
                 )}
+                <div className="EachResult SearchPagination">{pagination}</div>
               </div>
             </>
             :

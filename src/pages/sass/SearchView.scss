@@ -66,13 +66,50 @@
 .EachResult {
   padding: 20px;
 
-  &.ResultHeader {
-    color: $color__clay;
-    font-style: italic;
-  }
-
   &:not(:last-of-type) {
     border-bottom: 1px solid black;
+  }
+
+  &.SearchPagination {
+    display: flex;
+    align-items: center;
+
+
+    $pagination_border-color: $color__brown;
+    $pagination_hover-color: $color__clay;
+    $pagination_active-color: $color__redwood;
+    $pagination_radius: .3rem; // From Bootstrap
+
+    .rc-pagination {
+      margin: 0 auto;
+    }
+
+    .rc-pagination-item {
+      border: 1px solid $pagination_border-color;
+      border-radius: $pagination_radius;
+
+      &:not(.rc-pagination-item-active) {
+        &:hover > a, &:focus > a {
+          color: $pagination_hover-color;
+        }
+      }
+    }
+    .rc-pagination-prev, .rc-pagination-next, .rc-pagination-jump-prev, .rc-pagination-jump-next {
+      border-radius: $pagination_radius;
+      &:hover::after, &:focus::after {
+        color: $pagination_hover-color;
+      }
+    }
+    .rc-pagination-options-quick-jumper input {
+      border-radius: $pagination_radius;
+      &:hover {
+        border-color: $pagination_hover-color;
+      }
+    }
+    .rc-pagination-item-active {
+      background-color: $pagination_active-color;
+      color: white;
+    }
   }
 }
 // https://github.com/google/material-design-icons/issues/206#issuecomment-253966226
