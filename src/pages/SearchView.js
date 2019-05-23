@@ -1,101 +1,41 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import Form from "react-jsonschema-form";
-import BaseInput from "react-jsonschema-form/lib/components/widgets/BaseInput";
 import queryString from 'query-string';
 import fetch from "cross-fetch";
 import moment from 'moment';
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import Loading from './components/Loading';
-import CustomDateWidget from "./components/form/CustomDateWidget";
 import { createSearchQuery } from "../helpers/search";
 import { STRINGS } from "../helpers/constants";
 
 export function sendSearchFromForm(event, history) {
   const searchKeyword = event.target.elements.searchKeyword.value;
   if (searchKeyword) {
-    history.push(getSearchURL({ keyword: searchKeyword }));
+    history.push(getSearchURL({ q: searchKeyword }));
   }
   event.preventDefault();
 }
 
-export function getSearchURL({ keyword, searchWithin, searchSummaries, resultsPerPage, pageNumber, dateFrom, dateTo }) {
+export function getSearchURL(formData) {
   //console.log(keyword);
-  return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify({ q: keyword, page: pageNumber, pagelen: resultsPerPage });
+  return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
-// To avoid the use of `<fieldset>`.
-function PlainFormTemplate(props) {
-  return (
-    <>
-      {props.properties.map(element => element.content)}
-    </>
-  );
+const DEFAULTS_FORM_DATA = {
+  q: "",
+  year_start: 1892,
+  year_end: 1904, // TODO: should default to 2014
+  page: 1,
+  pagelen: 20,
 }
-
-// To support `labelClassNames`, `childrenClassNames`, and `hideLabel`.
-function CustomFieldTemplate(props) {
-  const { id, classNames, label, help, required, description, errors, children } = props;
-  const labelClassNames = props.uiSchema.labelClassNames;
-  const childrenClassNames = props.uiSchema.childrenClassNames;
-  const hideLabel = props.uiSchema.hideLabel;
-  return (
-    <div className={classNames}>
-      {(label && !hideLabel) && <label className={labelClassNames} htmlFor={id}>{label}</label>}
-      {description}
-      {childrenClassNames ? <div className={childrenClassNames}>{children}</div> : children}
-      {errors}
-      {help}
-    </div>
-  );
-}
-
-function CustomButtonWidget(props) {
-  const classNames = props.options.classNames || "";
-  const buttonText = props.options.buttonText || "Untitled Button";
-  const onClick = props.options.onClick || (() => {});
-  return (
-    <>
-      <button type="submit" className={"btn btn-primary" + (classNames && " " + classNames)} onClick={(e) => onClick(e)}>{buttonText}</button>
-    </>
-  )
-}
-
-function CustomInputWithMaxMinWidget(props) {
-  console.log(props);
-  return (
-    <BaseInput
-      min={props.schema.minimum}
-      max={props.schema.maximum}
-      {...props}
-    />
-  );
-}
-
-/*const CustomTextInputWidget = (props) => {
-  console.log(props);
-  const optionInputClassNames = props.options.inputClassNames;
-  const inputClassNames = optionInputClassNames ? (" " + optionInputClassNames) : "";
-  return (
-    <input type="text"
-      className={"form-control" + inputClassNames}
-      value={props.value}
-      required={props.required}
-      placeholder={props.placeholder}
-      onChange={(event) => props.onChange(event.target.value)} />
-  );
-};
-
-const widgets = {
-  customTextInputWidget: CustomTextInputWidget
-};*/
 
 class SearchView extends React.Component {
   constructor(props) {
     super(props);
 
     // TODO: add an error state
-    this.state = { loading: true, searchResults: [] };
+    this.state = { loading: true, searchResults: [], formData: {} };
   }
 
   componentDidMount() {
@@ -110,16 +50,26 @@ class SearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    this.setState({ loading: true });
+    let { q, year_start, year_end, page, pagelen } = queryString.parse(window.location.search);
+    // https://stackoverflow.com/a/4564199/2603230
+    year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
+    year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
+    page = Number(page) || DEFAULTS_FORM_DATA.page;
+    pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
+    this.setState({
+      loading: true,
+      formData: {
+        q,
+        year_start,
+        year_end,
+        page,
+        pagelen
+      }
+    });
 
-    this.searchParameters = queryString.parse(this.props.location.search);
-    console.log(this.searchParameters);
-    if (this.searchParameters.q) {
-      const q = this.searchParameters.q;
+    if (q) {
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      const pageNumber = this.searchParameters.page || 1;
-      const resultsPerPage = this.searchParameters.pagelen || 20;
-      this.searchFor({ keyword: q, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
+      this.searchFor({ q, year_start, year_end, resultsPerPage: pagelen, pageNumber: page });
     } else {
       this.setState({ loading: false });
     }
@@ -132,111 +82,55 @@ class SearchView extends React.Component {
       );
     }
 
-    const widgets = {
-      customDateWidget: CustomDateWidget,
-      customButtonWidget: CustomButtonWidget,
-      customInputWithMaxMinWidget: CustomInputWithMaxMinWidget
-    };
+    const range = Array.from({length: 2014 - 1892 + 1}, (x, i) => i + 1892);
 
     const schema = {
       type: "object",
       required: [
-        "keyword"
+        "q"
       ],
       properties: {
-        "keyword": {
+        "q": {
           title: "Search",
           type: "string",
-          default: this.searchParameters.q
+          default: DEFAULTS_FORM_DATA.q
         },
-        "search_within": {
-          title: "within",
-          type: "string",
-          default: "Full text",
-          enum: ["Full text", "Article headlines"]
-        },
-        "search_summaries": {
-          title: "and show",
-          type: "string",
-          default: "None",
-          enum: ["None", "Text", "Images"]
-        },
-        "results_per_page": {
-          title: "Results per page",
-          type: "integer",
-          minimum: 1, // TODO: better style error
-          maximum: 1000,
-          default: 20
-        },
-        "date_from": {
+        "year_start": {
           title: "From",
-          type: "string",
+          type: "number",
+          enum: range,
+          default: DEFAULTS_FORM_DATA.year_start
         },
-        "date_to": {
+        "year_end": {
           title: "To",
-          type: "string",
+          type: "number",
+          enum: range,
+          default: DEFAULTS_FORM_DATA.year_end
         },
-        "search_button": {
-          title: "Search",
-          type: "string",
+        /** Hidden properties **/
+        "page": {
+          title: "Page Number",
+          type: "number",
+          default: DEFAULTS_FORM_DATA.page
+        },
+        "pagelen": {
+          title: "Results Per Page",
+          type: "number",
+          default: DEFAULTS_FORM_DATA.pagelen
         }
+        // TODO: add support for other search such as "section type"
       }
     };
 
     const uiSchema = {
-      "keyword": {
-        classNames: "col-lg-12 col-md-6 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col",
-        hideLabel: true,
+      "q": {
         "ui:placeholder": "Enter keyword here"
       },
-      "search_within": {
-        classNames: "col-lg-12 col-md-6 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col"
+      "page": {
+        "ui:widget": "hidden"
       },
-      "search_summaries": {
-        classNames: "col-lg-12 col-md-6 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col"
-      },
-      "results_per_page": {
-        classNames: "col-lg-12 col-md-6 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col",
-        "ui:widget": "customInputWithMaxMinWidget"
-      },
-      "date_from": {
-        classNames: "col-lg-12 col-md-5 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col text-right",
-        "ui:widget": "customDateWidget",
-        "ui:options": {
-          yearsRange: [1892, 2014], // TODO: should we hardcode this?
-          hideNowButton: true,
-          hideClearButton: true
-        }
-      },
-      "date_to": {
-        classNames: "col-lg-12 col-md-5 form-row",
-        labelClassNames: "col-form-label",
-        childrenClassNames: "col text-right",
-        "ui:widget": "customDateWidget",
-        "ui:options": {
-          yearsRange: [1892, 2014], // TODO: should we hardcode this?
-          hideNowButton: true,
-          hideClearButton: true
-        }
-      },
-      "search_button": {
-        classNames: "col-lg-12 col-md-2 text-right",
-        hideLabel: true,
-        "ui:widget": "customButtonWidget",
-        "ui:options": {
-          buttonText: "Search",
-          classNames: "btn-dark btn-lg btn-block searchButton"
-        }
+      "pagelen": {
+        "ui:widget": "hidden"
       }
     };
 
@@ -246,17 +140,14 @@ class SearchView extends React.Component {
           <h2>Filter Archived Articles</h2>
           <Form schema={schema}
             uiSchema={uiSchema}
-            ObjectFieldTemplate={PlainFormTemplate}
-            FieldTemplate={CustomFieldTemplate}
-            widgets={widgets}
-            ref={(form) => { this.form = form; }}
+            idPrefix="search"
+            formData={this.state.formData}
+            onChange={e => this.setState({formData: e.formData})}
             onSubmit={(e) => {
               const formData = e.formData;
-              console.log(formData);
-              const keyword = formData.keyword;
-              this.props.history.push(getSearchURL({ keyword: keyword }));
+              this.props.history.push(getSearchURL(formData));
             }}>
-            <>{/* Handle submission using the `search_button` button above. */}</>
+            <button type="submit" className="btn-dark btn-lg btn-block searchButton">Search</button>
           </Form>
           {/* TODO: add a collapse content button - only show title and date */}
         </div>
@@ -274,6 +165,7 @@ class SearchView extends React.Component {
                     <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
                   )}
                 </div>
+                {/* TODO: add pagination; TODO: decompose this component */}
               </div>
             ) :
             <div className="SearchResultNoResult">No results!</div>
@@ -283,8 +175,8 @@ class SearchView extends React.Component {
     );
   }
 
-  searchFor({ keyword, searchWithin, searchSummaries, resultsPerPage = 20, pageNumber = 1, dateFrom, dateTo }) {
-    const searchQuery = createSearchQuery({ query: keyword });
+  searchFor({ q, year_start, year_end, searchWithin, searchSummaries, resultsPerPage = 20, pageNumber = 1, dateFrom, dateTo }) {
+    const searchQuery = createSearchQuery({ query: q, year_start, year_end });
     console.log(searchQuery);
 
     const serverSearchParameters = {
