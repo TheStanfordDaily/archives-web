@@ -86,7 +86,7 @@ class SearchView extends React.Component {
       );
     }
 
-    const range = Array.from({length: 2014 - 1892 + 1}, (x, i) => i + 1892);
+    const range = Array.from({ length: 2014 - 1892 + 1 }, (x, i) => i + 1892);
 
     const schema = {
       type: "object",
@@ -170,26 +170,24 @@ class SearchView extends React.Component {
         </div>
         <div className="SearchResultSection">
           {this.state.searchResults.length ?
-            <>
-              <div className="SearchResultAllResultsContent">
-                <div className="EachResult SearchPagination">{pagination}</div>
-                {this.state.searchResults.map((eachResult, index) =>
-                  <div className="EachResult" key={index}>
-                    <h4 className="EachResultTitle">
-                      {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                      <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
-                      <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
-                    </h4>
-                    <div className="EachResultTexts">
-                      {eachResult.text.map((eachText, textIndex) =>
-                        <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
-                      )}
-                    </div>
+            <div className="SearchResultAllResultsContent">
+              <div className="EachResult SearchPagination">{pagination}</div>
+              {this.state.searchResults.map((eachResult, index) =>
+                <div className="EachResult" key={index}>
+                  <h4 className="EachResultTitle">
+                    {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                    <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
+                    <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
+                  </h4>
+                  <div className="EachResultTexts">
+                    {eachResult.text.map((eachText, textIndex) =>
+                      <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
+                    )}
                   </div>
-                )}
-                <div className="EachResult SearchPagination">{pagination}</div>
-              </div>
-            </>
+                </div>
+              )}
+              <div className="EachResult SearchPagination">{pagination}</div>
+            </div>
             :
             <div className="SearchResultNoResult">No results!</div>
           }
