@@ -14,7 +14,7 @@ class SectionContent extends React.Component {
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
-    if (this.props.section !== prevProps.section) {
+    if (this.props.section.sectionID !== prevProps.section.sectionID) {
       this.fetchSectionContent();
     }
   }
