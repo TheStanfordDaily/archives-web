@@ -19,17 +19,47 @@
   color: white;
   text-align: center;
   padding-top: 20px;
-  padding-bottom: 20px;
 
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 0;
-}
-.PaperTitleBar .BackToCalendarButton {
-  margin: 0;
-}
-.PaperTitleBar .BackToCalendarButton a {
-  color: white;
-  text-decoration: underline;
+
+  .BackToCalendarButton {
+    margin: 0;
+    margin-bottom: 20px;
+    a {
+      color: white;
+      text-decoration: underline;
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .PaperNavigationSelectType {
+    width: 100%;
+    background-color: $color__cool-grey;
+    color: black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+
+    .PaperNavigationSelection {
+      display: inline-block;
+      padding: 10px;
+      width: 50%;
+      text-align: center;
+
+      cursor: pointer;
+      color: white;
+      text-decoration: underline;
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+
+      &:not(:last-of-type) {
+        border-right: 1px solid black;
+      }
+    }
+  }
 }
 
 .PaperNavigationItems {

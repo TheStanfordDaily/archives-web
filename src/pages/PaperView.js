@@ -10,10 +10,15 @@ import { fetchPaper } from '../helpers/papers';
 import { castArray } from "../helpers/util";
 import { STRINGS } from '../helpers/constants'
 
+const navigationType = {
+  ISSUE: 'issue',
+  ARTICLE: 'article'
+};
+
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false, loading: true };
+    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE };
   }
 
   async componentDidMount() {
@@ -212,10 +217,14 @@ class PaperView extends React.Component {
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
+            <div className="PaperNavigationSelectType">
+              <div className="PaperNavigationSelection" onClick={() => this.setState({ navigationSelection: navigationType.ISSUE })}>Issue</div>
+              <div className="PaperNavigationSelection" onClick={() => this.setState({ navigationSelection: navigationType.ARTICLE })}>Article</div>
+            </div>
           </div>
           <div className="PaperNavigationItems">
-            {/* TODO: add support for displaying article content from GitHub text. */}
-            {this.allPages.map((page) =>
+            {this.state.navigationSelection === navigationType.ISSUE ?
+            this.allPages.map((page) =>
               <div key={page.pageNumber}>
                 <h3 className="PageLabel">Page {page.pageLabel}</h3>
                 <ul>
@@ -236,7 +245,9 @@ class PaperView extends React.Component {
                   )}
                 </ul>
               </div>
-            )}
+            ) :
+            <div>ARTICLE CONTENT</div>
+            }
           </div>
         </div>
         <div className="PaperSection" id="paper-openseadragon" />
