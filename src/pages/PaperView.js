@@ -69,19 +69,13 @@ class PaperView extends React.Component {
 
     // Go to the page number given by the hash.
     this.onHashChange();
-
-    // https://stackoverflow.com/a/38965945/2603230
-    // https://gist.github.com/Restuta/e400a555ba24daa396cc
-    this.bind_onHashChange = this.onHashChange.bind(this);
-    window.addEventListener("hashchange", this.bind_onHashChange, false);
   }
 
-  componentWillUnmount() {
-    console.log("unmount");
-
-    // https://stackoverflow.com/a/38965945/2603230
-    // https://gist.github.com/Restuta/e400a555ba24daa396cc
-    window.removeEventListener("hashchange", this.bind_onHashChange, false);
+  componentDidUpdate(prevProps) {
+    if (this.props.location.hash !== prevProps.location.hash) {
+      console.log("location.hash changes from " + prevProps.location.hash + " to " + this.props.location.hash);
+      this.onHashChange();
+    }
   }
 
   // TODO: when there is `#section[]`, then display `navigationType.ARTICLE` in navigation by default.
@@ -131,9 +125,7 @@ class PaperView extends React.Component {
     if (Number(hashValue.page) !== pageNumber) {
       console.log("Number(hashValue.page) !== pageNumber");
       hashValue.page = pageNumber;
-      // Note that this seems NOT to call `onHashChange()`, so we want to call `setOverlays` here manually.
       this.props.history.replace("#" + queryString.stringify(hashValue));
-      this.setOverlays(page);
     }
   }
 
@@ -241,10 +233,6 @@ class PaperView extends React.Component {
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
                           <span className="SectionTitleLink" onClick={() => {
                             this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
-                            // TODO: directly calling `onHashChange` cause delay. Have to do this.
-                            setTimeout(function () {
-                              this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
-                            }.bind(this), 0);
                           }}>{section.title}</span>
                         </span>
                       </li>
