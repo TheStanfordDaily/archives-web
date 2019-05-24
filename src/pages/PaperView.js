@@ -84,6 +84,7 @@ class PaperView extends React.Component {
     window.removeEventListener("hashchange", this.bind_onHashChange, false);
   }
 
+  // TODO: when there is `#section[]`, then display `navigationType.ARTICLE` in navigation by default.
   onHashChange() {
     let hashValue = queryString.parse(this.props.location.hash);
     console.log("Hash set/changed to:");
