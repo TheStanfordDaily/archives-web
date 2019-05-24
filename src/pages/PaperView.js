@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import NotFound from './NotFound';
 import Loading from './components/Loading';
+import SectionContent from './components/SectionContent';
 import { fetchPaper } from '../helpers/papers';
 import { castArray } from "../helpers/util";
 import { STRINGS } from '../helpers/constants'
@@ -18,7 +19,7 @@ const navigationType = {
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE };
+    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [] };
   }
 
   async componentDidMount() {
@@ -142,6 +143,7 @@ class PaperView extends React.Component {
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
     // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
     let displayingSections = castArray(hashValue["section[]"]);
+    let selectedSectionsObjects = [];
     if (displayingSections.length) {
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
@@ -161,6 +163,8 @@ class PaperView extends React.Component {
             // It means that this section is probably not on this page.
             continue;
           }
+
+          selectedSectionsObjects.push(eachSection);
 
           let allOverlays = eachSection.areaIDs;
           for (let eachOverlayType in allOverlays) {
@@ -190,6 +194,7 @@ class PaperView extends React.Component {
         }
       });
     }
+    this.setState({ selectedSections: selectedSectionsObjects });
   }
 
   // TODO: Do we need this?
@@ -246,7 +251,7 @@ class PaperView extends React.Component {
                   </ul>
                 </div>
               ) :
-              <div>ARTICLE CONTENT</div>
+              <SectionContent date={moment(this.paper.date)} section={this.state.selectedSections && this.state.selectedSections[0]} />
             }
           </div>
         </div>
