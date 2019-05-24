@@ -224,29 +224,29 @@ class PaperView extends React.Component {
           </div>
           <div className="PaperNavigationItems">
             {this.state.navigationSelection === navigationType.ISSUE ?
-            this.allPages.map((page) =>
-              <div key={page.pageNumber}>
-                <h3 className="PageLabel">Page {page.pageLabel}</h3>
-                <ul>
-                  {page.sections.map((section) =>
-                    <li key={page.pageLabel + "-" + section.sectionID}>
-                      {section.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                      <span className="SectionTitle">
-                        {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
-                        <span className="SectionTitleLink" onClick={() => {
-                          this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
-                          // TODO: directly calling `onHashChange` cause delay. Have to do this.
-                          setTimeout(function () {
-                            this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
-                          }.bind(this), 0);
-                        }}>{section.title}</span>
-                      </span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            ) :
-            <div>ARTICLE CONTENT</div>
+              this.allPages.map((page) =>
+                <div key={page.pageNumber}>
+                  <h3 className="PageLabel">Page {page.pageLabel}</h3>
+                  <ul>
+                    {page.sections.map((section) =>
+                      <li key={page.pageLabel + "-" + section.sectionID}>
+                        {section.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                        <span className="SectionTitle">
+                          {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
+                          <span className="SectionTitleLink" onClick={() => {
+                            this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
+                            // TODO: directly calling `onHashChange` cause delay. Have to do this.
+                            setTimeout(function () {
+                              this.onHashChange();  // Because `history.replace` does not call `onHashChange`.
+                            }.bind(this), 0);
+                          }}>{section.title}</span>
+                        </span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              ) :
+              <div>ARTICLE CONTENT</div>
             }
           </div>
         </div>
