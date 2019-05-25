@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import interact from 'interactjs';
 import OpenSeadragon from 'openseadragon';
 import moment from 'moment'
 import queryString from 'query-string';
@@ -19,7 +20,7 @@ const navigationType = {
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [] };
+    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [], navigationPercentage: 30 };
   }
 
   async componentDidMount() {
@@ -69,6 +70,20 @@ class PaperView extends React.Component {
 
     // Go to the page number given by the hash.
     this.onHashChange();
+
+
+    interact('.NavigationSection').resizable({
+      // TODO: make `bottom: true` and `top: false` when on smaller screen
+      edges: { left: false, right: true, bottom: false, top: false },
+    }).on('resizemove', function (event) {
+      let percent = event.rect.width / window.innerWidth * 100;
+      console.log(percent);
+
+      // Only allows resize that is between 25% and 75% width.
+      if (percent >= 25 && percent <= 75) {
+        this.setState({ navigationPercentage: percent });
+      }
+    }.bind(this));
   }
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
@@ -218,7 +233,7 @@ class PaperView extends React.Component {
 
     return (
       <div className="PaperMainView">
-        <div className="NavigationSection">
+        <div className="NavigationSection" style={{ flexBasis: this.state.navigationPercentage + "%" }}>
           <div className="PaperTitleBar">
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
@@ -251,7 +266,7 @@ class PaperView extends React.Component {
             }
           </div>
         </div>
-        <div className="PaperSection" id="paper-openseadragon" />
+        <div className="PaperSection" id="paper-openseadragon" style={{ flexBasis: (100 - this.state.navigationPercentage) + "%" }} />
       </div>
     );
   }
