@@ -79,7 +79,6 @@ class PaperView extends React.Component {
     }
   }
 
-  // TODO: when there is `#section[]`, then display `navigationType.ARTICLE` in navigation by default.
   onHashChange() {
     let hashValue = queryString.parse(this.props.location.hash);
     console.log("Hash set/changed to:");
@@ -132,7 +131,7 @@ class PaperView extends React.Component {
 
   setOverlays(pageIndex) {
     this.viewer.clearOverlays();
-    this.setState({ selectedSections: [] });
+    this.setState({ selectedSections: [], navigationSelection: navigationType.ISSUE });
 
     let hashValue = queryString.parse(this.props.location.hash);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
@@ -190,6 +189,10 @@ class PaperView extends React.Component {
         }
 
         this.setState({ selectedSections: selectedSectionsObjects });
+        if (selectedSectionsObjects.length) {
+          // Displays display `navigationType.ARTICLE` in navigation by default when there is any overlay highlighted.
+          this.setState({ navigationSelection: navigationType.ARTICLE });
+        }
       });
     }
   }
