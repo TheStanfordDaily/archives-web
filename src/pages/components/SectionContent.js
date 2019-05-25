@@ -14,12 +14,14 @@ class SectionContent extends React.Component {
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
-    if (this.props.section.sectionID !== prevProps.section.sectionID) {
+    if (this.props.section !== prevProps.section) {
       this.fetchSectionContent();
     }
   }
 
   fetchSectionContent() {
+    this.setState({ loading: true });
+
     if (!this.props.date) {
       console.warn("No this.props.date!");
       this.setState({ loading: false, sectionContent: null });
@@ -33,7 +35,7 @@ class SectionContent extends React.Component {
     let serverURL = STRINGS.SECTION_CONTENT_SERVER_URL + this.props.date.format("YYYY/MM/DD") + "/" + this.props.section.sectionID + "." + this.props.section.type + ".txt";
     console.log(serverURL);
     fetch(serverURL).then(e => e.text()).then(e => {
-      console.log(e);
+      //console.log(e);
       let allLines = e.split("\n");
 
       let sectionContent = {};

@@ -71,6 +71,7 @@ class PaperView extends React.Component {
     this.onHashChange();
   }
 
+  // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
     if (this.props.location.hash !== prevProps.location.hash) {
       console.log("location.hash changes from " + prevProps.location.hash + " to " + this.props.location.hash);
@@ -131,12 +132,12 @@ class PaperView extends React.Component {
 
   setOverlays(pageIndex) {
     this.viewer.clearOverlays();
+    this.setState({ selectedSections: [] });
 
     let hashValue = queryString.parse(this.props.location.hash);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
     // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
     let displayingSections = castArray(hashValue["section[]"]);
-    let selectedSectionsObjects = [];
     if (displayingSections.length) {
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
@@ -145,6 +146,8 @@ class PaperView extends React.Component {
         console.log(results);
 
         let firstOverlayY = null;
+
+        let selectedSectionsObjects = [];
 
         for (let eachSectionID of displayingSections) {
           let eachSection = thisPage.sections.find(obj => {
@@ -185,9 +188,10 @@ class PaperView extends React.Component {
           var newBounds = new OpenSeadragon.Rect(0, firstOverlayY - 0.1, 1, currentBounds.height / currentBounds.width);
           this.viewer.viewport.fitBounds(newBounds, true);
         }
+
+        this.setState({ selectedSections: selectedSectionsObjects });
       });
     }
-    this.setState({ selectedSections: selectedSectionsObjects });
   }
 
   // TODO: Do we need this?
@@ -240,7 +244,7 @@ class PaperView extends React.Component {
                   </ul>
                 </div>
               ) :
-              <SectionContent date={moment(this.paper.date)} section={this.state.selectedSections && this.state.selectedSections[0]} />
+              <SectionContent date={moment(this.paper.date)} section={this.state.selectedSections.length ? this.state.selectedSections[0] : null} />
             }
           </div>
         </div>
