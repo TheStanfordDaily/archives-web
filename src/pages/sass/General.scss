@@ -8,6 +8,10 @@
 html, body {
   margin: 0;
   font-family: 'PT Serif', serif;
+
+  // https://www.bram.us/2016/05/02/prevent-overscroll-bounce-in-ios-mobilesafari-pure-css/
+  position: fixed;
+  overflow: hidden;
 }
 
 a {
@@ -40,6 +44,10 @@ mark {
   margin: 0;
   display: flex;
   flex-direction: column;
+
+  // https://www.bram.us/2016/05/02/prevent-overscroll-bounce-in-ios-mobilesafari-pure-css/
+  width: 100vw;
+  @extend %overflow-y;
 }
 
 .navbar {
