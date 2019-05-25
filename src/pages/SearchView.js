@@ -138,19 +138,22 @@ class SearchView extends React.Component {
       }
     };
 
-    const pagination = <Pagination
-      locale={localeInfo}
-      showQuickJumper
-      defaultPageSize={this.state.formData.pagelen}
-      defaultCurrent={this.state.formData.page}
-      total={Math.min(this.state.searchResultsSize, 1000) /* BitBucket cannot fetch results past result number 1000. */}
-      showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} results`}
-      onChange={(current, pageSize) => {
-        let newFormData = this.state.formData;
-        newFormData.page = current;
-        this.props.history.push(getSearchURL(newFormData));
-      }}
-    />;
+    const pagination = <>
+      <Pagination
+        locale={localeInfo}
+        showQuickJumper
+        defaultPageSize={this.state.formData.pagelen}
+        defaultCurrent={this.state.formData.page}
+        total={Math.min(this.state.searchResultsSize, 1000) /* BitBucket cannot fetch results past result number 1000. */}
+        showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} results`}
+        onChange={(current, pageSize) => {
+          let newFormData = this.state.formData;
+          newFormData.page = current;
+          this.props.history.push(getSearchURL(newFormData));
+        }}
+      />
+      {/* TODO: add number per page with `select` (10/20/50/100/500) and a `checkbox` to display/hide article content here */}
+    </>;
 
     return (
       <div className="SearchMainView">
@@ -186,6 +189,7 @@ class SearchView extends React.Component {
                   </div>
                 </div>
               )}
+              {/* TODO: add a notice with `EachResult` class here to notice the user that there query has return >1000 results and only first 1000 can be shown and please limit query */}
               <div className="EachResult SearchPagination">{pagination}</div>
             </div>
             :
