@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Div100vh from 'react-div-100vh'
 import logo from './logo.svg';
 import HomeView from './pages/HomeView';
 import Header from './pages/Header';
@@ -24,7 +25,7 @@ class App extends React.Component {
     // https://stackoverflow.com/a/42181069/2603230
     return (
       <Router>
-        <div className="App">
+        <Div100vh className="App">
           <Header />
           <TSDNavbar />
           <div className="MainView">
@@ -37,7 +38,7 @@ class App extends React.Component {
               <Route component={NotFound} />
             </Switch>
           </div>
-        </div>
+        </Div100vh>
       </Router>
     );
   }

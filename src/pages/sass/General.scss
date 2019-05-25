@@ -6,7 +6,6 @@
 }
 
 html, body {
-  height: 100vh;
   margin: 0;
   font-family: 'PT Serif', serif;
 }
@@ -37,10 +36,8 @@ mark {
 /* https://stackoverflow.com/a/46130505/2603230 */
 .App {
   text-align: center;
-  height: 100vh;
-  /* It should never be necessary to scroll the whole page. */
+  //height: 100vh; // Handled by `react-div-100vh`.
   margin: 0;
-  /* Nothing should get added to the 100vh. */
   display: flex;
   flex-direction: column;
 }
