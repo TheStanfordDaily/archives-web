@@ -245,6 +245,13 @@ class PaperView extends React.Component {
       this.setNavigationWidthFromPercent(defaultNavigationPercentage);
     }
   }
+  getNavigationSelectionClasses(selection) {
+    let classes = "PaperNavigationSelection"
+    if (this.state.navigationSelection === selection) {
+      classes += " Active";
+    }
+    return classes;
+  }
 
   render() {
     if (this.state.paperNotFound) {
@@ -266,8 +273,8 @@ class PaperView extends React.Component {
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
             <div className="PaperNavigationSelectType">
-              <div className="PaperNavigationSelection" onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>
-              <div className="PaperNavigationSelection" onClick={() => this.setNavigationSelection(navigationType.ARTICLE)}>Article</div>
+              <div className={this.getNavigationSelectionClasses(navigationType.ISSUE)} onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>
+              <div className={this.getNavigationSelectionClasses(navigationType.ARTICLE)} onClick={() => this.setNavigationSelection(navigationType.ARTICLE)}>Article</div>
             </div>
           </div>
           <div className="PaperNavigationItems" ref={(navElement) => this.navElement = navElement}>

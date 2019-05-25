@@ -41,7 +41,6 @@
     background-color: $color__cool-grey;
     color: black;
     border-top: 1px solid black;
-    border-bottom: 1px solid black;
 
     .PaperNavigationSelection {
       display: inline-block;
@@ -49,7 +48,6 @@
       width: 50%;
       text-align: center;
 
-      // TODO: highlight active tab (add `&.active`)
       cursor: pointer;
       color: white;
       text-decoration: underline;
@@ -57,8 +55,10 @@
         text-decoration: none;
       }
 
-      &:not(:last-of-type) {
-        border-right: 1px solid black;
+      &.Active {
+        background-color: $color__light-sage;
+        color: black;
+        text-decoration: none;
       }
     }
   }
