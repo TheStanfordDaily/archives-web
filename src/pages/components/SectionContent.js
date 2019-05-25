@@ -44,6 +44,9 @@ class SectionContent extends React.Component {
       sectionContent.author = allLines[2].substr(4); // Remove "### ".
       sectionContent.content = allLines.slice(3).join("\n"); // First three lines (title, subtitle, and author) are not included in content
       this.setState({ loading: false, sectionContent: sectionContent });
+
+      console.log(this.preElement.scrollWidth);
+      this.props.onScrollWidthChange(this.preElement.scrollWidth);
     });
   }
 
@@ -68,7 +71,7 @@ class SectionContent extends React.Component {
         {this.state.sectionContent.subtitle && <h5>{this.state.sectionContent.subtitle}</h5>}
         {this.state.sectionContent.author && <p className="Author">By <strong>{this.state.sectionContent.author}</strong></p>}
         <hr />
-        <pre>{/* TODO: increase `pre` readability: see `/paper/1973-01-30#page=1&section%5B%5D=MODSMD_ARTICLE4` */}
+        <pre ref={(preElement) => this.preElement = preElement}>
           {this.state.sectionContent.content}
         </pre>
       </div>

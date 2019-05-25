@@ -17,10 +17,12 @@ const navigationType = {
   ARTICLE: 'article'
 };
 
+const defaultNavigationPercentage = 30;
+
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [], navigationPercentage: 30 };
+    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [], navigationPercentage: defaultNavigationPercentage, customNavigationWidth: false };
   }
 
   async componentDidMount() {
@@ -79,13 +81,8 @@ class PaperView extends React.Component {
       // TODO: make `bottom: true` and `top: false` when on smaller screen
       edges: { left: false, right: true, bottom: false, top: false }, // TODO: maybe use div and then display none for one side?
     }).on('resizemove', function (event) {
-      let percent = event.rect.width / window.innerWidth * 100;
-      console.log(percent);
-
-      // Only allows resize that is between 25% and 75% width.
-      if (percent >= 25 && percent <= 75) {
-        this.setState({ navigationPercentage: percent });
-      }
+      this.setNavigationWidthFromPxWidth(event.rect.width, true);
+      this.setState({ customNavigationWidth: true });
     }.bind(this));
   }
 
@@ -221,6 +218,34 @@ class PaperView extends React.Component {
     return false
   }*/
 
+  setNavigationWidthFromPxWidth(pxWidth, force = false) {
+    let percent = pxWidth / window.innerWidth * 100;
+    console.log(percent);
+
+    this.setNavigationWidthFromPercent(percent, force);
+  }
+
+  setNavigationWidthFromPercent(percent, force = false) {
+    if (!force && this.state.customNavigationWidth) {
+      // Do not reset width if the user has already dragged the navigation width manually
+      // (unless `force` is true).
+      return;
+    }
+
+    let newPercent = percent;
+    // Resize to at least 25% width and at most 75% width.
+    newPercent = Math.min(percent, 75);
+    newPercent = Math.max(percent, 25);
+    this.setState({ navigationPercentage: newPercent });
+  }
+
+  setNavigationSelection(selection) {
+    this.setState({ navigationSelection: selection });
+    if (selection === navigationType.ISSUE) {
+      this.setNavigationWidthFromPercent(defaultNavigationPercentage);
+    }
+  }
+
   render() {
     if (this.state.paperNotFound) {
       return (
@@ -241,11 +266,11 @@ class PaperView extends React.Component {
             <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
             <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
             <div className="PaperNavigationSelectType">
-              <div className="PaperNavigationSelection" onClick={() => this.setState({ navigationSelection: navigationType.ISSUE })}>Issue</div>
-              <div className="PaperNavigationSelection" onClick={() => this.setState({ navigationSelection: navigationType.ARTICLE })}>Article</div>
+              <div className="PaperNavigationSelection" onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>
+              <div className="PaperNavigationSelection" onClick={() => this.setNavigationSelection(navigationType.ARTICLE)}>Article</div>
             </div>
           </div>
-          <div className="PaperNavigationItems">
+          <div className="PaperNavigationItems" ref={(navElement) => this.navElement = navElement}>
             {this.state.navigationSelection === navigationType.ISSUE ?
               this.allPages.map((page) =>
                 <div key={page.pageNumber}>
@@ -265,7 +290,17 @@ class PaperView extends React.Component {
                   </ul>
                 </div>
               ) :
-              <SectionContent date={moment(this.paper.date)} section={this.state.selectedSections.length ? this.state.selectedSections[0] : null} />
+              <SectionContent
+                date={moment(this.paper.date)}
+                section={this.state.selectedSections.length ? this.state.selectedSections[0] : null}
+                onScrollWidthChange={(scrollWidth) => {
+                  const scrollbarWidth = this.navElement.offsetWidth - this.navElement.clientWidth;
+                  // 40px is for padding-left: 20px; and padding-right: 20px;
+                  let pxWidth = scrollWidth + scrollbarWidth + 40;
+                  console.log(pxWidth);
+                  this.setNavigationWidthFromPxWidth(pxWidth);
+                }}
+              />
             }
           </div>
         </div>
