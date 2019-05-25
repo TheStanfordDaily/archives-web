@@ -11,6 +11,8 @@
   flex-direction: column;
 
   overflow: auto;
+
+  // TODO: add animation to resize
 }
 
 .PaperTitleBar {
@@ -47,6 +49,7 @@
       width: 50%;
       text-align: center;
 
+      // TODO: highlight active tab (add `&.active`)
       cursor: pointer;
       color: white;
       text-decoration: underline;

@@ -65,6 +65,7 @@ class PaperView extends React.Component {
       tileSources: allTileSources
     });
 
+    // TODO: this might be called many many times? Need check
     this.viewer.addHandler('page', (e) => { this.onPageChange(e.page) });
 
 
@@ -72,9 +73,11 @@ class PaperView extends React.Component {
     this.onHashChange();
 
 
+    // TODO: this is called many many times. Need to remove when unmount
+    // TODO: also check other classes' componentDidMount
     interact('.NavigationSection').resizable({
       // TODO: make `bottom: true` and `top: false` when on smaller screen
-      edges: { left: false, right: true, bottom: false, top: false },
+      edges: { left: false, right: true, bottom: false, top: false }, // TODO: maybe use div and then display none for one side?
     }).on('resizemove', function (event) {
       let percent = event.rect.width / window.innerWidth * 100;
       console.log(percent);
