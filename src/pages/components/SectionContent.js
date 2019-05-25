@@ -1,5 +1,6 @@
 import React from 'react';
 import fetch from "cross-fetch";
+import Loading from './Loading';
 import { STRINGS } from '../../helpers/constants'
 
 class SectionContent extends React.Component {
@@ -53,7 +54,7 @@ class SectionContent extends React.Component {
   render() {
     if (this.state.loading) {
       return (
-        <p><i>Loading&hellip;</i></p>
+        <Loading containerClasses="NoBG" />
       );
     }
 
