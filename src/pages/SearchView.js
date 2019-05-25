@@ -80,12 +80,6 @@ class SearchView extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <Loading />
-      );
-    }
-
     const range = Array.from({ length: 2014 - 1892 + 1 }, (x, i) => i + 1892);
 
     const schema = {
@@ -167,33 +161,37 @@ class SearchView extends React.Component {
               const formData = e.formData;
               this.props.history.push(getSearchURL(formData));
             }}>
-            <button type="submit" className="btn-dark btn-lg btn-block searchButton">Search</button>
+            <button type="submit" className="btn-dark btn-lg btn-block searchButton" disabled={this.state.loading /* disable search button when loading */}>Search</button>
           </Form>
           {/* TODO: add a collapse content button - only show title and date */}
         </div>
         <div className="SearchResultSection">
-          {this.state.searchResults.length ?
-            <div className="SearchResultAllResultsContent">
-              <div className="EachResult SearchPagination">{pagination}</div>
-              {this.state.searchResults.map((eachResult, index) =>
-                <div className="EachResult" key={index}>
-                  <h4 className="EachResultTitle">
-                    {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                    <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
-                    <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
-                  </h4>
-                  <div className="EachResultTexts">
-                    {eachResult.text.map((eachText, textIndex) =>
-                      <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
-                    )}
-                  </div>
-                </div>
-              )}
-              {/* TODO: add a notice with `EachResult` class here to notice the user that there query has return >1000 results and only first 1000 can be shown and please limit query */}
-              <div className="EachResult SearchPagination">{pagination}</div>
-            </div>
+          {this.state.loading ?
+            <Loading containerClasses="NoBG" />
             :
-            <div className="SearchResultNoResult">No results!</div>
+            (this.state.searchResults.length ?
+              <div className="SearchResultAllResultsContent">
+                <div className="EachResult SearchPagination">{pagination}</div>
+                {this.state.searchResults.map((eachResult, index) =>
+                  <div className="EachResult" key={index}>
+                    <h4 className="EachResultTitle">
+                      {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                      <span><Link to={STRINGS.ROUTE_PAPER_PREFIX + eachResult.date.format("YYYY-MM-DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
+                      <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
+                    </h4>
+                    <div className="EachResultTexts">
+                      {eachResult.text.map((eachText, textIndex) =>
+                        <p className="EachResultEachText" key={textIndex} dangerouslySetInnerHTML={{ __html: eachText }} />
+                      )}
+                    </div>
+                  </div>
+                )}
+                {/* TODO: add a notice with `EachResult` class here to notice the user that there query has return >1000 results and only first 1000 can be shown and please limit query */}
+                <div className="EachResult SearchPagination">{pagination}</div>
+              </div>
+              :
+              <div className="SearchResultNoResult">No results!</div>
+            )
           }
         </div>
       </div>

@@ -3,6 +3,14 @@
   background-color: $color__cardinal-red;
   flex-direction: column;
   justify-content: center;
+  height: 100%;
+  &.NoBG {
+    background-color: transparent;
+
+    .lds-roller div:after {
+      background: $color__cardinal-red;
+    }
+  }
 }
 .LoadingItem {
   margin: auto;
