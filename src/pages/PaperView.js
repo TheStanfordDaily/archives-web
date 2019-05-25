@@ -234,8 +234,8 @@ class PaperView extends React.Component {
 
     let newPercent = percent;
     // Resize to at least 25% width and at most 75% width.
-    newPercent = Math.min(percent, 75);
-    newPercent = Math.max(percent, 25);
+    newPercent = Math.min(newPercent, 75);
+    newPercent = Math.max(newPercent, 25);
     this.setState({ navigationPercentage: newPercent });
   }
 
