@@ -22,3 +22,8 @@ $color__link-hover: $color__cardinal-bright-red;
   @extend a;
   cursor: pointer;
 }
+
+%overflow-y {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

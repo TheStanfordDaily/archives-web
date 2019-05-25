@@ -72,7 +72,7 @@ mark {
   min-height: 0;
   width: 100%;
   display: flex;
-  overflow-y: auto;
+  @extend %overflow-y;
 }
 
 @import "Loading";

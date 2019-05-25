@@ -68,7 +68,7 @@
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 1;
 
-  overflow-y: auto;
+  @extend %overflow-y;
 
   ul {
     list-style: none;

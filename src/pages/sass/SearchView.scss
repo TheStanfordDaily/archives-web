@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
 
-  overflow-y: auto;
+  @extend %overflow-y;
 
   h2 {
     text-align: center;
@@ -53,7 +53,7 @@
 
 .SearchResultSection {
   width: 70%;
-  overflow-y: auto;
+  @extend %overflow-y;
   text-align: left;
 
   .SearchResultNoResult {
