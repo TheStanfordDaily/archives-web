@@ -1,4 +1,7 @@
 # Archives Web
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/TheStanfordDaily/archives-web.svg)](https://greenkeeper.io/)
+
 Helper functions (and web app) for METS/ALTO archive viewing.
 
 ## Usage
