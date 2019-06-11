@@ -20,4 +20,4 @@ Increment version.
 Run `npm publish --access public`
 
 ## License
-Licensed under an [Apache-2.0](https://github.com/apache/incubator-mxnet/blob/master/LICENSE) license.
+Licensed under an [Apache-2.0](https://github.com/TheStanfordDaily/archives-web/blob/master/LICENSE) license.
