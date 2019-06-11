@@ -1,5 +1,6 @@
 # Archives Web
 
+[![Build Status](https://travis-ci.com/TheStanfordDaily/archives-web.svg?branch=master)](https://travis-ci.com/TheStanfordDaily/archives-web)
 [![Greenkeeper badge](https://badges.greenkeeper.io/TheStanfordDaily/archives-web.svg)](https://greenkeeper.io/)
 
 Helper functions (and web app) for METS/ALTO archive viewing.
