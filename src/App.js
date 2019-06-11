@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Div100vh from 'react-div-100vh'
-import logo from './logo.svg';
 import HomeView from './pages/HomeView';
 import Header from './pages/Header';
 import TSDNavbar from './pages/components/TSDNavbar'
