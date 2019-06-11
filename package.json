@@ -1,6 +1,8 @@
 {
   "name": "@thestanforddaily/archives-web",
   "version": "0.3.5",
+  "homepage": "https://github.com/TheStanfordDaily/archives-web",
+  "license": "Apache-2.0",
   "private": false,
   "dependencies": {
     "@babel/runtime": "^7.4.4",

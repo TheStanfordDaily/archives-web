@@ -18,3 +18,6 @@ const {fetchAllPapers} = require("@thestanforddaily/archives-web/lib/helpers/pap
 ## Publishing new version
 Increment version.
 Run `npm publish --access public`
+
+## License
+Licensed under an [Apache-2.0](https://github.com/apache/incubator-mxnet/blob/master/LICENSE) license.
