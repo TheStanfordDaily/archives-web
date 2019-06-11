@@ -1,6 +1,6 @@
 const STRINGS = {
-  FILE_SERVER_URL: "https://d25ls8zm0kyzue.cloudfront.net/",
-  IMAGE_SERVER_URL: "https://stanforddaily-archives-loris.azurewebsites.net/",
+  FILE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
+  IMAGE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
   SEARCH_SERVER_URL: "https://api.bitbucket.org/2.0/teams/%7B34f1ce51-8a37-4436-9c9c-dc71cb82f5d6%7D/search/code",
   SECTION_CONTENT_SERVER_URL: "https://raw.githubusercontent.com/TheStanfordDaily/archives-text/master/",
   ROUTE_ROOT: "/",
