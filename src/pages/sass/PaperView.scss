@@ -111,19 +111,24 @@
     width: 100%;
   }
   .PaperTitleBar {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  .PaperTitleBar h1 {
-    font-size: 1rem;
-    line-height: inherit;
-    float: left;
-    margin: 0;
-  }
-  .PaperTitleBar .BackToCalendarButton {
-    float: right;
+    padding-top: 0;
+    .PaperTitleInfo {
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+
+      h1 {
+        font-size: 1rem;
+        line-height: inherit;
+        margin: 0;
+      }
+      .BackToCalendarButton {
+        margin-bottom: 0;
+      }
+    }
   }
   .PaperSection {
     width: 100%;

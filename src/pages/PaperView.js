@@ -270,8 +270,10 @@ class PaperView extends React.Component {
       <div className="PaperMainView">
         <div className="NavigationSection" style={{ flexBasis: this.state.navigationPercentage + "%" }}>
           <div className="PaperTitleBar">
-            <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
-            <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
+            <div className="PaperTitleInfo">
+              <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
+              <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
+            </div>
             <div className="PaperNavigationSelectType">
               <div className={this.getNavigationSelectionClasses(navigationType.ISSUE)} onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>
               <div className={this.getNavigationSelectionClasses(navigationType.ARTICLE)} onClick={() => this.setNavigationSelection(navigationType.ARTICLE)}>Article</div>
