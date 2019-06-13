@@ -8,7 +8,7 @@ const Header = function () {
         <div className="row DonateBannerRow">
           <h3 className="DonateBannerTitle">
             <IoMdPaper size="1.5em" className="DonateBannerTitleIcon" />
-            <mark>Help us preserve <em>your</em> history today!</mark>
+            <span className="DonateBannerTitleText">Help us preserve <em>your</em> history today!</span>
           </h3>
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" className="tsd-donation-form">
             <input type="hidden" name="business" defaultValue="coo@stanforddaily.com" />
@@ -16,7 +16,7 @@ const Header = function () {
             <input type="hidden" name="item_name" defaultValue="Stanford Daily Donation" />
             <input type="hidden" name="item_number" defaultValue={`Archives Site - From Header in Page: ${window.location.href}`} />
             <input type="hidden" name="currency_code" defaultValue="USD" />
-            <button className="tsd-button" type="submit" name="submit">Support the Daily</button>
+            <button className="tsd-button" type="submit" name="submit">Support<span className="HideOnSmallScreen"> the Daily</span></button>
             <select name="amount" className="tsd-select form-control">
               <option value={5}>$5</option>
               <option value={10}>$10</option>
