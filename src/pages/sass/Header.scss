@@ -12,6 +12,7 @@
       margin: 0;
 
       .DonateBannerTitleText {
+        padding: .2em;
         background: $color__sun;
       }
 
@@ -20,35 +21,42 @@
         margin-right: 10px;
       }
     }
-  }
 
-  @media screen and (max-width: 600px) {
-    .DonateBannerTitleText {
-      font-size: 4vw;
-      padding: 0 2.5px;
-    }
-    .DonateBannerTitleIcon {
+    @media screen and (max-width: 700px) {
+      .DonateBannerTitle {
+        .DonateBannerTitleText {
+          font-size: 4vw;
+          padding: 0 2.5px;
+        }
+
+        .DonateBannerTitleIcon {
+          display: none;
+        }
+      }
+
+      .HideOnSmallScreen {
         display: none;
-    }
-    .HideOnSmallScreen {
-      display: none;
-    }
-    .tsd-donation-form {
-      display: inline-flex;
-      align-self: center;
-      align-items: center;
-    }
-    .tsd-button {
-      font-size: 3.2vw;
-      padding: 0 2.5px;
-      margin-left: 0;
-    }
-    .tsd-select {
-      font-size: 3.2vw;
-      padding: 0;
-      margin-left: 0;
-      width: 10vw;
-      border-radius: 0;
+      }
+
+      .tsd-donation-form {
+        display: inline-flex;
+        align-self: center;
+        align-items: center;
+      }
+
+      .tsd-button {
+        font-size: 3.2vw;
+        padding: 0 2.5px;
+        margin-left: 0;
+      }
+
+      .tsd-select {
+        font-size: 3.2vw;
+        padding: 0;
+        margin-left: 0;
+        width: 10vw;
+        border-radius: 0;
+      }
     }
   }
 }
