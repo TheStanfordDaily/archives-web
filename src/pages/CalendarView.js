@@ -1,5 +1,5 @@
 import React from 'react';
-import BigCalendar from 'react-big-calendar'
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from 'moment'
 import NotFound from './NotFound'
 import Loading from './components/Loading';
@@ -9,7 +9,7 @@ import { STRINGS } from '../helpers/constants'
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-const localizer = BigCalendar.momentLocalizer(moment);
+const localizer = momentLocalizer(moment);
 
 class CalendarView extends React.Component {
   constructor(props) {
@@ -65,7 +65,7 @@ class CalendarView extends React.Component {
           <div className="CalendarTitleRight">{/* Nothing here yet. */}</div>
         </div>
         <div className="CalendarContent">
-          <BigCalendar
+          <Calendar
             ref={(calendar) => { this.calendar = calendar; }}
             localizer={localizer}
             events={allEvents}
