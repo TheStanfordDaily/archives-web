@@ -35,6 +35,7 @@
 
           .EachMonthNoLink {
             color: $color__cool-grey;
+            pointer-events: none;
           }
           .EachMonthLink {
             @extend %link;

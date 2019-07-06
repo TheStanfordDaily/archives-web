@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import moment from 'moment'
 import Loading from './components/Loading';
 import { fetchMetadata, isMonthInMetaData } from '../helpers/papers';
-import { STRINGS } from '../helpers/constants';
+import { STRINGS, getMonthPath } from '../helpers/constants';
 
 class AllYearView extends React.Component {
   constructor(props) {
@@ -38,9 +39,15 @@ class AllYearView extends React.Component {
         let dateMoment = moment({ year: year, month: month });
         monthsElements.push(
           <div key={month} className="EachMonth">
-            <span className={isMonthInMetaData(this.state.allPapers, dateMoment) ? "EachMonthLink" : "EachMonthNoLink"} onClick={() => { this.goToMonth(dateMoment); }}>
-              {moment.monthsShort(month)}
-            </span>
+            {isMonthInMetaData(this.state.allPapers, dateMoment) ? (
+              <Link to={getMonthPath(dateMoment)} className="EachMonthLink">
+                {moment.monthsShort(month)}
+              </Link>
+            ) : (
+              <span className="EachMonthNoLink">
+                {moment.monthsShort(month)}
+              </span>
+            )}
           </div>
         );
       }
@@ -59,14 +66,6 @@ class AllYearView extends React.Component {
         </div>
       </div>
     );
-  }
-
-  goToMonth(dateMoment) {
-    if (isMonthInMetaData(this.state.allPapers, dateMoment)) {
-      let yearString = dateMoment.format('YYYY');
-      let monthString = dateMoment.format('MM');
-      this.props.history.push(STRINGS.ROUTE_ROOT + yearString + "/" + monthString + "/");
-    }
   }
 }
 
