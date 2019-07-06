@@ -1,11 +1,13 @@
-import React from 'react';
-import MonthView from 'react-big-calendar/lib/Month'
+import React from "react";
+import MonthView from "react-big-calendar/lib/Month";
 
 // Ref: https://github.com/intljusticemission/react-big-calendar/blob/master/examples/demos/customView.js
 export default class CalendarNotFoundComponent extends React.Component {
   render() {
     return (
-      <div className="CalendarNotFound"><i>There are no issues in the collection for this month.</i></div>
+      <div className="CalendarNotFound">
+        <i>There are no issues in the collection for this month.</i>
+      </div>
     );
   }
 }

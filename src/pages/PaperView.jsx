@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import interact from 'interactjs';
-import OpenSeadragon from 'openseadragon';
-import moment from 'moment'
-import queryString from 'query-string';
+import interact from "interactjs";
+import OpenSeadragon from "openseadragon";
+import moment from "moment";
+import queryString from "query-string";
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
-import NotFound from './NotFound';
-import Loading from './components/Loading';
-import SectionContent from './components/SectionContent';
-import { fetchPaper } from '../helpers/papers';
+import NotFound from "./NotFound";
+import Loading from "./components/Loading";
+import SectionContent from "./components/SectionContent";
+import { fetchPaper } from "../helpers/papers";
 import { castArray } from "../helpers/util";
-import { STRINGS, getMonthPath } from '../helpers/constants'
+import { STRINGS, getMonthPath } from "../helpers/constants";
 
 const navigationType = {
-  ISSUE: 'issue',
-  ARTICLE: 'article'
+  ISSUE: "issue",
+  ARTICLE: "article"
 };
 
 const defaultNavigationPercentage = 30;
@@ -22,7 +22,14 @@ const defaultNavigationPercentage = 30;
 class PaperView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { paperNotFound: false, loading: true, navigationSelection: navigationType.ISSUE, selectedSections: [], navigationPercentage: defaultNavigationPercentage, customNavigationWidth: false };
+    this.state = {
+      paperNotFound: false,
+      loading: true,
+      navigationSelection: navigationType.ISSUE,
+      selectedSections: [],
+      navigationPercentage: defaultNavigationPercentage,
+      customNavigationWidth: false
+    };
   }
 
   async componentDidMount() {
@@ -34,17 +41,22 @@ class PaperView extends React.Component {
     );
     console.log(openseadragonImagesFolderPath);*/
 
-
     //let paper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
     //let allPapers = await fetchAllPapers();
     //let paper = allPapers[10000];
     let matchParams = this.props.match.params;
-    this.paper = await fetchPaper(matchParams.year, matchParams.month, matchParams.day);
+    this.paper = await fetchPaper(
+      matchParams.year,
+      matchParams.month,
+      matchParams.day
+    );
     if (this.paper === null) {
       this.setState({ paperNotFound: true });
       return;
     }
-    document.title = moment(this.paper.date).format("MMMM D, YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
+    document.title =
+      moment(this.paper.date).format("MMMM D, YYYY") +
+      STRINGS.SITE_NAME_WITH_DIVIDER;
 
     this.allPages = await this.paper.getPages();
     console.log(this.allPages);
@@ -69,28 +81,38 @@ class PaperView extends React.Component {
     });
 
     // TODO: this might be called many many times? Need check
-    this.viewer.addHandler('page', (e) => { this.onPageChange(e.page) });
-
+    this.viewer.addHandler("page", e => {
+      this.onPageChange(e.page);
+    });
 
     // Go to the page number given by the hash.
     this.onHashChange();
 
-
     // TODO: this is called many many times. Need to remove when unmount
     // TODO: also check other classes' componentDidMount
-    interact('.NavigationSection').resizable({
-      // TODO: make `bottom: true` and `top: false` when on smaller screen
-      edges: { left: false, right: true, bottom: false, top: false }, // TODO: maybe use div and then display none for one side?
-    }).on('resizemove', function (event) {
-      this.setNavigationWidthFromPxWidth(event.rect.width, true);
-      this.setState({ customNavigationWidth: true });
-    }.bind(this));
+    interact(".NavigationSection")
+      .resizable({
+        // TODO: make `bottom: true` and `top: false` when on smaller screen
+        edges: { left: false, right: true, bottom: false, top: false } // TODO: maybe use div and then display none for one side?
+      })
+      .on(
+        "resizemove",
+        function(event) {
+          this.setNavigationWidthFromPxWidth(event.rect.width, true);
+          this.setState({ customNavigationWidth: true });
+        }.bind(this)
+      );
   }
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
     if (this.props.location.hash !== prevProps.location.hash) {
-      console.log("location.hash changes from " + prevProps.location.hash + " to " + this.props.location.hash);
+      console.log(
+        "location.hash changes from " +
+          prevProps.location.hash +
+          " to " +
+          this.props.location.hash
+      );
       this.onHashChange();
     }
   }
@@ -105,14 +127,20 @@ class PaperView extends React.Component {
     // By default (and when the input is not a valid page number), go to page 1.
     // This is also used to trigger `onPageChange` (and `addOverlay` even by default).
     let pageIndex = 0;
-    if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= this.allPages.length) {
+    if (
+      !isNaN(pageNumber) &&
+      pageNumber > 0 &&
+      pageNumber <= this.allPages.length
+    ) {
       // `goToPage` is 0-indexed.
       pageIndex = pageNumber - 1;
     } else if (hashValue["section[]"]) {
       // If `#page` is not specified but `#section[]` is, then directly go to the page that contains the first `section`.
 
       let sectionIDs = castArray(hashValue["section[]"]);
-      let pageNumberForSection = this.paper.getPageNumberFromSectionID(sectionIDs[0]);
+      let pageNumberForSection = this.paper.getPageNumberFromSectionID(
+        sectionIDs[0]
+      );
       if (pageNumberForSection !== -1) {
         pageIndex = pageNumberForSection - 1;
       }
@@ -128,9 +156,13 @@ class PaperView extends React.Component {
     // TODO: Not working for the initial view of the paper.
     // By default view the top of the page.
     var currentBounds = this.viewer.viewport.getBounds();
-    var newBounds = new OpenSeadragon.Rect(0, 0, 1, currentBounds.height / currentBounds.width);
+    var newBounds = new OpenSeadragon.Rect(
+      0,
+      0,
+      1,
+      currentBounds.height / currentBounds.width
+    );
     this.viewer.viewport.fitBounds(newBounds, true);
-
 
     // `page` is 0-indexed.
     let pageNumber = page + 1;
@@ -147,7 +179,10 @@ class PaperView extends React.Component {
 
   setOverlays(pageIndex) {
     this.viewer.clearOverlays();
-    this.setState({ selectedSections: [], navigationSelection: navigationType.ISSUE });
+    this.setState({
+      selectedSections: [],
+      navigationSelection: navigationType.ISSUE
+    });
 
     let hashValue = queryString.parse(this.props.location.hash);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
@@ -156,7 +191,7 @@ class PaperView extends React.Component {
     if (displayingSections.length) {
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
-      thisPage.getAltoData().then((results) => {
+      thisPage.getAltoData().then(results => {
         console.log("finished getAltoData");
         console.log(results);
 
@@ -166,8 +201,8 @@ class PaperView extends React.Component {
 
         for (let eachSectionID of displayingSections) {
           let eachSection = thisPage.sections.find(obj => {
-            return obj.sectionID === eachSectionID
-          })
+            return obj.sectionID === eachSectionID;
+          });
           console.log(eachSection);
 
           if (eachSection === undefined) {
@@ -188,11 +223,22 @@ class PaperView extends React.Component {
               }
 
               var elt = document.createElement("div");
-              elt.id = "overlay-page" + thisPage.pageNumber.toString() + "-" + eachSection.sectionID + "-" + eachID;
+              elt.id =
+                "overlay-page" +
+                thisPage.pageNumber.toString() +
+                "-" +
+                eachSection.sectionID +
+                "-" +
+                eachID;
               elt.className = "SectionHighlight";
               this.viewer.addOverlay({
                 element: elt,
-                location: new OpenSeadragon.Rect(overlayPos.x, overlayPos.y, overlayPos.width, overlayPos.height)
+                location: new OpenSeadragon.Rect(
+                  overlayPos.x,
+                  overlayPos.y,
+                  overlayPos.width,
+                  overlayPos.height
+                )
               });
             }
           }
@@ -200,7 +246,12 @@ class PaperView extends React.Component {
 
         if (firstOverlayY) {
           let currentBounds = this.viewer.viewport.getBounds();
-          var newBounds = new OpenSeadragon.Rect(0, firstOverlayY - 0.1, 1, currentBounds.height / currentBounds.width);
+          var newBounds = new OpenSeadragon.Rect(
+            0,
+            firstOverlayY - 0.1,
+            1,
+            currentBounds.height / currentBounds.width
+          );
           this.viewer.viewport.fitBounds(newBounds, true);
         }
 
@@ -220,7 +271,7 @@ class PaperView extends React.Component {
   }*/
 
   setNavigationWidthFromPxWidth(pxWidth, force = false) {
-    let percent = pxWidth / window.innerWidth * 100;
+    let percent = (pxWidth / window.innerWidth) * 100;
     console.log(percent);
 
     this.setNavigationWidthFromPercent(percent, force);
@@ -247,7 +298,7 @@ class PaperView extends React.Component {
     }
   }
   getNavigationSelectionClasses(selection) {
-    let classes = "PaperNavigationSelection"
+    let classes = "PaperNavigationSelection";
     if (this.state.navigationSelection === selection) {
       classes += " Active";
     }
@@ -256,65 +307,114 @@ class PaperView extends React.Component {
 
   render() {
     if (this.state.paperNotFound) {
-      return (
-        <NotFound />
-      );
+      return <NotFound />;
     }
 
     if (this.state.loading) {
-      return (
-        <Loading />
-      );
+      return <Loading />;
     }
 
     return (
       <div className="PaperMainView">
-        <div className="NavigationSection" style={{ flexBasis: this.state.navigationPercentage + "%" }}>
+        <div
+          className="NavigationSection"
+          style={{ flexBasis: this.state.navigationPercentage + "%" }}
+        >
           <div className="PaperTitleBar">
             <div className="PaperTitleInfo">
               <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
-              <p className="BackToCalendarButton"><Link to={getMonthPath(this.paper.date)}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
+              <p className="BackToCalendarButton">
+                <Link to={getMonthPath(this.paper.date)}>
+                  Back to {moment(this.paper.date).format("MMMM YYYY")}
+                </Link>
+              </p>
             </div>
             <div className="PaperNavigationSelectType">
-              <div className={this.getNavigationSelectionClasses(navigationType.ISSUE)} onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>
-              <div className={this.getNavigationSelectionClasses(navigationType.ARTICLE)} onClick={() => this.setNavigationSelection(navigationType.ARTICLE)}>Article</div>
+              <div
+                className={this.getNavigationSelectionClasses(
+                  navigationType.ISSUE
+                )}
+                onClick={() =>
+                  this.setNavigationSelection(navigationType.ISSUE)
+                }
+              >
+                Issue
+              </div>
+              <div
+                className={this.getNavigationSelectionClasses(
+                  navigationType.ARTICLE
+                )}
+                onClick={() =>
+                  this.setNavigationSelection(navigationType.ARTICLE)
+                }
+              >
+                Article
+              </div>
             </div>
           </div>
-          <div className="PaperNavigationItems" ref={(navElement) => this.navElement = navElement}>
-            {this.state.navigationSelection === navigationType.ISSUE ?
-              this.allPages.map((page) =>
+          <div
+            className="PaperNavigationItems"
+            ref={navElement => (this.navElement = navElement)}
+          >
+            {this.state.navigationSelection === navigationType.ISSUE ? (
+              this.allPages.map(page => (
                 <div key={page.pageNumber}>
                   <h3 className="PageLabel">Page {page.pageLabel}</h3>
                   <ul>
-                    {page.sections.map((section) =>
+                    {page.sections.map(section => (
                       <li key={page.pageLabel + "-" + section.sectionID}>
-                        {section.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
+                        {section.type === "advertisement" ? (
+                          <IoMdMegaphone />
+                        ) : (
+                          <IoIosPaper />
+                        )}
                         <span className="SectionTitle">
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
-                          <span className="SectionTitleLink" onClick={() => {
-                            this.props.history.replace("#" + queryString.stringify({ page: page.pageNumber, "section[]": section.sectionID }));
-                          }}>{section.title}</span>
+                          <span
+                            className="SectionTitleLink"
+                            onClick={() => {
+                              this.props.history.replace(
+                                "#" +
+                                  queryString.stringify({
+                                    page: page.pageNumber,
+                                    "section[]": section.sectionID
+                                  })
+                              );
+                            }}
+                          >
+                            {section.title}
+                          </span>
                         </span>
                       </li>
-                    )}
+                    ))}
                   </ul>
                 </div>
-              ) :
+              ))
+            ) : (
               <SectionContent
                 date={moment(this.paper.date)}
-                section={this.state.selectedSections.length ? this.state.selectedSections[0] : null}
-                onScrollWidthChange={(scrollWidth) => {
-                  const scrollbarWidth = this.navElement.offsetWidth - this.navElement.clientWidth;
+                section={
+                  this.state.selectedSections.length
+                    ? this.state.selectedSections[0]
+                    : null
+                }
+                onScrollWidthChange={scrollWidth => {
+                  const scrollbarWidth =
+                    this.navElement.offsetWidth - this.navElement.clientWidth;
                   // 40px is for padding-left: 20px; and padding-right: 20px;
                   let pxWidth = scrollWidth + scrollbarWidth + 40;
                   console.log(pxWidth);
                   this.setNavigationWidthFromPxWidth(pxWidth);
                 }}
               />
-            }
+            )}
           </div>
         </div>
-        <div className="PaperSection" id="paper-openseadragon" style={{ flexBasis: (100 - this.state.navigationPercentage) + "%" }} />
+        <div
+          className="PaperSection"
+          id="paper-openseadragon"
+          style={{ flexBasis: 100 - this.state.navigationPercentage + "%" }}
+        />
       </div>
     );
   }

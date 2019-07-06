@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import fetch from "cross-fetch";
-import Loading from './Loading';
-import { STRINGS } from '../../helpers/constants'
+import Loading from "./Loading";
+import { STRINGS } from "../../helpers/constants";
 
 class SectionContent extends React.Component {
   constructor(props) {
@@ -33,34 +33,43 @@ class SectionContent extends React.Component {
       return;
     }
 
-    let serverURL = STRINGS.SECTION_CONTENT_SERVER_URL + this.props.date.format("YYYY/MM/DD") + "/" + this.props.section.sectionID + "." + this.props.section.type + ".txt";
+    let serverURL =
+      STRINGS.SECTION_CONTENT_SERVER_URL +
+      this.props.date.format("YYYY/MM/DD") +
+      "/" +
+      this.props.section.sectionID +
+      "." +
+      this.props.section.type +
+      ".txt";
     console.log(serverURL);
-    fetch(serverURL).then(e => e.text()).then(e => {
-      //console.log(e);
-      let allLines = e.split("\n");
+    fetch(serverURL)
+      .then(e => e.text())
+      .then(e => {
+        //console.log(e);
+        let allLines = e.split("\n");
 
-      let sectionContent = {};
-      sectionContent.title = allLines[0].substr(2); // Remove "# ".
-      sectionContent.subtitle = allLines[1].substr(3); // Remove "## ".
-      sectionContent.author = allLines[2].substr(4); // Remove "### ".
-      sectionContent.content = allLines.slice(3).join("\n"); // First three lines (title, subtitle, and author) are not included in content
-      this.setState({ loading: false, sectionContent: sectionContent });
+        let sectionContent = {};
+        sectionContent.title = allLines[0].substr(2); // Remove "# ".
+        sectionContent.subtitle = allLines[1].substr(3); // Remove "## ".
+        sectionContent.author = allLines[2].substr(4); // Remove "### ".
+        sectionContent.content = allLines.slice(3).join("\n"); // First three lines (title, subtitle, and author) are not included in content
+        this.setState({ loading: false, sectionContent: sectionContent });
 
-      console.log(this.preElement.scrollWidth);
-      this.props.onScrollWidthChange(this.preElement.scrollWidth);
-    });
+        console.log(this.preElement.scrollWidth);
+        this.props.onScrollWidthChange(this.preElement.scrollWidth);
+      });
   }
 
   render() {
     if (this.state.loading) {
-      return (
-        <Loading containerClasses="NoBG" />
-      );
+      return <Loading containerClasses="NoBG" />;
     }
 
     if (!this.state.sectionContent) {
       return (
-        <p><i>Select an article in the document viewer.</i></p>
+        <p>
+          <i>Select an article in the document viewer.</i>
+        </p>
       );
     }
 
@@ -68,11 +77,19 @@ class SectionContent extends React.Component {
     // TODO: resize back to default 30% after going back to issue.
     return (
       <div className="SectionContent">
-        {this.state.sectionContent.title && <h3>{this.state.sectionContent.title}</h3>}
-        {this.state.sectionContent.subtitle && <h5>{this.state.sectionContent.subtitle}</h5>}
-        {this.state.sectionContent.author && <p className="Author">By <strong>{this.state.sectionContent.author}</strong></p>}
+        {this.state.sectionContent.title && (
+          <h3>{this.state.sectionContent.title}</h3>
+        )}
+        {this.state.sectionContent.subtitle && (
+          <h5>{this.state.sectionContent.subtitle}</h5>
+        )}
+        {this.state.sectionContent.author && (
+          <p className="Author">
+            By <strong>{this.state.sectionContent.author}</strong>
+          </p>
+        )}
         <hr />
-        <pre ref={(preElement) => this.preElement = preElement}>
+        <pre ref={preElement => (this.preElement = preElement)}>
           {this.state.sectionContent.content}
         </pre>
       </div>

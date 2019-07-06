@@ -1,25 +1,23 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Div100vh from 'react-div-100vh'
-import HomeView from './pages/HomeView';
-import Header from './pages/Header';
-import TSDNavbar from './pages/components/TSDNavbar'
-import SearchView from './pages/SearchView'
-import AllYearView from './pages/AllYearView'
-import CalendarView from './pages/CalendarView'
-import PaperView from './pages/PaperView'
+import Div100vh from "react-div-100vh";
+import HomeView from "./pages/HomeView";
+import Header from "./pages/Header";
+import TSDNavbar from "./pages/components/TSDNavbar";
+import SearchView from "./pages/SearchView";
+import AllYearView from "./pages/AllYearView";
+import CalendarView from "./pages/CalendarView";
+import PaperView from "./pages/PaperView";
 import AcknowledgementsView from "./pages/AcknowledgementsView";
-import NotFound from './pages/NotFound'
-import { STRINGS } from './helpers/constants'
+import NotFound from "./pages/NotFound";
+import { STRINGS } from "./helpers/constants";
 
 import "./pages/sass/General.scss";
 
 class App extends React.Component {
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   render() {
     const yearRoute = STRINGS.ROUTE_ROOT + ":year(\\d{4})/";
@@ -34,11 +32,26 @@ class App extends React.Component {
           <div className="MainView">
             <Switch>
               <Route path={STRINGS.ROUTE_ROOT} exact component={HomeView} />
-              <Route path={STRINGS.ROUTE_CALENDAR} strict exact component={AllYearView} />
+              <Route
+                path={STRINGS.ROUTE_CALENDAR}
+                strict
+                exact
+                component={AllYearView}
+              />
               <Route path={monthRoute} strict exact component={CalendarView} />
               <Route path={dayRoute} strict exact component={PaperView} />
-              <Route path={STRINGS.ROUTE_SEARCH_PREFIX} strict exact component={SearchView}/>
-              <Route path={STRINGS.ROUTE_ACKNOWLEDGEMENTS} strict exact component={AcknowledgementsView}/>
+              <Route
+                path={STRINGS.ROUTE_SEARCH_PREFIX}
+                strict
+                exact
+                component={SearchView}
+              />
+              <Route
+                path={STRINGS.ROUTE_ACKNOWLEDGEMENTS}
+                strict
+                exact
+                component={AcknowledgementsView}
+              />
               <Route component={NotFound} />
             </Switch>
           </div>

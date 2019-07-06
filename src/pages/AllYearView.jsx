@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
-import moment from 'moment'
-import Loading from './components/Loading';
-import { fetchMetadata, isMonthInMetaData } from '../helpers/papers';
-import { STRINGS, getMonthPath } from '../helpers/constants';
+import moment from "moment";
+import Loading from "./components/Loading";
+import { fetchMetadata, isMonthInMetaData } from "../helpers/papers";
+import { STRINGS, getMonthPath } from "../helpers/constants";
 
 class AllYearView extends React.Component {
   constructor(props) {
@@ -19,9 +19,7 @@ class AllYearView extends React.Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <Loading />
-      );
+      return <Loading />;
     }
 
     console.log(this.state.allPapers);
@@ -33,7 +31,11 @@ class AllYearView extends React.Component {
 
     // https://stackoverflow.com/q/22876978/2603230
     let yearElements = [];
-    for (let year = allYears[0]; year <= allYears[allYears.length - 1]; year++) {
+    for (
+      let year = allYears[0];
+      year <= allYears[allYears.length - 1];
+      year++
+    ) {
       let monthsElements = [];
       for (let month = 0; month <= 11; month++) {
         let dateMoment = moment({ year: year, month: month });
@@ -61,9 +63,7 @@ class AllYearView extends React.Component {
 
     return (
       <div className="AllYearMainView">
-        <div className="AllYears">
-          {yearElements}
-        </div>
+        <div className="AllYears">{yearElements}</div>
       </div>
     );
   }
