@@ -7,14 +7,14 @@
 Helper functions (and web app) for METS/ALTO archives viewing.
 
 ## Usage
-```
+```bash
 npm install @thestanforddaily/archives-web
 ```
 
 Use utility functions
 
-```
-const {fetchAllPapers} = require("@thestanforddaily/archives-web/lib/helpers/papers");
+```js
+const { fetchAllPapers } = require("@thestanforddaily/archives-web/lib/helpers/papers");
 ```
 
 ## Publishing new version
