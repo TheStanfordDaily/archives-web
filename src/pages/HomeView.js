@@ -1,6 +1,5 @@
 import React from 'react';
-import { IoIosSearch } from "react-icons/io";
-import { sendSearchFromForm } from './SearchView';
+import SearchWidget from "./components/SearchWidget";
 import { STRINGS } from "../helpers/constants";
 
 class HomeView extends React.Component {
@@ -23,14 +22,7 @@ class HomeView extends React.Component {
           </div>
           <div className="col-12 col-sm-4">
             <h2>Search the collection</h2>
-            <form className="mt-4" onSubmit={(e) => sendSearchFromForm(e, this.props.history)}>
-              <div className="input-group">
-                <input type="text" className="form-control" name="searchKeyword" placeholder="Search&hellip;" required />
-                <div className="input-group-append">
-                  <button type="submit" className="form-control HomeSearchButton"><IoIosSearch /></button>
-                </div>
-              </div>
-            </form>
+            <SearchWidget />
           </div>
           <div className="col-12 col-sm-4">
             <h2>Subscribe</h2>
