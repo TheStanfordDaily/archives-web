@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import NotFound from './NotFound'
@@ -57,7 +58,7 @@ class CalendarView extends React.Component {
       <div className="CalendarMainView">
         <div className="CalendarTitle">
           <div className="CalendarTitleLeft">
-            <button className="CalendarNavigationButton CalendarNavigationBackButton" onClick={() => this.props.history.push(STRINGS.ROUTE_CALENDAR)}>View All Years</button>
+            <span className="CalendarNavigationButton CalendarNavigationBackButton"><Link to={STRINGS.ROUTE_CALENDAR}>View All Years</Link></span>
           </div>
           <div className="CalendarTitleCenter">
             <button className="CalendarNavigationButton CalendarNavigationPrevButton" onClick={() => this.calendar.handleNavigate('PREV')} />

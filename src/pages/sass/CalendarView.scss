@@ -33,6 +33,11 @@
   border: 0;
   color: white;
   font-size: 130%;
+  display: flex;
+  align-items: center;
+  a {
+    color: inherit;
+  }
 }
 
 .CalendarNavigationBackButton {
