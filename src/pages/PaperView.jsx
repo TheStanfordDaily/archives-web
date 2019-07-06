@@ -370,20 +370,18 @@ class PaperView extends React.Component {
                         )}
                         <span className="SectionTitle">
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
-                          <span
+                          <Link
                             className="SectionTitleLink"
-                            onClick={() => {
-                              this.props.history.replace(
-                                "#" +
-                                  queryString.stringify({
-                                    page: page.pageNumber,
-                                    "section[]": section.sectionID
-                                  })
-                              );
-                            }}
+                            to={
+                              "#" +
+                              queryString.stringify({
+                                page: page.pageNumber,
+                                "section[]": section.sectionID
+                              })
+                            }
                           >
                             {section.title}
-                          </span>
+                          </Link>
                         </span>
                       </li>
                     ))}
