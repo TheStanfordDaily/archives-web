@@ -1,6 +1,7 @@
 # Archives Web
 
 [![Build Status](https://travis-ci.com/TheStanfordDaily/archives-web.svg?branch=master)](https://travis-ci.com/TheStanfordDaily/archives-web)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/18b5bb7c-4136-4b00-a7c8-09b80998ba92/deploy-status)](https://app.netlify.com/sites/stanforddaily-archives/deploys)
 [![Greenkeeper badge](https://badges.greenkeeper.io/TheStanfordDaily/archives-web.svg)](https://greenkeeper.io/)
 
 Helper functions (and web app) for METS/ALTO archive viewing.
