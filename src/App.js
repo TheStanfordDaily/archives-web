@@ -8,6 +8,7 @@ import SearchView from './pages/SearchView'
 import AllYearView from './pages/AllYearView'
 import CalendarView from './pages/CalendarView'
 import PaperView from './pages/PaperView'
+import AcknowledgementsView from "./pages/AcknowledgementsView";
 import NotFound from './pages/NotFound'
 import { STRINGS } from './helpers/constants'
 
@@ -37,6 +38,7 @@ class App extends React.Component {
               <Route path={monthRoute} strict exact component={CalendarView} />
               <Route path={dayRoute} strict exact component={PaperView} />
               <Route path={STRINGS.ROUTE_SEARCH_PREFIX} strict exact component={SearchView}/>
+              <Route path={STRINGS.ROUTE_ACKNOWLEDGEMENTS} strict exact component={AcknowledgementsView}/>
               <Route component={NotFound} />
             </Switch>
           </div>

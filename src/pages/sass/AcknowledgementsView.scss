@@ -1,0 +1,13 @@
+.AcknowledgementsMainView {
+  padding: 50px 20%;
+  overflow-y: auto;
+  .AcknowledgementsContent {
+    text-align: left;
+  }
+  @media screen and (max-width: 700px) {
+    padding: 20px 20px;
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}

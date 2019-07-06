@@ -8,7 +8,12 @@ class TSDNavbar extends React.Component {
   render() {
     console.log(this.props.location);
 
-    let navItems = { "Home": STRINGS.ROUTE_ROOT, "Calendar": STRINGS.ROUTE_CALENDAR, "Search": STRINGS.ROUTE_SEARCH_PREFIX };
+    let navItems = {
+      Home: STRINGS.ROUTE_ROOT,
+      Calendar: STRINGS.ROUTE_CALENDAR,
+      Search: STRINGS.ROUTE_SEARCH_PREFIX,
+      Acknowledgements: STRINGS.ROUTE_ACKNOWLEDGEMENTS,
+    };
     let navLinks = [];
     for (let navItemName in navItems) {
       let classNames = "nav-link";

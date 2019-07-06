@@ -10,6 +10,7 @@ export const STRINGS = {
   SECTION_CONTENT_SERVER_URL: "https://raw.githubusercontent.com/TheStanfordDaily/archives-text/master/",
   ROUTE_ROOT: "/",
   ROUTE_CALENDAR: "/calendar",
+  ROUTE_ACKNOWLEDGEMENTS: "/acknowledgements",
   ROUTE_SEARCH_PREFIX: "/search",
 }
 
