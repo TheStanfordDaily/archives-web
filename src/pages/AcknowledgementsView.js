@@ -8,8 +8,8 @@ class AcknowledgementsView extends React.Component {
   render() {
     return (
       <div className="AcknowledgementsMainView">
-        <h1>Acknowledgements</h1>
         <div className="AcknowledgementsContent">
+          <h1>Acknowledgements</h1>
           <p>
             The Stanford Daily Archives would not have been possible without the
             vision and determination of Charlie Hoffman '73, MBA '76. Hoffman,
