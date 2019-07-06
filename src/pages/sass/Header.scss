@@ -1,3 +1,9 @@
+.github-corner {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}
+
 // TODO: support smaller screens
 .DonateHeader {
   background: $color__fog;

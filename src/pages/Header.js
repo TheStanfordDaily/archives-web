@@ -1,8 +1,10 @@
 import React from "react";
+import GithubCorner from "react-github-corner";
 import { IoMdPaper } from "react-icons/io";
 
 const Header = function () {
-  return (
+  return (<>
+    <GithubCorner size="65" href="https://github.com/TheStanfordDaily/archives-web" />
     <div className="DonateHeader">
       <div className="container">
         <div className="row DonateBannerRow">
@@ -49,6 +51,6 @@ const Header = function () {
         </div>
       </div>
     </div>
-  );
+  </>);
 }
 export default Header;
