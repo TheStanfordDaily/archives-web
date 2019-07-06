@@ -35,6 +35,11 @@ class AcknowledgementsView extends React.Component {
             <li>Devin Banerjee</li>
             <li>Elise McDonald</li>
           </ul>
+          <p>
+            The Stanford Daily Archives website was revamped and redesigned in
+            2019 (Vol. 255-256) by the Daily's Tech Team led by Ashwin Ramaswami
+            '21 and Yifei He '22.
+          </p>
         </div>
       </div>
     );
