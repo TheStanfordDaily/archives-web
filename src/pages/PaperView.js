@@ -44,6 +44,7 @@ class PaperView extends React.Component {
       this.setState({ paperNotFound: true });
       return;
     }
+    document.title = moment(this.paper.date).format("MMMM D, YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
 
     this.allPages = await this.paper.getPages();
     console.log(this.allPages);

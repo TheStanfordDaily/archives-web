@@ -72,9 +72,11 @@ class SearchView extends React.Component {
     });
 
     if (q) {
+      document.title = "Search results for " + q + STRINGS.SITE_NAME_WITH_DIVIDER;
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
       this.searchFor({ q, year_start, year_end, resultsPerPage: pagelen, pageNumber: page });
     } else {
+      document.title = "Search" + STRINGS.SITE_NAME_WITH_DIVIDER;
       this.setState({ loading: false });
     }
   }

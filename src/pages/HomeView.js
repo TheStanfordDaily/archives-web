@@ -1,9 +1,11 @@
 import React from 'react';
 import { IoIosSearch } from "react-icons/io";
 import { sendSearchFromForm } from './SearchView';
+import { STRINGS } from "../helpers/constants";
 
 class HomeView extends React.Component {
   componentDidMount() {
+    document.title = STRINGS.SITE_NAME;
   }
 
   componentWillUnmount() {

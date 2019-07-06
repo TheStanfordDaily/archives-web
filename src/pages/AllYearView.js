@@ -11,6 +11,7 @@ class AllYearView extends React.Component {
   }
 
   async componentDidMount() {
+    document.title = "Calendar" + STRINGS.SITE_NAME_WITH_DIVIDER;
     let allPapers = await fetchMetadata();
     this.setState({ allPapers: allPapers, loading: false });
   }

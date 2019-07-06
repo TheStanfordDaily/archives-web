@@ -36,7 +36,7 @@ class TSDNavbar extends React.Component {
           </Nav>
         </Navbar.Collapse>
         <div className="mx-auto order-0">
-          <Navbar.Brand className="mx-auto site-title"><Link to={STRINGS.ROUTE_ROOT}>{/* TODO: use TSD logo */}The Stanford Daily Archives</Link></Navbar.Brand>
+          <Navbar.Brand className="mx-auto site-title"><Link to={STRINGS.ROUTE_ROOT}>{/* TODO: use TSD logo */ STRINGS.SITE_NAME }</Link></Navbar.Brand>
         </div>
         <Navbar.Collapse className="justify-content-end w-100 order-3 dual-collapse2">
           {![STRINGS.ROUTE_ROOT, STRINGS.ROUTE_SEARCH_PREFIX].includes(this.props.location.pathname) && <Form inline className="ml-auto" onSubmit={(e) => sendSearchFromForm(e, this.props.history)}>

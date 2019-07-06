@@ -36,6 +36,8 @@ class CalendarView extends React.Component {
     let monthString = this.props.match.params.month;
     let thisMonth = moment({ year: Number(yearString), month: Number(monthString) - 1 });
 
+    document.title = thisMonth.format("MMMM YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
+
     if (!thisMonth.isValid()) {
       return (
         <NotFound />
