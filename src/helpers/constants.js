@@ -1,4 +1,7 @@
-const STRINGS = {
+import moment from "moment";
+import queryString from "query-string";
+
+export const STRINGS = {
   SITE_NAME: "The Stanford Daily Archives",
   SITE_NAME_WITH_DIVIDER: " - Stanford Daily Archives",
   FILE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
@@ -10,4 +13,15 @@ const STRINGS = {
   ROUTE_SEARCH_PREFIX: "/search",
 }
 
-module.exports = { STRINGS };
+export function getDatePath(date, sectionId = null) {
+  let path = STRINGS.ROUTE_ROOT + moment(date).format("YYYY/MM/DD");
+  if (sectionId) {
+    path += "#" + queryString.stringify({ "section[]": sectionId });
+  }
+  return path;
+}
+
+export function getMonthPath(date) {
+  let path = STRINGS.ROUTE_ROOT + moment(date).format("YYYY/MM/");
+  return path;
+}

@@ -5,7 +5,7 @@ import NotFound from './NotFound'
 import Loading from './components/Loading';
 import CalendarNotFoundComponent from './components/CalendarNotFoundComponent';
 import { fetchMetadata, isMonthInMetaData, getMonthEventsFromMetadata } from '../helpers/papers';
-import { STRINGS } from '../helpers/constants'
+import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -95,16 +95,11 @@ class CalendarView extends React.Component {
 
   paperOnSelect(event, e) {
     let selectedDate = event.start;
-    let selectedDateString = moment(selectedDate).format('YYYY/MM/DD');
-    console.log(selectedDateString);
-    this.props.history.push(STRINGS.ROUTE_ROOT + selectedDateString);
+    this.props.history.push(getDatePath(selectedDate));
   }
 
   goToNewDate(newDate) {
-    let newDateMoment = moment(newDate);
-    let yearString = newDateMoment.format('YYYY');
-    let monthString = newDateMoment.format('MM');
-    this.props.history.push(STRINGS.ROUTE_ROOT + yearString + "/" + monthString + "/");
+    this.props.history.push(getMonthPath(newDate));
   }
 }
 

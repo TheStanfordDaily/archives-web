@@ -9,7 +9,7 @@ import localeInfo from 'rc-pagination/lib/locale/en_US';
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import Loading from './components/Loading';
 import { createSearchQuery } from "../helpers/search";
-import { STRINGS } from "../helpers/constants";
+import { STRINGS, getDatePath } from "../helpers/constants";
 
 import 'rc-pagination/assets/index.css';
 
@@ -178,7 +178,7 @@ class SearchView extends React.Component {
                   <div className="EachResult" key={index}>
                     <h4 className="EachResultTitle">
                       {eachResult.type === "advertisement" ? <IoMdMegaphone /> : <IoIosPaper />}
-                      <span><Link to={STRINGS.ROUTE_ROOT + eachResult.date.format("YYYY/MM/DD") + "#" + queryString.stringify({ "section[]": eachResult.id })}>{eachResult.title}</Link></span>
+                      <span><Link to={getDatePath(eachResult.date, eachResult.id)}>{eachResult.title}</Link></span>
                       <span className="EachResultDate">{eachResult.date.format("MMMM DD, YYYY")}</span>
                     </h4>
                     <div className="EachResultTexts">
