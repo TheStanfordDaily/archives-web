@@ -15,8 +15,8 @@ class HomeView extends React.Component {
         <div className="row">
           <div className="col-12 col-sm-4">
             <h2>About this collection</h2>
-            <p>Welcome to The Stanford Daily archive! We are proud to present the collection of issues dating back to 1892. Since its founding, the Daily has informed, educated and entertained Stanford students and the surrounding community.</p>
-            <p>Providing a firsthand account of life at Stanford from 1892-today, the archive is an invaluable resource for anyone looking to explore American history as seen through the eyes of undergraduates. Issues are presented as originally printed, accompanied by a sidebar featuring articles in plain text. The collection is entirely searchable, and registration is only necessary to make corrections in the plain text.</p>
+            <p>Welcome to The Stanford Daily archives! We are proud to present the collection of issues dating back to 1892. Since its founding, the Daily has informed, educated and entertained Stanford students and the surrounding community.</p>
+            <p>Providing a firsthand account of life at Stanford from 1892-today, the archives is an invaluable resource for anyone looking to explore American history as seen through the eyes of undergraduates. Issues are presented as originally printed, accompanied by a sidebar featuring articles in plain text. The collection is entirely searchable, and registration is only necessary to make corrections in the plain text.</p>
             <p>This collection contains 18,931 issues comprising 143,685 pages and 1,013,592 articles.</p>
           </div>
           <div className="col-12 col-sm-4">
