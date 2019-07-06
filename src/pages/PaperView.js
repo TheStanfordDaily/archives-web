@@ -273,7 +273,7 @@ class PaperView extends React.Component {
           <div className="PaperTitleBar">
             <div className="PaperTitleInfo">
               <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
-              <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_CALENDAR_PREFIX + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
+              <p className="BackToCalendarButton"><Link to={STRINGS.ROUTE_ROOT + moment(this.paper.date).format("YYYY/MM/")}>Back to {moment(this.paper.date).format("MMMM YYYY")}</Link></p>
             </div>
             <div className="PaperNavigationSelectType">
               <div className={this.getNavigationSelectionClasses(navigationType.ISSUE)} onClick={() => this.setNavigationSelection(navigationType.ISSUE)}>Issue</div>

@@ -65,7 +65,7 @@ class AllYearView extends React.Component {
     if (isMonthInMetaData(this.state.allPapers, dateMoment)) {
       let yearString = dateMoment.format('YYYY');
       let monthString = dateMoment.format('MM');
-      this.props.history.push(STRINGS.ROUTE_CALENDAR_PREFIX + yearString + "/" + monthString + "/");
+      this.props.history.push(STRINGS.ROUTE_ROOT + yearString + "/" + monthString + "/");
     }
   }
 }

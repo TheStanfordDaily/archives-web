@@ -21,6 +21,9 @@ class App extends React.Component {
   }
 
   render() {
+    const yearRoute = STRINGS.ROUTE_ROOT + ":year(\\d{4})/";
+    const monthRoute = yearRoute + ":month(\\d{2})/";
+    const dayRoute = monthRoute + ":day(\\d{2})";
     // https://stackoverflow.com/a/42181069/2603230
     return (
       <Router>
@@ -30,9 +33,9 @@ class App extends React.Component {
           <div className="MainView">
             <Switch>
               <Route path={STRINGS.ROUTE_ROOT} exact component={HomeView} />
-              <Route path={STRINGS.ROUTE_CALENDAR_PREFIX} strict exact component={AllYearView} />
-              <Route path={STRINGS.ROUTE_CALENDAR_PREFIX + ":year(\\d{4})/:month(\\d{2})/"} strict exact component={CalendarView} />
-              <Route path={STRINGS.ROUTE_PAPER_PREFIX + ":year(\\d{4})-:month(\\d{2})-:day(\\d{2})"} strict exact component={PaperView} />
+              <Route path={STRINGS.ROUTE_CALENDAR} strict exact component={AllYearView} />
+              <Route path={monthRoute} strict exact component={CalendarView} />
+              <Route path={dayRoute} strict exact component={PaperView} />
               <Route path={STRINGS.ROUTE_SEARCH_PREFIX} strict exact component={SearchView}/>
               <Route component={NotFound} />
             </Switch>
