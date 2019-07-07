@@ -3,8 +3,8 @@
   flex-direction: column;
 
   .AllYears {
-    max-width: 1000px;
-    width: 70%;
+    max-width: 900px;
+    width: 100%;
     margin: 0 auto;
 
     //background-color: yellow;
@@ -20,15 +20,20 @@
       }
 
       .YearName {
-        width: 30%;
+        width: 20%;
         margin: 0;
+        padding: 0 10px;
         border-right: 1px solid black;
-        //background-color: lightblue;
+        @media screen and (max-width: 700px) {
+          width: 15%;
+          font-size: 1.5em;
+          border-right: 0;
+        }
       }
 
       .YearMonths {
-        width: 70%;
-        //background-color: lightgreen;
+        width: 80%;
+        padding: 0 10px;
         .EachMonth {
           display: inline-block;
           margin-right: 20px;
@@ -40,6 +45,9 @@
           .EachMonthLink {
             @extend %link;
           }
+        }
+        @media screen and (max-width: 700px) {
+          width: 85%;
         }
       }
     }
