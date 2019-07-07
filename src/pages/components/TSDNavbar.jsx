@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Navbar, Nav, Form, FormControl } from "react-bootstrap";
-import { sendSearchFromForm } from "../SearchView";
+import { Navbar, Nav } from "react-bootstrap";
 import { STRINGS } from "../../helpers/constants";
 
 class TSDNavbar extends React.Component {
@@ -9,26 +8,33 @@ class TSDNavbar extends React.Component {
     console.log(this.props.location);
 
     let navItems = {
-      Home: STRINGS.ROUTE_ROOT,
-      Calendar: STRINGS.ROUTE_CALENDAR,
-      Search: STRINGS.ROUTE_SEARCH_PREFIX,
-      Acknowledgements: STRINGS.ROUTE_ACKNOWLEDGEMENTS
-    };
-    let navLinks = [];
-    for (let navItemName in navItems) {
-      let classNames = "nav-link";
-      if (this.props.location.pathname === navItems[navItemName]) {
-        classNames += " active";
+      left: {
+        Home: STRINGS.ROUTE_ROOT,
+        Calendar: STRINGS.ROUTE_CALENDAR,
+        Acknowledgements: STRINGS.ROUTE_ACKNOWLEDGEMENTS
+      },
+      right: {
+        Search: STRINGS.ROUTE_SEARCH_PREFIX
       }
-      navLinks.push(
-        <Link
-          to={navItems[navItemName]}
-          className={classNames}
-          key={navItems[navItemName]}
-        >
-          {navItemName}
-        </Link>
-      );
+    };
+    let navLinks = {};
+    for (let navType in navItems) {
+      navLinks[navType] = [];
+      for (let navItemName in navItems[navType]) {
+        let classNames = "nav-link";
+        if (this.props.location.pathname === navItems[navType][navItemName]) {
+          classNames += " active";
+        }
+        navLinks[navType].push(
+          <Link
+            to={navItems[navType][navItemName]}
+            className={classNames}
+            key={navItems[navItemName]}
+          >
+            {navItemName}
+          </Link>
+        );
+      }
     }
 
     return (
@@ -38,16 +44,7 @@ class TSDNavbar extends React.Component {
           id="basic-navbar-nav"
           className="w-100 order-1 order-md-0 dual-collapse2"
         >
-          <Nav className="mr-auto">
-            {navLinks}
-            {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                </NavDropdown>*/}
-          </Nav>
+          <Nav className="mr-auto">{navLinks.left}</Nav>
         </Navbar.Collapse>
         <div className="mx-auto order-0">
           <Navbar.Brand className="mx-auto site-title">
@@ -57,22 +54,7 @@ class TSDNavbar extends React.Component {
           </Navbar.Brand>
         </div>
         <Navbar.Collapse className="justify-content-end w-100 order-3 dual-collapse2">
-          {![STRINGS.ROUTE_ROOT, STRINGS.ROUTE_SEARCH_PREFIX].includes(
-            this.props.location.pathname
-          ) && (
-            <Form
-              inline
-              className="ml-auto"
-              onSubmit={e => sendSearchFromForm(e, this.props.history)}
-            >
-              <FormControl
-                type="text"
-                placeholder="Search&hellip;"
-                className="mr-sm-2 searchbar"
-                name="searchKeyword"
-              />
-            </Form>
-          )}
+          <Nav className="ml-auto">{navLinks.right}</Nav>
         </Navbar.Collapse>
       </Navbar>
     );
