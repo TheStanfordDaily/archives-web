@@ -1,9 +1,24 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
+import ReactGA from "react-ga";
 import { STRINGS } from "../../helpers/constants";
 
 class TSDNavbar extends React.Component {
+  componentDidMount() {
+    this.onRouteChanged();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.onRouteChanged();
+    }
+  }
+
+  onRouteChanged() {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   render() {
     console.log(this.props.location);
 

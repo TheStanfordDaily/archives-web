@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ReactGA from "react-ga";
 import Div100vh from "react-div-100vh";
 import HomeView from "./pages/HomeView";
 import Header from "./pages/Header";
@@ -15,6 +16,11 @@ import { STRINGS } from "./helpers/constants";
 import "./pages/sass/General.scss";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    ReactGA.initialize(STRINGS.GOOGLE_ANALYTICS_TRACKING_ID);
+  }
+
   componentDidMount() {}
 
   componentWillUnmount() {}

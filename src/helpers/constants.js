@@ -12,6 +12,7 @@ export const STRINGS = {
   ROUTE_CALENDAR: "/calendar",
   ROUTE_ACKNOWLEDGEMENTS: "/acknowledgements",
   ROUTE_SEARCH_PREFIX: "/search",
+  GOOGLE_ANALYTICS_TRACKING_ID: "UA-5773957-6",
 }
 
 export function getDatePath(date, sectionId = null) {
