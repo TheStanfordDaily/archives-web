@@ -21,15 +21,17 @@ class TSDNavbar extends React.Component {
     for (let navType in navItems) {
       navLinks[navType] = [];
       for (let navItemName in navItems[navType]) {
+        const navItemPathname = navItems[navType][navItemName];
+
         let classNames = "nav-link";
-        if (this.props.location.pathname === navItems[navType][navItemName]) {
+        if (this.props.location.pathname === navItemPathname) {
           classNames += " active";
         }
         navLinks[navType].push(
           <Link
-            to={navItems[navType][navItemName]}
+            to={navItemPathname}
             className={classNames}
-            key={navItems[navItemName]}
+            key={navItemPathname}
           >
             {navItemName}
           </Link>
