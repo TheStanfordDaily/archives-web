@@ -107,8 +107,10 @@
   .PaperMainView {
     flex-direction: column;
   }
-  .NavigationSection {
+  .NavigationSection, .PaperSection {
     width: 100%;
+    // Override `flex-basis` changed by dragging on mobile screens.
+    flex-basis: 50% !important;
   }
   .PaperTitleBar {
     padding-top: 0;
@@ -129,9 +131,6 @@
         margin-bottom: 0;
       }
     }
-  }
-  .PaperSection {
-    width: 100%;
   }
 }
 
