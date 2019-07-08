@@ -23,6 +23,10 @@
     padding-top: 10px;
     padding-bottom: 10px;
     margin: 0;
+
+    @media screen and (max-width: 700px) {
+      font-size: 1.5em;
+    }
   }
 }
 
@@ -37,12 +41,20 @@
   a {
     color: inherit;
   }
+  @media screen and (max-width: 700px) {
+    font-size: 100%;
+    padding: 0;
+  }
 }
 
 .CalendarNavigationBackButton {
   margin-left: 20px;
   float: left;
   text-decoration: underline;
+  @media screen and (max-width: 700px) {
+    font-size: 95%;
+    margin-left: 10px;
+  }
 }
 
 .CalendarNavigationPrevButton {
@@ -51,6 +63,9 @@
     content: "\2190";
     margin-right: 5px;
   }
+  @media screen and (max-width: 700px) {
+    margin-right: 0;
+  }
 }
 
 .CalendarNavigationNextButton {
@@ -58,6 +73,9 @@
   &::after {
     content: "\2192";
     margin-left: 5px;
+  }
+  @media screen and (max-width: 700px) {
+    margin-left: 0;
   }
 }
 
