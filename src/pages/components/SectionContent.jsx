@@ -1,7 +1,7 @@
 import React from "react";
 import fetch from "cross-fetch";
 import Loading from "./Loading";
-import { STRINGS } from "../../helpers/constants";
+import { STRINGS, INTERNAL } from "../../helpers/constants";
 
 class SectionContent extends React.Component {
   constructor(props) {
@@ -30,6 +30,10 @@ class SectionContent extends React.Component {
     }
     if (!this.props.section) {
       this.setState({ loading: false, sectionContent: null });
+      return;
+    }
+    if (this.props.section === INTERNAL.LOADING_PLACEHOLDER) {
+      // It means the section meta data is still loading.
       return;
     }
 

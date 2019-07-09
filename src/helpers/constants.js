@@ -15,6 +15,10 @@ export const STRINGS = {
   GOOGLE_ANALYTICS_TRACKING_ID: "UA-5773957-6",
 }
 
+export const INTERNAL = {
+  LOADING_PLACEHOLDER: "___LOADING___"
+}
+
 export function getDatePath(date, sectionId = null) {
   let path = STRINGS.ROUTE_ROOT + moment(date).format("YYYY/MM/DD");
   if (sectionId) {

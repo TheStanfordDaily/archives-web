@@ -10,7 +10,7 @@ import Loading from "./components/Loading";
 import SectionContent from "./components/SectionContent";
 import { fetchPaper } from "../helpers/papers";
 import { castArray } from "../helpers/util";
-import { STRINGS, getMonthPath } from "../helpers/constants";
+import { STRINGS, INTERNAL, getMonthPath } from "../helpers/constants";
 
 const navigationType = {
   ISSUE: "issue",
@@ -189,6 +189,10 @@ class PaperView extends React.Component {
     // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
     let displayingSections = castArray(queryValue["section[]"]);
     if (displayingSections.length) {
+      this.setState({
+        navigationSelection: navigationType.ARTICLE,
+        selectedSections: [INTERNAL.LOADING_PLACEHOLDER]
+      });
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
       thisPage.getAltoData().then(results => {
@@ -256,10 +260,6 @@ class PaperView extends React.Component {
         }
 
         this.setState({ selectedSections: selectedSectionsObjects });
-        if (selectedSectionsObjects.length) {
-          // Displays display `navigationType.ARTICLE` in navigation by default when there is any overlay highlighted.
-          this.setState({ navigationSelection: navigationType.ARTICLE });
-        }
       });
     }
   }
