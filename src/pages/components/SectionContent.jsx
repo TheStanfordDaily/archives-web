@@ -1,7 +1,7 @@
 import React from "react";
 import fetch from "cross-fetch";
 import Loading from "./Loading";
-import { STRINGS, INTERNAL } from "../../helpers/constants";
+import { STRINGS, INTERNAL, getDateTitle } from "../../helpers/constants";
 
 class SectionContent extends React.Component {
   constructor(props) {
@@ -58,6 +58,8 @@ class SectionContent extends React.Component {
         sectionContent.author = allLines[2].substr(4); // Remove "### ".
         sectionContent.content = allLines.slice(3).join("\n"); // First three lines (title, subtitle, and author) are not included in content
         this.setState({ loading: false, sectionContent: sectionContent });
+
+        document.title = getDateTitle(this.props.date, sectionContent.title);
 
         console.log(this.preElement.scrollWidth);
         this.props.onScrollWidthChange(this.preElement.scrollWidth);

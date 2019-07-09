@@ -10,7 +10,7 @@ import Loading from "./components/Loading";
 import SectionContent from "./components/SectionContent";
 import { fetchPaper } from "../helpers/papers";
 import { castArray } from "../helpers/util";
-import { STRINGS, INTERNAL, getMonthPath } from "../helpers/constants";
+import { INTERNAL, getDateTitle, getMonthPath } from "../helpers/constants";
 
 const navigationType = {
   ISSUE: "issue",
@@ -54,9 +54,7 @@ class PaperView extends React.Component {
       this.setState({ paperNotFound: true });
       return;
     }
-    document.title =
-      moment(this.paper.date).format("MMMM D, YYYY") +
-      STRINGS.SITE_NAME_WITH_DIVIDER;
+    this.setNavigationSelection(navigationType.ISSUE);
 
     this.allPages = await this.paper.getPages();
     console.log(this.allPages);
@@ -295,6 +293,7 @@ class PaperView extends React.Component {
     this.setState({ navigationSelection: selection });
     if (selection === navigationType.ISSUE) {
       this.setNavigationWidthFromPercent(defaultNavigationPercentage);
+      document.title = getDateTitle(this.paper.date);
     }
   }
   getNavigationSelectionClasses(selection) {

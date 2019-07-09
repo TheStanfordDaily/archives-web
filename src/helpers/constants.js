@@ -2,6 +2,7 @@ import moment from "moment";
 import queryString from "query-string";
 
 export const STRINGS = {
+  PAGE_TITLE_DIVIDER: " - ",
   SITE_NAME: "The Stanford Daily Archives",
   SITE_NAME_WITH_DIVIDER: " - Stanford Daily Archives",
   FILE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
@@ -17,6 +18,15 @@ export const STRINGS = {
 
 export const INTERNAL = {
   LOADING_PLACEHOLDER: "___LOADING___"
+}
+
+export function getDateTitle(date, sectionTitle = null) {
+  let results =
+    moment(date).format("MMMM D, YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
+  if (sectionTitle) {
+    results = sectionTitle + STRINGS.PAGE_TITLE_DIVIDER + results;
+  }
+  return results;
 }
 
 export function getDatePath(date, sectionId = null) {
