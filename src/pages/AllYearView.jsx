@@ -42,7 +42,11 @@ class AllYearView extends React.Component {
         monthsElements.push(
           <div key={month} className="EachMonth">
             {isMonthInMetaData(this.state.allPapers, dateMoment) ? (
-              <Link to={getMonthPath(dateMoment)} className="EachMonthLink">
+              <Link
+                to={getMonthPath(dateMoment)}
+                title={dateMoment.format("MMMM YYYY")}
+                className="EachMonthLink"
+              >
                 {moment.monthsShort(month)}
               </Link>
             ) : (
