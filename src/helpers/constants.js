@@ -18,7 +18,7 @@ export const STRINGS = {
 export function getDatePath(date, sectionId = null) {
   let path = STRINGS.ROUTE_ROOT + moment(date).format("YYYY/MM/DD");
   if (sectionId) {
-    path += "#" + queryString.stringify({ "section[]": sectionId });
+    path += "?" + queryString.stringify({ "section[]": sectionId });
   }
   return path;
 }

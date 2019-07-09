@@ -85,8 +85,8 @@ class PaperView extends React.Component {
       this.onPageChange(e.page);
     });
 
-    // Go to the page number given by the hash.
-    this.onHashChange();
+    // Go to the page number given by the query.
+    this.onQueryChange();
 
     // TODO: this is called many many times. Need to remove when unmount
     // TODO: also check other classes' componentDidMount
@@ -106,23 +106,23 @@ class PaperView extends React.Component {
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
-    if (this.props.location.hash !== prevProps.location.hash) {
+    if (this.props.location.search !== prevProps.location.search) {
       console.log(
-        "location.hash changes from " +
-          prevProps.location.hash +
+        "location.search changes from " +
+          prevProps.location.search +
           " to " +
-          this.props.location.hash
+          this.props.location.search
       );
-      this.onHashChange();
+      this.onQueryChange();
     }
   }
 
-  onHashChange() {
-    let hashValue = queryString.parse(this.props.location.hash);
-    console.log("Hash set/changed to:");
-    console.log(hashValue);
+  onQueryChange() {
+    let queryValue = queryString.parse(this.props.location.search);
+    console.log("Query set/changed to:");
+    console.log(queryValue);
 
-    let pageNumber = Number(hashValue.page);
+    let pageNumber = Number(queryValue.page);
 
     // By default (and when the input is not a valid page number), go to page 1.
     // This is also used to trigger `onPageChange` (and `addOverlay` even by default).
@@ -134,10 +134,10 @@ class PaperView extends React.Component {
     ) {
       // `goToPage` is 0-indexed.
       pageIndex = pageNumber - 1;
-    } else if (hashValue["section[]"]) {
+    } else if (queryValue["section[]"]) {
       // If `#page` is not specified but `#section[]` is, then directly go to the page that contains the first `section`.
 
-      let sectionIDs = castArray(hashValue["section[]"]);
+      let sectionIDs = castArray(queryValue["section[]"]);
       let pageNumberForSection = this.paper.getPageNumberFromSectionID(
         sectionIDs[0]
       );
@@ -167,13 +167,13 @@ class PaperView extends React.Component {
     // `page` is 0-indexed.
     let pageNumber = page + 1;
 
-    let hashValue = queryString.parse(this.props.location.hash);
-    //console.log("hashValue.page is " + hashValue.page.toString() + "while pageNumber is " + pageNumber.toString());
-    // Only use `history.replace` if current hash pageNumber is not equal to the new pageNumber.
-    if (Number(hashValue.page) !== pageNumber) {
-      console.log("Number(hashValue.page) !== pageNumber");
-      hashValue.page = pageNumber;
-      this.props.history.replace("#" + queryString.stringify(hashValue));
+    let queryValue = queryString.parse(this.props.location.search);
+    //console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
+    // Only use `history.replace` if current query pageNumber is not equal to the new pageNumber.
+    if (Number(queryValue.page) !== pageNumber) {
+      console.log("Number(queryValue.page) !== pageNumber");
+      queryValue.page = pageNumber;
+      this.props.history.replace("?" + queryString.stringify(queryValue));
     }
   }
 
@@ -184,10 +184,10 @@ class PaperView extends React.Component {
       navigationSelection: navigationType.ISSUE
     });
 
-    let hashValue = queryString.parse(this.props.location.hash);
+    let queryValue = queryString.parse(this.props.location.search);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
     // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
-    let displayingSections = castArray(hashValue["section[]"]);
+    let displayingSections = castArray(queryValue["section[]"]);
     if (displayingSections.length) {
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
@@ -373,7 +373,7 @@ class PaperView extends React.Component {
                           <Link
                             className="SectionTitleLink"
                             to={
-                              "#" +
+                              "?" +
                               queryString.stringify({
                                 page: page.pageNumber,
                                 "section[]": section.sectionID
