@@ -100,10 +100,19 @@ class CalendarView extends React.Component {
             date={new Date(thisMonth)}
             startAccessor="start"
             endAccessor="end"
-            onSelectEvent={(event, e) => this.paperOnSelect(event, e)}
             views={{ month: true, notfound: CalendarNotFoundComponent }}
             view={calendarNotFound ? "notfound" : "month"}
             components={{
+              event: ({ event }) => {
+                return (
+                  <Link
+                    to={getDatePath(event.start)}
+                    title={moment(event.start).format("MMMM D, YYYY")}
+                  >
+                    {event.title}
+                  </Link>
+                );
+              },
               toolbar: () => {
                 return <></>;
               }
@@ -121,11 +130,6 @@ class CalendarView extends React.Component {
         </div>
       </div>
     );
-  }
-
-  paperOnSelect(event, e) {
-    let selectedDate = event.start;
-    this.props.history.push(getDatePath(selectedDate));
   }
 
   goToNewDate(newDate) {
