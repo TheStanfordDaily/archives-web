@@ -66,6 +66,8 @@
 
 .PaperNavigationItems {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 
   /* https://codepen.io/anthonyLukes/pen/DLBeE */
   flex: 1;
