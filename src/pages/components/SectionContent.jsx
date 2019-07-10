@@ -73,7 +73,7 @@ class SectionContent extends React.Component {
 
     if (!this.state.sectionContent) {
       return (
-        <p class="SectionContent">
+        <p className="SectionContent">
           <i>Select an article in the document viewer.</i>
         </p>
       );
