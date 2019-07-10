@@ -151,6 +151,11 @@ class PaperView extends React.Component {
   }
 
   onPageChange(page) {
+    // `page` is 0-indexed.
+    let pageNumber = page + 1;
+
+    document.querySelector("#page-" + pageNumber).scrollIntoView();
+
     // TODO: Not working for the initial view of the paper.
     // By default view the top of the page.
     var currentBounds = this.viewer.viewport.getBounds();
@@ -161,9 +166,6 @@ class PaperView extends React.Component {
       currentBounds.height / currentBounds.width
     );
     this.viewer.viewport.fitBounds(newBounds, true);
-
-    // `page` is 0-indexed.
-    let pageNumber = page + 1;
 
     let queryValue = queryString.parse(this.props.location.search);
     //console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
