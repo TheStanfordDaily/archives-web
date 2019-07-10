@@ -361,7 +361,11 @@ class PaperView extends React.Component {
           >
             {this.state.navigationSelection === navigationType.ISSUE ? (
               this.allPages.map(page => (
-                <div key={page.pageNumber}>
+                <div
+                  key={page.pageNumber}
+                  id={"page-" + page.pageNumber}
+                  className="EachPageArticleList"
+                >
                   <h3 className="PageLabel">Page {page.pageLabel}</h3>
                   <ul>
                     {page.sections.map(section => (
