@@ -181,7 +181,7 @@ class PaperView extends React.Component {
     if (Number(queryValue.page) !== pageNumber) {
       console.log("Number(queryValue.page) !== pageNumber");
       queryValue.page = pageNumber;
-      this.props.history.replace("?" + queryString.stringify(queryValue));
+      this.props.history.replace(getDatePath(this.paper.date, queryValue));
     }
   }
 
@@ -399,13 +399,10 @@ class PaperView extends React.Component {
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
                           <Link
                             className="SectionTitleLink"
-                            to={
-                              "?" +
-                              queryString.stringify({
-                                page: page.pageNumber,
-                                "section[]": section.sectionID
-                              })
-                            }
+                            to={getDatePath(this.paper.date, {
+                              page: page.pageNumber,
+                              "section[]": section.sectionID
+                            })}
                           >
                             {section.title}
                           </Link>
