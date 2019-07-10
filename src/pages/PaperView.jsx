@@ -154,7 +154,10 @@ class PaperView extends React.Component {
     // `page` is 0-indexed.
     let pageNumber = page + 1;
 
-    document.querySelector("#page-" + pageNumber).scrollIntoView();
+    let articleListEle = document.querySelector("#page-" + pageNumber);
+    if (articleListEle) {
+      articleListEle.scrollIntoView();
+    }
 
     // TODO: Not working for the initial view of the paper.
     // By default view the top of the page.
