@@ -188,9 +188,9 @@ class PaperView extends React.Component {
   setOverlays(pageIndex) {
     this.viewer.clearOverlays();
     this.setState({
-      selectedSections: [],
-      navigationSelection: navigationType.ISSUE
+      selectedSections: []
     });
+    this.setNavigationSelection(navigationType.ISSUE);
 
     let queryValue = queryString.parse(this.props.location.search);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
@@ -198,9 +198,9 @@ class PaperView extends React.Component {
     let displayingSections = castArray(queryValue["section[]"]);
     if (displayingSections.length) {
       this.setState({
-        navigationSelection: navigationType.ARTICLE,
         selectedSections: [INTERNAL.LOADING_PLACEHOLDER]
       });
+      this.setNavigationSelection(navigationType.ARTICLE);
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
       thisPage.getAltoData().then(results => {
@@ -270,7 +270,7 @@ class PaperView extends React.Component {
         this.setState({ selectedSections: selectedSectionsObjects });
         if (!selectedSectionsObjects.length) {
           // Go back to ISSUE view if no section text is actually displayed.
-          this.setState({ navigationSelection: navigationType.ISSUE });
+          this.setNavigationSelection(navigationType.ISSUE);
         }
       });
     }
