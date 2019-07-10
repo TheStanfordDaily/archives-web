@@ -83,6 +83,15 @@ class SectionContent extends React.Component {
     // TODO: resize back to default 30% after going back to issue.
     return (
       <div className="SectionContent">
+        <span
+          className="CloseButton"
+          title="Back to the issue list"
+          onClick={() => {
+            this.props.onCloseButtonClicked();
+          }}
+        >
+          &times;
+        </span>
         {this.state.sectionContent.title && (
           <h3>{this.state.sectionContent.title}</h3>
         )}

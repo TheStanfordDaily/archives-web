@@ -105,6 +105,16 @@
 
   .SectionContent {
     padding-top: 1rem;
+    .CloseButton {
+      float: right;
+      font-size: 1.5em;
+      font-weight: bold;
+      @extend %link;
+    }
+    h3 {
+      word-wrap: break-word;
+      padding-right: 15px;
+    }
     .Author {
       text-align: right;
     }

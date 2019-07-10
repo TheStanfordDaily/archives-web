@@ -413,6 +413,16 @@ class PaperView extends React.Component {
                   console.log(pxWidth);
                   this.setNavigationWidthFromPxWidth(pxWidth);
                 }}
+                onCloseButtonClicked={() => {
+                  this.setNavigationSelection(navigationType.ISSUE);
+                  let queryValue = queryString.parse(
+                    this.props.location.search
+                  );
+                  let newQueryValue = { page: queryValue.page };
+                  this.props.history.replace(
+                    "?" + queryString.stringify(newQueryValue)
+                  );
+                }}
               />
             )}
           </div>
