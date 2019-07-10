@@ -213,7 +213,11 @@ class SearchView extends React.Component {
                       <IoIosPaper />
                     )}
                     <span>
-                      <Link to={getDatePath(eachResult.date, eachResult.id)}>
+                      <Link
+                        to={getDatePath(eachResult.date, {
+                          "section[]": eachResult.id
+                        })}
+                      >
                         {eachResult.title}
                       </Link>
                     </span>

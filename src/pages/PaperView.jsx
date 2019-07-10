@@ -10,7 +10,12 @@ import Loading from "./components/Loading";
 import SectionContent from "./components/SectionContent";
 import { fetchPaper } from "../helpers/papers";
 import { castArray } from "../helpers/util";
-import { INTERNAL, getDateTitle, getMonthPath } from "../helpers/constants";
+import {
+  INTERNAL,
+  getDateTitle,
+  getDatePath,
+  getMonthPath
+} from "../helpers/constants";
 
 const navigationType = {
   ISSUE: "issue",
@@ -371,7 +376,17 @@ class PaperView extends React.Component {
                   id={"page-" + page.pageNumber}
                   className="EachPageArticleList"
                 >
-                  <h3 className="PageLabel">Page {page.pageLabel}</h3>
+                  <h3 className="PageLabel">
+                    Page {page.pageLabel}{" "}
+                    <Link
+                      to={getDatePath(this.paper.date, {
+                        page: page.pageNumber
+                      })}
+                      title={"Go to Page " + page.pageLabel}
+                    >
+                      &rarr;
+                    </Link>
+                  </h3>
                   <ul>
                     {page.sections.map(section => (
                       <li key={page.pageLabel + "-" + section.sectionID}>
@@ -421,9 +436,10 @@ class PaperView extends React.Component {
                   let queryValue = queryString.parse(
                     this.props.location.search
                   );
-                  let newQueryValue = { page: queryValue.page };
                   this.props.history.replace(
-                    "?" + queryString.stringify(newQueryValue)
+                    getDatePath(this.paper.date, {
+                      page: queryValue.page
+                    })
                   );
                 }}
               />
