@@ -258,6 +258,10 @@ class PaperView extends React.Component {
         }
 
         this.setState({ selectedSections: selectedSectionsObjects });
+        if (!selectedSectionsObjects.length) {
+          // Go back to ISSUE view if no section text is actually displayed.
+          this.setState({ navigationSelection: navigationType.ISSUE });
+        }
       });
     }
   }
