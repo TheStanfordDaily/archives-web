@@ -52,6 +52,8 @@
 
 
 .SearchResultSection {
+  display: flex;
+  flex-direction: column;
   width: 70%;
   @extend %overflow-y;
   text-align: left;
