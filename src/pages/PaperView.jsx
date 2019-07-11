@@ -131,7 +131,9 @@ class PaperView extends React.Component {
 
   onHashChange() {
     if (!this.props.location.hash) {
-      this.goNavigationSelection(navigationType.ISSUE);
+      this.props.history.replace(
+        this.getNavigationSelectionLink(navigationType.ISSUE)
+      );
       return;
     }
 
@@ -326,9 +328,8 @@ class PaperView extends React.Component {
     this.setState({ navigationPercentage: newPercent });
   }
 
-  goNavigationSelection(selection) {
-    console.log(this.props.location.search);
-    this.props.history.replace(this.props.location.search + "#" + selection);
+  getNavigationSelectionLink(selection) {
+    return this.props.location.search + "#" + selection;
   }
 
   setNavigationSelection(selection) {
@@ -371,24 +372,22 @@ class PaperView extends React.Component {
               </p>
             </div>
             <div className="PaperNavigationSelectType">
-              <div
+              <Link
                 className={this.getNavigationSelectionClasses(
                   navigationType.ISSUE
                 )}
-                onClick={() => this.goNavigationSelection(navigationType.ISSUE)}
+                to={this.getNavigationSelectionLink(navigationType.ISSUE)}
               >
                 Issue
-              </div>
-              <div
+              </Link>
+              <Link
                 className={this.getNavigationSelectionClasses(
                   navigationType.ARTICLE
                 )}
-                onClick={() =>
-                  this.goNavigationSelection(navigationType.ARTICLE)
-                }
+                to={this.getNavigationSelectionLink(navigationType.ARTICLE)}
               >
                 Article
-              </div>
+              </Link>
             </div>
           </div>
           <div
