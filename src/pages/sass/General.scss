@@ -53,6 +53,12 @@ mark {
 .navbar {
   background-color: $color__cardinal-red;
   flex: none;
+  .nav-link {
+    &.active {
+      pointer-events: none;
+      cursor: default;
+    }
+  }
 }
 
 .site-title a {
