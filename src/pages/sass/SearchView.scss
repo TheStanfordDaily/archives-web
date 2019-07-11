@@ -111,6 +111,7 @@
     .rc-pagination-item-active {
       background-color: $pagination_active-color;
       color: white;
+      @extend %no-click;
     }
   }
 }

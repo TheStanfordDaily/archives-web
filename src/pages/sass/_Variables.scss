@@ -23,6 +23,11 @@ $color__link-hover: $color__cardinal-bright-red;
   cursor: pointer;
 }
 
+%no-click {
+  pointer-events: none;
+  cursor: default;
+}
+
 %overflow-y {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

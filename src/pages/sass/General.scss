@@ -55,8 +55,7 @@ mark {
   flex: none;
   .nav-link {
     &.active {
-      pointer-events: none;
-      cursor: default;
+      @extend %no-click;
     }
   }
 }
