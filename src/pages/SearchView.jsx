@@ -182,7 +182,8 @@ class SearchView extends React.Component {
             idPrefix="search"
             formData={this.state.formData}
             onSubmit={e => {
-              const formData = e.formData;
+              let formData = e.formData;
+              formData.page = 1;  // Reset the results to the first page.
               this.props.history.push(getSearchURL(formData));
             }}
           >
