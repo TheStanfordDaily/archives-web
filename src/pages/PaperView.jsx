@@ -374,7 +374,9 @@ class PaperView extends React.Component {
         >
           <div className="PaperTitleBar">
             <div className="PaperTitleInfo">
-              <h1>{moment(this.paper.date).format("YYYY-MM-DD")}</h1>
+              <h1>
+                <time>{moment(this.paper.date).format("YYYY-MM-DD")}</time>
+              </h1>
               <p className="BackToCalendarButton">
                 <Link to={getMonthPath(this.paper.date)}>
                   Back to {moment(this.paper.date).format("MMMM YYYY")}
