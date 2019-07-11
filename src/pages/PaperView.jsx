@@ -212,7 +212,13 @@ class PaperView extends React.Component {
     if (Number(queryValue.page) !== pageNumber) {
       console.log("Number(queryValue.page) !== pageNumber");
       queryValue.page = pageNumber;
-      this.props.history.replace(getDatePath(this.paper.date, queryValue));
+      this.props.history.replace(
+        getDatePath(
+          this.paper.date,
+          queryValue,
+          this.props.location.hash.substring(1)
+        )
+      );
     }
   }
 
@@ -404,9 +410,13 @@ class PaperView extends React.Component {
                   <h3 className="PageLabel">
                     Page {page.pageLabel}{" "}
                     <Link
-                      to={getDatePath(this.paper.date, {
-                        page: page.pageNumber
-                      })}
+                      to={getDatePath(
+                        this.paper.date,
+                        {
+                          page: page.pageNumber
+                        },
+                        navigationType.ISSUE
+                      )}
                       title={"Go to Page " + page.pageLabel}
                     >
                       &rarr;
