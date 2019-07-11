@@ -133,7 +133,7 @@ class PaperView extends React.Component {
     if (!this.props.location.hash) {
       let newLink = this.getNavigationSelectionLink(navigationType.ISSUE);
       let queryValue = queryString.parse(this.props.location.search);
-      if (queryValue["section[]"]) {
+      if (queryValue.section) {
         // Display article view by default if there is a section selected.
         newLink = this.getNavigationSelectionLink(navigationType.ARTICLE);
       }
@@ -172,10 +172,10 @@ class PaperView extends React.Component {
     ) {
       // `goToPage` is 0-indexed.
       pageIndex = pageNumber - 1;
-    } else if (queryValue["section[]"]) {
-      // If `#page` is not specified but `#section[]` is, then directly go to the page that contains the first `section`.
+    } else if (queryValue.section) {
+      // If `#page` is not specified but `?section` is, then directly go to the page that contains the first `section`.
 
-      let sectionIDs = castArray(queryValue["section[]"]);
+      let sectionIDs = castArray(queryValue.section);
       let pageNumberForSection = this.paper.getPageNumberFromSectionID(
         sectionIDs[0]
       );
@@ -233,9 +233,9 @@ class PaperView extends React.Component {
     });
 
     let queryValue = queryString.parse(this.props.location.search);
-    // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
-    // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section[]=...").
-    let displayingSections = castArray(queryValue["section[]"]);
+    // For the name of `section`, see https://stackoverflow.com/a/9176496/2603230
+    // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section=...").
+    let displayingSections = castArray(queryValue.section);
     if (displayingSections.length) {
       this.setState({
         selectedSections: [INTERNAL.LOADING_PLACEHOLDER]
@@ -442,7 +442,7 @@ class PaperView extends React.Component {
                               this.paper.date,
                               {
                                 page: page.pageNumber,
-                                "section[]": section.sectionID
+                                section: section.sectionID
                               },
                               navigationType.ARTICLE
                             )}

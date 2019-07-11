@@ -215,7 +215,7 @@ class SearchView extends React.Component {
                     <span>
                       <Link
                         to={getDatePath(eachResult.date, {
-                          "section[]": eachResult.id
+                          section: eachResult.id
                         })}
                       >
                         {eachResult.title}
