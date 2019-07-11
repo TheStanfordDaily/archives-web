@@ -29,10 +29,13 @@ export function getDateTitle(date, sectionTitle = null) {
   return results;
 }
 
-export function getDatePath(date, options = null) {
+export function getDatePath(date, options = null, hash = null) {
   let path = STRINGS.ROUTE_ROOT + moment(date).format("YYYY/MM/DD");
   if (options) {
     path += "?" + queryString.stringify(options);
+  }
+  if (hash) {
+    path += "#" + hash;
   }
   return path;
 }

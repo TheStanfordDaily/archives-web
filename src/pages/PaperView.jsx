@@ -59,7 +59,6 @@ class PaperView extends React.Component {
       this.setState({ paperNotFound: true });
       return;
     }
-    this.setNavigationSelection(navigationType.ISSUE);
 
     this.allPages = await this.paper.getPages();
     console.log(this.allPages);
@@ -90,6 +89,7 @@ class PaperView extends React.Component {
 
     // Go to the page number given by the query.
     this.onQueryChange();
+    this.onHashChange();
 
     // TODO: this is called many many times. Need to remove when unmount
     // TODO: also check other classes' componentDidMount
@@ -117,6 +117,35 @@ class PaperView extends React.Component {
           this.props.location.search
       );
       this.onQueryChange();
+    }
+    if (this.props.location.hash !== prevProps.location.hash) {
+      console.log(
+        "location.hash changes from " +
+          prevProps.location.hash +
+          " to " +
+          this.props.location.hash
+      );
+      this.onHashChange();
+    }
+  }
+
+  onHashChange() {
+    if (!this.props.location.hash) {
+      this.goNavigationSelection(navigationType.ISSUE);
+      return;
+    }
+
+    let hashValue = queryString.parse(this.props.location.hash);
+    console.log(hashValue);
+    for (const type in navigationType) {
+      let typeName = navigationType[type];
+      if (
+        typeName in hashValue &&
+        typeName !== this.state.navigationSelection
+      ) {
+        this.setNavigationSelection(typeName);
+        break;
+      }
     }
   }
 
@@ -190,7 +219,6 @@ class PaperView extends React.Component {
     this.setState({
       selectedSections: []
     });
-    this.setNavigationSelection(navigationType.ISSUE);
 
     let queryValue = queryString.parse(this.props.location.search);
     // For the name of `section[]`, see https://stackoverflow.com/a/9176496/2603230
@@ -200,7 +228,6 @@ class PaperView extends React.Component {
       this.setState({
         selectedSections: [INTERNAL.LOADING_PLACEHOLDER]
       });
-      this.setNavigationSelection(navigationType.ARTICLE);
       let thisPage = this.allPages[pageIndex];
       console.log(thisPage.sections);
       thisPage.getAltoData().then(results => {
@@ -268,10 +295,6 @@ class PaperView extends React.Component {
         }
 
         this.setState({ selectedSections: selectedSectionsObjects });
-        if (!selectedSectionsObjects.length) {
-          // Go back to ISSUE view if no section text is actually displayed.
-          this.setNavigationSelection(navigationType.ISSUE);
-        }
       });
     }
   }
@@ -301,6 +324,11 @@ class PaperView extends React.Component {
     newPercent = Math.min(newPercent, 75);
     newPercent = Math.max(newPercent, 25);
     this.setState({ navigationPercentage: newPercent });
+  }
+
+  goNavigationSelection(selection) {
+    console.log(this.props.location.search);
+    this.props.history.replace(this.props.location.search + "#" + selection);
   }
 
   setNavigationSelection(selection) {
@@ -347,9 +375,7 @@ class PaperView extends React.Component {
                 className={this.getNavigationSelectionClasses(
                   navigationType.ISSUE
                 )}
-                onClick={() =>
-                  this.setNavigationSelection(navigationType.ISSUE)
-                }
+                onClick={() => this.goNavigationSelection(navigationType.ISSUE)}
               >
                 Issue
               </div>
@@ -358,7 +384,7 @@ class PaperView extends React.Component {
                   navigationType.ARTICLE
                 )}
                 onClick={() =>
-                  this.setNavigationSelection(navigationType.ARTICLE)
+                  this.goNavigationSelection(navigationType.ARTICLE)
                 }
               >
                 Article
@@ -399,10 +425,14 @@ class PaperView extends React.Component {
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
                           <Link
                             className="SectionTitleLink"
-                            to={getDatePath(this.paper.date, {
-                              page: page.pageNumber,
-                              "section[]": section.sectionID
-                            })}
+                            to={getDatePath(
+                              this.paper.date,
+                              {
+                                page: page.pageNumber,
+                                "section[]": section.sectionID
+                              },
+                              navigationType.ARTICLE
+                            )}
                           >
                             {section.title}
                           </Link>
@@ -428,15 +458,16 @@ class PaperView extends React.Component {
                   console.log(pxWidth);
                   this.setNavigationWidthFromPxWidth(pxWidth);
                 }}
-                onCloseButtonClicked={() => {
-                  this.setNavigationSelection(navigationType.ISSUE);
+                backLink={() => {
                   let queryValue = queryString.parse(
                     this.props.location.search
                   );
-                  this.props.history.replace(
-                    getDatePath(this.paper.date, {
+                  return getDatePath(
+                    this.paper.date,
+                    {
                       page: queryValue.page
-                    })
+                    },
+                    navigationType.ISSUE
                   );
                 }}
               />

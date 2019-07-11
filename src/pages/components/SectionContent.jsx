@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import fetch from "cross-fetch";
 import Loading from "./Loading";
 import { STRINGS, INTERNAL, getDateTitle } from "../../helpers/constants";
@@ -83,15 +84,13 @@ class SectionContent extends React.Component {
     // TODO: resize back to default 30% after going back to issue.
     return (
       <div className="SectionContent">
-        <span
+        <Link
           className="CloseButton"
           title="Back to the issue list"
-          onClick={() => {
-            this.props.onCloseButtonClicked();
-          }}
+          to={this.props.backLink()}
         >
           &times;
-        </span>
+        </Link>
         {this.state.sectionContent.title && (
           <h3>{this.state.sectionContent.title}</h3>
         )}
