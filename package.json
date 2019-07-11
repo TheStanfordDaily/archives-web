@@ -62,6 +62,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "prettier": "^1.17.1"
   }
 }
