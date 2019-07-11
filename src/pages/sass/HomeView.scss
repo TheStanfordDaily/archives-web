@@ -1,3 +1,11 @@
+.HomeSection {
+  margin-bottom: 2rem;
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
 .HomeSearchButton {
   border-radius: 0;
   display: flex;

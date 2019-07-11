@@ -13,7 +13,7 @@ class HomeView extends React.Component {
     return (
       <div className="HomeMainView container mt-4 text-left">
         <div className="row">
-          <div className="col-12 col-sm-4">
+          <div className="HomeSection col-12 col-sm-4">
             <h2>About this collection</h2>
             <p>
               Welcome to The Stanford Daily archives! We are proud to present
@@ -35,11 +35,11 @@ class HomeView extends React.Component {
               and 1,013,592 articles.
             </p>
           </div>
-          <div className="col-12 col-sm-4">
+          <div className="HomeSection col-12 col-sm-4">
             <h2>Search the collection</h2>
             <SearchWidget />
           </div>
-          <div className="col-12 col-sm-4">
+          <div className="HomeSection col-12 col-sm-4">
             <h2>Subscribe</h2>
             Visit{" "}
             <a

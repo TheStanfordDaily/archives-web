@@ -7,7 +7,6 @@ class SearchWidget extends React.Component {
   render() {
     return (
       <form
-        className="mt-4"
         onSubmit={e => sendSearchFromForm(e, this.props.history)}
       >
         <div className="input-group">
