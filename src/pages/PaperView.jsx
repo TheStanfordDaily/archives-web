@@ -131,17 +131,13 @@ class PaperView extends React.Component {
 
   onHashChange() {
     if (!this.props.location.hash) {
-      // Display article view by default if there is a section selected.
+      let newLink = this.getNavigationSelectionLink(navigationType.ISSUE);
       let queryValue = queryString.parse(this.props.location.search);
       if (queryValue["section[]"]) {
-        this.props.history.replace(
-          this.getNavigationSelectionLink(navigationType.ARTICLE)
-        );
-      } else {
-        this.props.history.replace(
-          this.getNavigationSelectionLink(navigationType.ISSUE)
-        );
+        // Display article view by default if there is a section selected.
+        newLink = this.getNavigationSelectionLink(navigationType.ARTICLE);
       }
+      this.props.history.replace(newLink);
       return;
     }
 
