@@ -194,10 +194,7 @@ class PaperView extends React.Component {
     // `page` is 0-indexed.
     let pageNumber = page + 1;
 
-    let articleListEle = document.querySelector("#page-" + pageNumber);
-    if (articleListEle) {
-      articleListEle.scrollIntoView();
-    }
+    this.scrollToPageNumber();
 
     // TODO: Not working for the initial view of the paper.
     // By default view the top of the page.
@@ -343,7 +340,9 @@ class PaperView extends React.Component {
   }
 
   setNavigationSelection(selection) {
-    this.setState({ navigationSelection: selection });
+    this.setState({ navigationSelection: selection }, () => {
+      this.scrollToPageNumber();
+    });
     if (selection === navigationType.ISSUE) {
       this.setNavigationWidthFromPercent(defaultNavigationPercentage);
       document.title = getDateTitle(this.paper.date);
@@ -355,6 +354,15 @@ class PaperView extends React.Component {
       classes += " Active";
     }
     return classes;
+  }
+
+  scrollToPageNumber() {
+    let queryValue = queryString.parse(this.props.location.search);
+    let pageNumber = Number(queryValue.page);
+    let articleListEle = document.querySelector("#page-" + pageNumber);
+    if (articleListEle) {
+      articleListEle.scrollIntoView();
+    }
   }
 
   render() {
