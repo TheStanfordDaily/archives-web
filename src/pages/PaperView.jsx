@@ -156,6 +156,9 @@ class PaperView extends React.Component {
   }
 
   onQueryChange() {
+    // This might be overriden by `SectionContent`.
+    document.title = getDateTitle(this.paper.date);
+
     let queryValue = queryString.parse(this.props.location.search);
     console.log("Query set/changed to:");
     console.log(queryValue);
@@ -345,7 +348,6 @@ class PaperView extends React.Component {
     });
     if (selection === navigationType.ISSUE) {
       this.setNavigationWidthFromPercent(defaultNavigationPercentage);
-      document.title = getDateTitle(this.paper.date);
     }
   }
   getNavigationSelectionClasses(selection) {
