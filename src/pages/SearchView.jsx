@@ -15,9 +15,15 @@ import "rc-pagination/assets/index.css";
 
 export function sendSearchFromForm(event, history) {
   const searchKeyword = event.target.elements.searchKeyword.value;
-  if (searchKeyword) {
-    history.push(getSearchURL({ q: searchKeyword }));
-  }
+
+  let finalSearchKeyword = createSearchQuery({ year_start: 1892, year_end:1904, query:searchKeyword });
+
+  if (finalSearchKeyword.length > 250) {
+      alert("Search query exceeds the maximum allowed length."); 
+  } else if (finalSearchKeyword.length < 250) {
+        history.push(getSearchURL({ q: searchKeyword }));
+  } 
+
   event.preventDefault();
 }
 
@@ -183,6 +189,20 @@ class SearchView extends React.Component {
             formData={this.state.formData}
             onSubmit={e => {
               let formData = e.formData;
+
+ let finalSearchKeyword = createSearchQuery({year_start: formData.year_start, year_end:formData.year_end, query:formData.q});
+ console.log("THIS: ", finalSearchKeyword); 
+ console.log("NEW finalSearchKeyword.length", finalSearchKeyword.length);
+
+  if (finalSearchKeyword.length > 250) {
+      alert("Search query exceeds the maximum allowed length.");
+      return;
+  }
+
+
+
+
+              console.log("e.formData", e.formData);
               formData.page = 1;  // Reset the results to the first page.
               this.props.history.push(getSearchURL(formData));
             }}
@@ -259,20 +279,34 @@ class SearchView extends React.Component {
     dateFrom,
     dateTo
   }) {
-    const searchQuery = createSearchQuery({ query: q, year_start, year_end });
-    console.log(searchQuery);
 
+  let searchQuery;
+  try {
+    searchQuery = createSearchQuery({ query: q, year_start, year_end });  
+  }
+  catch(err) {
+    alert(err);
+    return; 
+  }
+
+
+    //Change: let search_query;
     const serverSearchParameters = {
       search_query: searchQuery,
       pagelen: resultsPerPage,
       page: pageNumber
     };
+    //Change:
+    // if(search_query === undefined) {
+    //   return;
+    // }
 
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
     const serverSearchURL =
       STRINGS.SEARCH_SERVER_URL +
       "?" +
       queryString.stringify(serverSearchParameters);
+      console.log(serverSearchParameters);
     console.log(serverSearchURL);
     fetch(serverSearchURL)
       .then(e => e.json())
