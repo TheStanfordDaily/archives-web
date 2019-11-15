@@ -288,25 +288,17 @@ class SearchView extends React.Component {
     alert(err);
     return; 
   }
-
-
-    //Change: let search_query;
     const serverSearchParameters = {
       search_query: searchQuery,
       pagelen: resultsPerPage,
       page: pageNumber
     };
-    //Change:
-    // if(search_query === undefined) {
-    //   return;
-    // }
 
     // https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
     const serverSearchURL =
       STRINGS.SEARCH_SERVER_URL +
       "?" +
       queryString.stringify(serverSearchParameters);
-      console.log(serverSearchParameters);
     console.log(serverSearchURL);
     fetch(serverSearchURL)
       .then(e => e.json())
