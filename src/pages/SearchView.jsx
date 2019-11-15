@@ -191,18 +191,10 @@ class SearchView extends React.Component {
               let formData = e.formData;
 
  let finalSearchKeyword = createSearchQuery({year_start: formData.year_start, year_end:formData.year_end, query:formData.q});
- console.log("THIS: ", finalSearchKeyword); 
- console.log("NEW finalSearchKeyword.length", finalSearchKeyword.length);
-
   if (finalSearchKeyword.length > 250) {
       alert("Search query exceeds the maximum allowed length.");
       return;
   }
-
-
-
-
-              console.log("e.formData", e.formData);
               formData.page = 1;  // Reset the results to the first page.
               this.props.history.push(getSearchURL(formData));
             }}
