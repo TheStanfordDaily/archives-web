@@ -29,7 +29,7 @@ export function getSearchURL(formData) {
 const DEFAULTS_FORM_DATA = {
   q: "",
   year_start: 1892,
-  year_end: 1904, // TODO: should default to 2014
+  year_end: 2014,
   page: 1,
   pagelen: 20
 };
@@ -172,6 +172,9 @@ class SearchView extends React.Component {
       </>
     );
 
+    let isLoading = this.state.loading;
+    console.log("loading");
+    console.log(isLoading);
     return (
       <div className="SearchMainView">
         <div className="SearchFilterSection">
@@ -197,12 +200,16 @@ class SearchView extends React.Component {
               Search
             </button>
           </Form>
+          
+          {isLoading &&
+            <Loading containerClasses="NoBG" />
+          } 
           {/* TODO: add a collapse content button - only show title and date */}
         </div>
         <div className="SearchResultSection">
-          {this.state.loading ? (
-            <Loading containerClasses="NoBG" />
-          ) : this.state.searchResults.length ? (
+             
+          {
+          this.state.searchResults.length ? (
             <div className="SearchResultAllResultsContent">
               <div className="EachResult SearchPagination">{pagination}</div>
               {this.state.searchResults.map((eachResult, index) => (
@@ -347,7 +354,9 @@ class SearchView extends React.Component {
         console.log(results);
         // TODO: sort results by `matchCount`?
         this.setState({
-          searchResults: results,
+          searchResults: results.sort(function(a, b) {
+              return b.matchCount - a.matchCount;
+          }),
           searchResultsSize: resultsSize,
           loading: false
         });
