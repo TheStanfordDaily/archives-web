@@ -16,12 +16,12 @@ class AcknowledgementsView extends React.Component {
             the editor-in-chief of Vol. 163, worked tirelessly to oversee the
             life of this project, ensuring that we could present more than 120
             years of Stanford history in its original form. For that, and for
-            all of his dedication to the Daily, we are grateful.
+            all of his dedication to The Daily, we are grateful.
           </p>
           <p>
             We would also like to acknowledge the hard work of Ed Kohn '73,
             whose assistance was an integral part of the archives launch, and
-            the continued support of The Friends of the Stanford Daily
+            the continued support of The Friends of The Stanford Daily
             Foundation.
           </p>
           <p>
@@ -37,7 +37,7 @@ class AcknowledgementsView extends React.Component {
           </ul>
           <p>
             The Stanford Daily Archives website was revamped and redesigned in
-            2019 (Vol. 255-256) by the Daily's Tech Team led by Ashwin Ramaswami
+            2019 (Vol. 255-256) by The Daily's Tech Team led by Ashwin Ramaswami
             '21 and Yifei He '22.
           </p>
         </div>
