@@ -26,10 +26,10 @@ export function getSearchURL(formData) {
   return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
-const DEFAULTS_FORM_DATA = {
+export const DEFAULTS_FORM_DATA = {
   q: "",
   year_start: 1892,
-  year_end: 1904, // TODO: should default to 2014
+  year_end: 2014,
   page: 1,
   pagelen: 20
 };

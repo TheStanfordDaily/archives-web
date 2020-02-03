@@ -1,3 +1,4 @@
+import { DEFAULTS_FORM_DATA } from "../pages/SearchView";
 
 function createPath({ century, decade, year, pathSuffix }) {
     let pathPrefix = "";
@@ -68,7 +69,9 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
     if (year) {
         path = createPath({ year, pathSuffix });
     }
-    else if (year_start && year_end) {
+    else if (year_start && year_end
+        // Don't create range for default range (all years):
+        && (year_start !== DEFAULTS_FORM_DATA.year_start || year_end !== DEFAULTS_FORM_DATA.year_end) ) {
         path = createRangePath(year_start, year_end, pathSuffix);
     }
     else {
