@@ -80,7 +80,9 @@ export function createSearchQuery({ year_start, year_end, year, month, day, type
     path = path.replace(/\/\*\/\*/g, "/*");
     let finalQuery = `${path} ${query}`;
     if (finalQuery.length > 250) {
-        throw new Error("Queries can be up to 250 characters in length.");
+        // Silently fail.
+        finalQuery = finalQuery.substring(0, 250);
+        // throw new Error("Queries can be up to 250 characters in length.");
     }
     return finalQuery;
 }
