@@ -3,7 +3,10 @@ import { createSearchQuery } from "../helpers/search";
 describe("createSearchQuery", () => {
   test("search query too long - length exception", () => {
     expect(() => {
-      createSearchQuery({ query: "12345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451" })
+      createSearchQuery({
+        query:
+          "12345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451234567890123456789012345123456789012345678901234512345678901234567890123451"
+      });
     }).toThrowError("Queries can be up to 250 characters in length.");
   });
   test("search query with text", () => {
@@ -43,6 +46,11 @@ describe("createSearchQuery", () => {
       expect(
         createSearchQuery({ year_start: 1900, year_end: 1909, query: "hi" })
       ).toMatchInlineSnapshot(`"path:190x/*.txt hi"`);
+    });
+    test("all", () => {
+      expect(
+        createSearchQuery({ year_start: 1892, year_end: 2014, query: "hi" })
+      ).toMatchInlineSnapshot(`"path:*.txt hi"`);
     });
   });
   describe("date ranges with months / days", () => {
