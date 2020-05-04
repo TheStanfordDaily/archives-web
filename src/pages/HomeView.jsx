@@ -1,6 +1,7 @@
+import CloudsearchWidget from "./components/CloudsearchWidget";
 import React from "react";
-import SearchWidget from "./components/SearchWidget";
 import { STRINGS } from "../helpers/constants";
+import SearchWidget from "./components/SearchWidget";
 
 class HomeView extends React.Component {
   componentDidMount() {
@@ -32,12 +33,13 @@ class HomeView extends React.Component {
             </p>
             <p>
               This collection contains 18,931 issues comprising 143,685 pages
-              and 1,013,592 articles.
+              and 1,213,816 articles.
             </p>
           </div>
           <div className="HomeSection col-12 col-sm-4">
             <h2>Search the collection</h2>
             <SearchWidget />
+            <CloudsearchWidget />
           </div>
           <div className="HomeSection col-12 col-sm-4">
             <h2>Subscribe</h2>

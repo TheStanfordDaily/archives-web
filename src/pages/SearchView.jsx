@@ -1,17 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Form from "react-jsonschema-form";
-import queryString from "query-string";
-import fetch from "cross-fetch";
-import moment from "moment";
-import Pagination from "rc-pagination";
-import localeInfo from "rc-pagination/lib/locale/en_US";
+import "rc-pagination/assets/index.css";
+
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
-import Loading from "./components/Loading";
-import { createSearchQuery } from "../helpers/search";
 import { STRINGS, getDatePath } from "../helpers/constants";
 
-import "rc-pagination/assets/index.css";
+import Form from "react-jsonschema-form";
+import { Link } from "react-router-dom";
+import Loading from "./components/Loading";
+import Pagination from "rc-pagination";
+import React from "react";
+import { createSearchQuery } from "../helpers/search";
+import fetch from "cross-fetch";
+import localeInfo from "rc-pagination/lib/locale/en_US";
+import moment from "moment";
+import queryString from "query-string";
 
 export function sendSearchFromForm(event, history) {
   const searchKeyword = event.target.elements.searchKeyword.value;
@@ -22,7 +23,7 @@ export function sendSearchFromForm(event, history) {
 }
 
 export function getSearchURL(formData) {
-  //console.log(keyword);
+  console.log( STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData));
   return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
