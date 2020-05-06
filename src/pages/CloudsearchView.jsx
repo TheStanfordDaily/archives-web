@@ -290,7 +290,7 @@ class CloudsearchView extends React.Component {
           const matchCount = 100; // idk what this is yet
           const raw_id = hit.id;
           const id = raw_id.substring(raw_id.indexOf(type) + type.length);
-          const date = moment(new Date(hit.fields.date));
+          const date = moment(new Date(hit.fields.publish_date));
           return {
             text: [text],
             title: title,
