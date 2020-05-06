@@ -54,6 +54,10 @@ function roundUpToNearest(i, n) {
     return Math.ceil(i / n) * n;
 }
 
+export function createCloudsearchQuery({query}){
+    return "q=" + query; //for now, basic; assumes query is string.
+}
+
 export function createSearchQuery({ year_start, year_end, year, month, day, type, query }) {
     let pathSuffix = "*.txt";
     if (type) {
