@@ -1,19 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ReactGA from "react-ga";
-import Div100vh from "react-div-100vh";
-import HomeView from "./pages/HomeView";
-import Header from "./pages/Header";
-import TSDNavbar from "./pages/components/TSDNavbar";
-import SearchView from "./pages/SearchView";
+import "./pages/sass/General.scss";
+
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
+import AcknowledgementsView from "./pages/AcknowledgementsView";
 import AllYearView from "./pages/AllYearView";
 import CalendarView from "./pages/CalendarView";
-import PaperView from "./pages/PaperView";
-import AcknowledgementsView from "./pages/AcknowledgementsView";
+import CloudsearchView from "./pages/CloudsearchView";
+import Div100vh from "react-div-100vh";
+import Header from "./pages/Header";
+import HomeView from "./pages/HomeView";
 import NotFound from "./pages/NotFound";
+import PaperView from "./pages/PaperView";
+import React from "react";
+import ReactGA from "react-ga";
 import { STRINGS } from "./helpers/constants";
-
-import "./pages/sass/General.scss";
+import TSDNavbar from "./pages/components/TSDNavbar";
 
 class App extends React.Component {
   constructor(props) {
@@ -47,10 +48,10 @@ class App extends React.Component {
               <Route path={monthRoute} strict exact component={CalendarView} />
               <Route path={dayRoute} strict exact component={PaperView} />
               <Route
-                path={STRINGS.ROUTE_SEARCH_PREFIX}
+                path={STRINGS.ROUTE_CLOUDSEARCH_PREFIX}
                 strict
                 exact
-                component={SearchView}
+                component={CloudsearchView}
               />
               <Route
                 path={STRINGS.ROUTE_ACKNOWLEDGEMENTS}

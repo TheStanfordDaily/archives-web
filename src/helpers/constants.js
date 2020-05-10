@@ -7,12 +7,12 @@ export const STRINGS = {
   SITE_NAME_WITH_DIVIDER: " - Stanford Daily Archives",
   FILE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
   IMAGE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
-  SEARCH_SERVER_URL: "https://api.bitbucket.org/2.0/teams/%7B34f1ce51-8a37-4436-9c9c-dc71cb82f5d6%7D/search/code",
+  CLOUDSEARCH_SEARCH_URL: "https://ehabp6fuc5.execute-api.us-east-1.amazonaws.com/prod",
   SECTION_CONTENT_SERVER_URL: "https://raw.githubusercontent.com/TheStanfordDaily/archives-text/master/",
   ROUTE_ROOT: "/",
   ROUTE_CALENDAR: "/calendar",
   ROUTE_ACKNOWLEDGEMENTS: "/acknowledgements",
-  ROUTE_SEARCH_PREFIX: "/search",
+  ROUTE_CLOUDSEARCH_PREFIX: '/search', 
   GOOGLE_ANALYTICS_TRACKING_ID: "UA-5773957-6",
 }
 

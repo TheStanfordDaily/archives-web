@@ -1,29 +1,29 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Form from "react-jsonschema-form";
-import queryString from "query-string";
-import fetch from "cross-fetch";
-import moment from "moment";
-import Pagination from "rc-pagination";
-import localeInfo from "rc-pagination/lib/locale/en_US";
-import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
-import Loading from "./components/Loading";
-import { createSearchQuery } from "../helpers/search";
-import { STRINGS, getDatePath } from "../helpers/constants";
-
 import "rc-pagination/assets/index.css";
 
-export function sendSearchFromForm(event, history) {
-  const searchKeyword = event.target.elements.searchKeyword.value;
-  if (searchKeyword) {
-    history.push(getSearchURL({ q: searchKeyword }));
-  }
-  event.preventDefault();
-}
+import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
+import { STRINGS, getDatePath } from "../helpers/constants";
 
-export function getSearchURL(formData) {
-  //console.log(keyword);
-  return STRINGS.ROUTE_SEARCH_PREFIX + "?" + queryString.stringify(formData);
+import Form from "react-jsonschema-form";
+import { Link } from "react-router-dom";
+import Loading from "./components/Loading";
+import Pagination from "rc-pagination";
+import React from "react";
+import { createCloudsearchQuery } from "../helpers/search";
+import fetch from "cross-fetch";
+import localeInfo from "rc-pagination/lib/locale/en_US";
+import moment from "moment";
+import queryString from "query-string";
+
+export function sendCloudsearchFromForm(event, history) {
+        const searchKeyword = event.target.elements.searchKeyword.value;
+        if (searchKeyword) {
+            history.push(getCloudsearchURL({ q: searchKeyword }));
+        }
+        event.preventDefault();
+  }
+
+export function getCloudsearchURL(formData) {
+    return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
 export const DEFAULTS_FORM_DATA = {
@@ -34,7 +34,7 @@ export const DEFAULTS_FORM_DATA = {
   pagelen: 20
 };
 
-class SearchView extends React.Component {
+class CloudsearchView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -156,8 +156,8 @@ class SearchView extends React.Component {
           total={
             Math.min(
               this.state.searchResultsSize,
-              1000
-            ) /* BitBucket cannot fetch results past result number 1000. */
+              9980
+            ) /* cloudsearch needs cursor to fetch results past result number 10000. (todo: implement cursor lol) */
           }
           showTotal={(total, range) =>
             `${range[0]} - ${range[1]} of ${total} results`
@@ -165,7 +165,7 @@ class SearchView extends React.Component {
           onChange={(current, pageSize) => {
             let newFormData = this.state.formData;
             newFormData.page = current;
-            this.props.history.push(getSearchURL(newFormData));
+            this.props.history.push(getCloudsearchURL(newFormData));
           }}
         />
         {/* TODO: add number per page with `select` (10/20/50/100/500) and a `checkbox` to display/hide article content here */}
@@ -184,7 +184,7 @@ class SearchView extends React.Component {
             onSubmit={e => {
               let formData = e.formData;
               formData.page = 1;  // Reset the results to the first page.
-              this.props.history.push(getSearchURL(formData));
+              this.props.history.push(getCloudsearchURL(formData));
             }}
           >
             <button
@@ -258,93 +258,55 @@ class SearchView extends React.Component {
     pageNumber = 1,
     dateFrom,
     dateTo
-  }) {
-    const searchQuery = createSearchQuery({ query: q, year_start, year_end });
-    console.log(searchQuery);
+  }) {      
+    const searchQuery = createCloudsearchQuery({ 
+      q: q, 
+      resultsPerPage: resultsPerPage, 
+      pageNumber: pageNumber, 
+      highlight: 'article_text',
+      year_start: year_start,
+      year_end: year_end,
+    });
 
-    const serverSearchParameters = {
-      search_query: searchQuery,
-      pagelen: resultsPerPage,
-      page: pageNumber
-    };
-
-    // https://developer.atlassian.com/bitbucket/api/2/reference/resource/teams/%7Busername%7D/search/code
     const serverSearchURL =
-      STRINGS.SEARCH_SERVER_URL +
+      STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
-      queryString.stringify(serverSearchParameters);
-    console.log(serverSearchURL);
+      searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
     fetch(serverSearchURL)
       .then(e => e.json())
       .then(e => {
         // TODO: handle error
-        console.log(e);
-        const resultsSize = e.size;
-        let results = [];
-        for (let eachResultSection of e.values) {
-          const matchCount = eachResultSection.content_match_count;
-          const filepath = eachResultSection.file.path;
-          const filepathSplited = filepath.split("/");
-          //console.log(filepathSplited);
-          if (filepathSplited.length !== 6) {
-            console.warn(
-              "filepathSplited = [" +
-                filepathSplited.toString() +
-                "] does not have exactly 6 elements! Ignoring it..."
-            );
-            continue;
+        const hits = e.hits.hit;
+        const resultsSize = e.hits.found - resultsPerPage;
+        const results = hits.map(function(hit){
+          const replace_text = {
+            "\\.\\.\\.":'...<br><br>...',
+            "<em>":"<mark>",
+            "</em>":"</mark>"
           }
-          const year = Number(filepathSplited[2].slice(0, -1));
-          const month = Number(filepathSplited[3].slice(0, -1));
-          const day = Number(filepathSplited[4].slice(0, -1));
-          const date = moment(new Date(year, month - 1, day));
-          //console.log(date);
-          const rawFilename = filepathSplited[5];
-          const rawFilenameSplited = rawFilename.split(".");
-          //console.log(rawFilenameSplited);
-          if (rawFilenameSplited.length !== 4) {
-            console.warn(
-              "rawFilenameSplited = [" +
-                rawFilenameSplited.toString() +
-                "] does not have exactly 4 elements! Ignoring it..."
-            );
-            continue;
-          }
-          const id = rawFilenameSplited[0];
-          // https://stackoverflow.com/a/25840184/2603230 We are using UTF-8 for base64.
-          const title = new Buffer(rawFilenameSplited[1], "base64").toString();
-          const type = rawFilenameSplited[2];
-          //console.log(title);
-
-          let text = [];
-          for (let eachMatches of eachResultSection.content_matches) {
-            let thisLine = "&hellip; ";
-            for (let eachSubline of eachMatches.lines) {
-              for (let eachSegments of eachSubline.segments) {
-                if (eachSegments.match) {
-                  thisLine += "<mark>";
-                }
-                thisLine += eachSegments.text;
-                if (eachSegments.match) {
-                  thisLine += "</mark>";
-                }
-              }
-              thisLine = thisLine.trim() + " ";
+          var RE = new RegExp(Object.keys(replace_text).join("|"), "gi"); 
+          const highlighted_text = (' ' + hit.highlights.article_text).slice(1).replace(RE, function(matched){
+            if(matched === '...'){
+              return replace_text['\\.\\.\\.'];
             }
-            thisLine = thisLine.trim() + " &hellip;";
-            text.push(thisLine);
-          }
-          //console.log(text);
-          results.push({
-            date: date,
-            id: id,
-            title: title,
-            matchCount: matchCount,
-            type: type,
-            text: text
+            return replace_text[matched];
           });
-        }
-        console.log(results);
+          const text = '...' + highlighted_text + '...';
+          const title = hit.fields.title;
+          const type = hit.fields.article_type;
+          const matchCount = 100; // idk what this is yet
+          const raw_id = hit.id;
+          const id = raw_id.substring(raw_id.indexOf(type) + type.length);
+          const date = moment(new Date(hit.fields.publish_date));
+          return {
+            text: [text],
+            title: title,
+            type: type,
+            matchCount: matchCount,
+            id: id,
+            date: date
+          };
+        });
         // TODO: sort results by `matchCount`?
         this.setState({
           searchResults: results,
@@ -354,5 +316,5 @@ class SearchView extends React.Component {
       });
   }
 }
-
-export default SearchView;
+ 
+export default CloudsearchView;
