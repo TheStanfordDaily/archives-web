@@ -1,9 +1,14 @@
+import { DEFAULTS_FORM_DATA, getCloudsearchURL } from '../../helpers/search';
 import { IoIosPaper, IoMdMegaphone } from 'react-icons/io';
 
 import { Link } from 'react-router-dom';
 import React from 'react';
 
 const SearchResult = ({eachResult, getDatePath}) => {
+    let author_data = DEFAULTS_FORM_DATA;
+    if(eachResult.author){
+        author_data.author = eachResult.author;
+    }
     return (
         <div className="EachResult">
             <h4 className="EachResultTitle">
@@ -28,7 +33,7 @@ const SearchResult = ({eachResult, getDatePath}) => {
             {eachResult.subtitle &&
                 <h5 className="EachResultSubtitle">{eachResult.subtitle}</h5>}
             {eachResult.author &&
-                <h5 className="EachResultAuthor">By {eachResult.author.replace(/^\s+|\s+$/g, '')}{eachResult.author_title && `, ${eachResult.author_title}`}</h5>}
+                <h5 className="EachResultAuthor">By <Link to={getCloudsearchURL(author_data)}>{eachResult.author.replace(/^\s+|\s+$/g, '')}</Link>{eachResult.author_title && `, ${eachResult.author_title}`}</h5>}
             <div className="EachResultTexts">
                 {eachResult.text.map((eachText, textIndex) => (
                 <p
