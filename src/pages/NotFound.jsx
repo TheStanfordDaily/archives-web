@@ -1,5 +1,5 @@
+import CloudsearchWidget from "./components/CloudsearchWidget";
 import React from "react";
-import SearchWidget from "./components/SearchWidget";
 import { STRINGS } from "../helpers/constants";
 
 class NotFound extends React.Component {
@@ -17,7 +17,7 @@ class NotFound extends React.Component {
           We’re sorry! It looks like nothing was found at this location. Maybe
           try searching for it?
         </p>
-        <SearchWidget />
+        <CloudsearchWidget />
       </div>
     );
   }

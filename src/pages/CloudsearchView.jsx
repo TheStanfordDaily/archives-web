@@ -277,7 +277,7 @@ class CloudsearchView extends React.Component {
       .then(e => {
         // TODO: handle error
         const hits = e.hits.hit;
-        const resultsSize = e.hits.found;
+        const resultsSize = e.hits.found - resultsPerPage;
         const results = hits.map(function(hit){
           const replace_text = {
             "\\.\\.\\.":'...<br><br>...',

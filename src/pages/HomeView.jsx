@@ -1,7 +1,6 @@
 import CloudsearchWidget from "./components/CloudsearchWidget";
 import React from "react";
 import { STRINGS } from "../helpers/constants";
-import SearchWidget from "./components/SearchWidget";
 
 class HomeView extends React.Component {
   componentDidMount() {
@@ -38,7 +37,6 @@ class HomeView extends React.Component {
           </div>
           <div className="HomeSection col-12 col-sm-4">
             <h2>Search the collection</h2>
-            <SearchWidget />
             <CloudsearchWidget />
           </div>
           <div className="HomeSection col-12 col-sm-4">

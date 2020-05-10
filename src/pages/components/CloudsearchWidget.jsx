@@ -13,7 +13,7 @@ const CloudsearchWidget = ({history}) => {
                     type="text"
                     className="form-control"
                     name="searchKeyword"
-                    placeholder="Cloudsearch&hellip;"
+                    placeholder="Search&hellip;"
                     required
                 />
                 <div className="input-group-append">

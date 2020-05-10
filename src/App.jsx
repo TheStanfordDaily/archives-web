@@ -14,7 +14,6 @@ import PaperView from "./pages/PaperView";
 import React from "react";
 import ReactGA from "react-ga";
 import { STRINGS } from "./helpers/constants";
-import SearchView from "./pages/SearchView";
 import TSDNavbar from "./pages/components/TSDNavbar";
 
 class App extends React.Component {
@@ -48,12 +47,6 @@ class App extends React.Component {
               />
               <Route path={monthRoute} strict exact component={CalendarView} />
               <Route path={dayRoute} strict exact component={PaperView} />
-              <Route
-                path={STRINGS.ROUTE_SEARCH_PREFIX}
-                strict
-                exact
-                component={SearchView}
-              />
               <Route
                 path={STRINGS.ROUTE_CLOUDSEARCH_PREFIX}
                 strict
