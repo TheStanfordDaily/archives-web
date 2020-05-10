@@ -1,6 +1,7 @@
-import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
+
+import React from "react";
 import ReactGA from "react-ga";
 import { STRINGS } from "../../helpers/constants";
 
@@ -29,7 +30,7 @@ class TSDNavbar extends React.Component {
         Acknowledgements: STRINGS.ROUTE_ACKNOWLEDGEMENTS
       },
       right: {
-        Search: STRINGS.ROUTE_SEARCH_PREFIX
+        Search: STRINGS.ROUTE_CLOUDSEARCH_PREFIX
       }
     };
     let navLinks = {};
@@ -37,7 +38,7 @@ class TSDNavbar extends React.Component {
       navLinks[navType] = [];
       for (let navItemName in navItems[navType]) {
         const navItemPathname = navItems[navType][navItemName];
-
+        console.log("pathname:", navItemPathname)
         let classNames = "nav-link";
         if (this.props.location.pathname === navItemPathname) {
           classNames += " active";
