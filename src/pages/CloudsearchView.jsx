@@ -1,7 +1,7 @@
 import "rc-pagination/assets/index.css";
 
+import { DEFAULTS_FORM_DATA, createCloudsearchQuery, getCloudsearchURL } from "../helpers/search";
 import { STRINGS, getDatePath } from "../helpers/constants";
-import { createCloudsearchQuery, getCloudsearchURL } from "../helpers/search";
 
 import Form from "react-jsonschema-form";
 import Loading from "./components/Loading";
@@ -12,14 +12,6 @@ import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
 import queryString from "query-string";
-
-export const DEFAULTS_FORM_DATA = {
-  q: "",
-  year_start: 1892,
-  year_end: 2014,
-  page: 1,
-  pagelen: 20
-};
 
 class CloudsearchView extends React.Component {
   constructor(props) {
@@ -46,7 +38,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { q, year_start, year_end, page, pagelen } = queryString.parse(
+    let { q, author, year_start, year_end, page, pagelen } = queryString.parse(
       window.location.search
     );
     // https://stackoverflow.com/a/4564199/2603230
@@ -61,11 +53,12 @@ class CloudsearchView extends React.Component {
         year_start,
         year_end,
         page,
-        pagelen
+        pagelen,
+        author,
       }
     });
 
-    if (q) {
+    if (q || author || (year_start && year_end)) { // probably should just allow any
       document.title =
         "Search results for " + q + STRINGS.SITE_NAME_WITH_DIVIDER;
       // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
@@ -74,7 +67,8 @@ class CloudsearchView extends React.Component {
         year_start,
         year_end,
         resultsPerPage: pagelen,
-        pageNumber: page
+        pageNumber: page,
+        author
       });
     } else {
       document.title = "Search" + STRINGS.SITE_NAME_WITH_DIVIDER;
@@ -87,10 +81,10 @@ class CloudsearchView extends React.Component {
 
     const schema = {
       type: "object",
-      required: ["q"],
+      required: [],
       properties: {
         q: {
-          title: "Search",
+          title: "Keyword",
           type: "string",
           default: DEFAULTS_FORM_DATA.q
         },
@@ -105,6 +99,11 @@ class CloudsearchView extends React.Component {
           type: "number",
           enum: range,
           default: DEFAULTS_FORM_DATA.year_end
+        },
+        author: {
+          title: "Author",
+          type: "string",
+          default: DEFAULTS_FORM_DATA.author
         },
         /** Hidden properties **/
         page: {
@@ -123,14 +122,17 @@ class CloudsearchView extends React.Component {
 
     const uiSchema = {
       q: {
-        "ui:placeholder": "Enter keyword here"
+        "ui:placeholder": "Leave empty to search all"
+      },
+      author: {
+        "ui:placeholder": "Leave empty to search all"
       },
       page: {
         "ui:widget": "hidden"
       },
       pagelen: {
         "ui:widget": "hidden"
-      }
+      },
     };
 
     const pagination = (
@@ -166,7 +168,6 @@ class CloudsearchView extends React.Component {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            idPrefix="search"
             formData={this.state.formData}
             onSubmit={e => {
               let formData = e.formData;
@@ -209,12 +210,9 @@ class CloudsearchView extends React.Component {
     q,
     year_start,
     year_end,
-    searchWithin,
-    searchSummaries,
     resultsPerPage = 20,
     pageNumber = 1,
-    dateFrom,
-    dateTo
+    author
   }) {      
     const searchQuery = createCloudsearchQuery({ 
       q: q, 
@@ -223,13 +221,20 @@ class CloudsearchView extends React.Component {
       highlight: 'article_text',
       year_start: year_start,
       year_end: year_end,
+      author: author,
     });
+
+    if(!searchQuery){
+      alert("error in search query!");
+      this.props.history.push(getCloudsearchURL(DEFAULTS_FORM_DATA));
+      return;
+    }
 
     const serverSearchURL =
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
       searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
-    fetch(serverSearchURL)
+      fetch(serverSearchURL)
       .then(e => e.json())
       .then(e => {
         // TODO: handle error
@@ -248,7 +253,6 @@ class CloudsearchView extends React.Component {
             }
             return replace_text[matched];
           });
-          console.log(e);
           const text = '...' + highlighted_text + '...';
           const title = hit.fields.title;
           const subtitle = hit.fields.subtitle;

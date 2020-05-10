@@ -1,40 +1,51 @@
 import { STRINGS } from "../helpers/constants";
+import lucene from "lucene"
 import queryString from "query-string";
 
+export const DEFAULTS_FORM_DATA = {
+    q: "",
+    year_start: 1892,
+    year_end: 2014,
+    page: 1,
+    pagelen: 20,
+    author: undefined,
+  };
+  
+function add_and_lucene_string(lucene_string, key, val){
+    return ` ${lucene_string.length > 0 ? 'AND' : ''} ${key}:${val}`; 
+}
+  
 export function createCloudsearchQuery(query){
-    let query_string = "q=" + query.q;
+    try {
+        let query_string = "q.parser=lucene&q=";
+        let lucene_string = "";
+        if(query.q){
+            lucene_string += add_and_lucene_string(lucene_string, 'article_text', query.q);
+        }
+        if(query.author){
+            lucene_string += add_and_lucene_string(lucene_string, 'author', query.author);
+        }
+        if(query.year_start && query.year_end){
+            lucene_string += add_and_lucene_string(lucene_string, 'publish_date', `[${query.year_start}-01-01T12:00:00Z TO ${query.year_end+1}-01-02T12:00:00Z]`);
+        }
+        const ast = lucene.parse(lucene_string);
+        let lucene_query = lucene.toString(ast);
+        query_string += lucene_query;
 
-    // consider using structured search 
-    // note: you can view the amazon generated queries in cloudsearch console's example search by clicking on: "(view raw: JSON or XML)""
-    // note: yes, you are allowed to have multiple fq's in a query string. It will do an "or" and not an "and". but for consistency, we will only have 1.
- 
-    let fq= "&fq=";
+        if(query.resultsPerPage){
+            query_string += `&size=${query.resultsPerPage}`;
+        }
+        if(query.pageNumber){
+            query_string += `&start=${query.resultsPerPage * query.pageNumber}`;
+        }
+        if(query.highlight === 'article_text'){
+            query_string += `&highlight.article_text=%7Bformat:'html',max_phrases:5%7D`; //this nailed me for an hour: must encode '{' and '}'
+        }
 
-    if(query.resultsPerPage){
-        query_string += `&size=${query.resultsPerPage}`;
+        return query_string;
+    } catch {
+        return undefined;
     }
-    if(query.pageNumber){
-        query_string += `&start=${query.resultsPerPage * query.pageNumber}`;
-    }
-    if(query.year_start && query.year_end){
-        fq += `publish_date:['${query.year_start}-01-01T12:00:00Z','${query.year_end+1}-01-02T12:00:00Z']`
-    }
-    
-    // ugh: can't figure out the api gateway stuff for highlights.
-    if(query.highlight === 'article_text'){
-        query_string += `&highlight.article_text=%7Bformat:'html',max_phrases:5%7D`; //this nailed me for an hour: must encode '{' and '}'
-    }
-
-    // todo: write legit logic for fq's. not sure the best way to do this yet. Not needed for basic searches though, so can put to later.
-    // maybe: we can assume that for any single fq, all things will be anded together,
-    // and if we want to do an or, then we create append a new fq.
-
-    // not supported yet.
-    // if(query.articleType){
-    //     query_string += `&fq=article_type:${query.articleType}`;
-    // }
-    
-    return query_string + fq;
 }
 
 export function getCloudsearchURL(formData) {
@@ -48,3 +59,4 @@ export function sendCloudsearchFromForm(event, history) {
     }
     event.preventDefault();
 }
+

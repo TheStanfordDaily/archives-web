@@ -13,6 +13,7 @@
     "cross-fetch": "^3.0.2",
     "interactjs": "^1.4.3",
     "jsdom": "^16.0.1",
+    "lucene": "^2.1.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "openseadragon": "^2.4.0",
