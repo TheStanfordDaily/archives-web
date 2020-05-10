@@ -157,7 +157,7 @@ class CloudsearchView extends React.Component {
           total={
             Math.min(
               this.state.searchResultsSize,
-              10000
+              9980
             ) /* cloudsearch needs cursor to fetch results past result number 10000. (todo: implement cursor lol) */
           }
           showTotal={(total, range) =>
@@ -260,8 +260,23 @@ class CloudsearchView extends React.Component {
     dateFrom,
     dateTo
   }) {
-    const searchQuery = createCloudsearchQuery({ q: q, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
-    console.log(searchQuery, resultsPerPage, pageNumber);
+    console.log(    year_start,
+      year_end,
+      searchWithin,
+      searchSummaries,
+      resultsPerPage = 20,
+      pageNumber = 1,
+      dateFrom,
+      dateTo);
+      
+    const searchQuery = createCloudsearchQuery({ 
+      q: q, 
+      resultsPerPage: resultsPerPage, 
+      pageNumber: pageNumber, 
+      highlight: 'article_text',
+      year_start: year_start,
+      year_end: year_end,
+    });
 
     const serverSearchURL =
       STRINGS.CLOUDSEARCH_SEARCH_URL +
@@ -276,7 +291,7 @@ class CloudsearchView extends React.Component {
         const hits = e.hits.hit;
         const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
-          const text = hit.fields.article_text;
+          const text = hit.fields.article_text.substring(0, 500); // todo: find section of article which is most relevant to search and subtring from that.
           const title = hit.fields.title;
           const type = hit.fields.article_type;
           const matchCount = 100; // idk what this is yet
@@ -292,7 +307,6 @@ class CloudsearchView extends React.Component {
             date: date
           };
         });
-        console.log(results);
         // TODO: sort results by `matchCount`?
         this.setState({
           searchResults: results,
