@@ -136,6 +136,17 @@
     margin-left: auto;
   }
 }
+.EachResultSubtitle {
+  // margin-left: 30px; 
+  color: $color__clay;
+  vertical-align: middle;
+}
+.EachResultAuthor {
+  vertical-align: middle;
+  .EarchResultAuthorTitle {
+
+  }
+}
 .EachResultEachText:last-of-type {
   margin-bottom: 0;
 }

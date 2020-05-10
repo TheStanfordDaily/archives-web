@@ -249,7 +249,7 @@ class CloudsearchView extends React.Component {
         const resultsSize = e.hits.found - resultsPerPage;
         const results = hits.map(function(hit){
           const replace_text = {
-            "\\.\\.\\.":'...<br><br>...',
+            "\\.\\.\\.":'...<br>...',
             "<em>":"<mark>",
             "</em>":"</mark>"
           }
@@ -260,8 +260,12 @@ class CloudsearchView extends React.Component {
             }
             return replace_text[matched];
           });
+          console.log(e);
           const text = '...' + highlighted_text + '...';
           const title = hit.fields.title;
+          const subtitle = hit.fields.subtitle;
+          const author = hit.fields.author;
+          const author_title = hit.fields.author_title;
           const type = hit.fields.article_type;
           const matchCount = 100; // idk what this is yet
           const raw_id = hit.id;
@@ -269,7 +273,10 @@ class CloudsearchView extends React.Component {
           const date = moment(new Date(hit.fields.publish_date));
           return {
             text: [text],
+            subtitle: subtitle,
             title: title,
+            author: author,
+            author_title: author_title,
             type: type,
             matchCount: matchCount,
             id: id,
