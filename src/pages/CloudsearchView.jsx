@@ -1,29 +1,17 @@
 import "rc-pagination/assets/index.css";
 
 import { STRINGS, getDatePath } from "../helpers/constants";
+import { createCloudsearchQuery, getCloudsearchURL } from "../helpers/search";
 
 import Form from "react-jsonschema-form";
 import Loading from "./components/Loading";
 import Pagination from "rc-pagination";
 import React from "react";
 import SearchResults from "./components/SearchResults";
-import { createCloudsearchQuery } from "../helpers/search";
 import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
 import queryString from "query-string";
-
-export function sendCloudsearchFromForm(event, history) {
-        const searchKeyword = event.target.elements.searchKeyword.value;
-        if (searchKeyword) {
-            history.push(getCloudsearchURL({ q: searchKeyword }));
-        }
-        event.preventDefault();
-  }
-
-export function getCloudsearchURL(formData) {
-    return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
-}
 
 export const DEFAULTS_FORM_DATA = {
   q: "",

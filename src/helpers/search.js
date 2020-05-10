@@ -1,3 +1,6 @@
+import { STRINGS } from "../helpers/constants";
+import queryString from "query-string";
+
 export function createCloudsearchQuery(query){
     let query_string = "q=" + query.q;
 
@@ -32,4 +35,16 @@ export function createCloudsearchQuery(query){
     // }
     
     return query_string + fq;
+}
+
+export function getCloudsearchURL(formData) {
+    return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
+}
+
+export function sendCloudsearchFromForm(event, history) {
+    const searchKeyword = event.target.elements.searchKeyword.value;
+    if (searchKeyword) {
+        history.push(getCloudsearchURL({ q: searchKeyword }));
+    }
+    event.preventDefault();
 }

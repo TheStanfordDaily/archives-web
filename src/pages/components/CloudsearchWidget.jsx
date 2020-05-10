@@ -1,6 +1,6 @@
 import { IoIosSearch } from 'react-icons/io';
 import React from 'react';
-import { sendCloudsearchFromForm } from '../CloudsearchView';
+import { sendCloudsearchFromForm } from '../../helpers/search';
 import { withRouter } from "react-router-dom";
 
 const CloudsearchWidget = ({history}) => {
