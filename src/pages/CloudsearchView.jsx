@@ -280,7 +280,7 @@ class CloudsearchView extends React.Component {
         const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
           const replace_text = {
-            "\\.\\.\\.":'..."<br><br>"...',
+            "\\.\\.\\.":'...<br><br>...',
             "<em>":"<mark>",
             "</em>":"</mark>"
           }
@@ -291,7 +291,7 @@ class CloudsearchView extends React.Component {
             }
             return replace_text[matched];
           });
-          const text = '"' + highlighted_text + '"';
+          const text = '...' + highlighted_text + '...';
           const title = hit.fields.title;
           const type = hit.fields.article_type;
           const matchCount = 100; // idk what this is yet
