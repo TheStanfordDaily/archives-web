@@ -21,8 +21,6 @@ class TSDNavbar extends React.Component {
   }
 
   render() {
-    console.log(this.props.location);
-
     let navItems = {
       left: {
         Home: STRINGS.ROUTE_ROOT,
@@ -38,7 +36,6 @@ class TSDNavbar extends React.Component {
       navLinks[navType] = [];
       for (let navItemName in navItems[navType]) {
         const navItemPathname = navItems[navType][navItemName];
-        console.log("pathname:", navItemPathname)
         let classNames = "nav-link";
         if (this.props.location.pathname === navItemPathname) {
           classNames += " active";

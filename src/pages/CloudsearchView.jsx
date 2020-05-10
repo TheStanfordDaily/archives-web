@@ -1,13 +1,12 @@
 import "rc-pagination/assets/index.css";
 
-import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import { STRINGS, getDatePath } from "../helpers/constants";
 
 import Form from "react-jsonschema-form";
-import { Link } from "react-router-dom";
 import Loading from "./components/Loading";
 import Pagination from "rc-pagination";
 import React from "react";
+import SearchResults from "./components/SearchResults";
 import { createCloudsearchQuery } from "../helpers/search";
 import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
@@ -205,38 +204,8 @@ class CloudsearchView extends React.Component {
           ) : this.state.searchResults.length ? (
             <div className="SearchResultAllResultsContent">
               <div className="EachResult SearchPagination">{pagination}</div>
-              {this.state.searchResults.map((eachResult, index) => (
-                <div className="EachResult" key={index}>
-                  <h4 className="EachResultTitle">
-                    {eachResult.type === "advertisement" ? (
-                      <IoMdMegaphone />
-                    ) : (
-                      <IoIosPaper />
-                    )}
-                    <span>
-                      <Link
-                        to={getDatePath(eachResult.date, {
-                          section: eachResult.id
-                        })}
-                      >
-                        {eachResult.title}
-                      </Link>
-                    </span>
-                    <span className="EachResultDate">
-                      {eachResult.date.format("MMMM DD, YYYY")}
-                    </span>
-                  </h4>
-                  <div className="EachResultTexts">
-                    {eachResult.text.map((eachText, textIndex) => (
-                      <p
-                        className="EachResultEachText"
-                        key={textIndex}
-                        dangerouslySetInnerHTML={{ __html: eachText }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
+              <SearchResults searchResults={this.state.searchResults} getDatePath={getDatePath} />
+              
               {/* TODO: add a notice with `EachResult` class here to notice the user that there query has return >1000 results and only first 1000 can be shown and please limit query */}
               <div className="EachResult SearchPagination">{pagination}</div>
             </div>
