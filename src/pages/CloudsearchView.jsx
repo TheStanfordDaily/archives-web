@@ -38,7 +38,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { q, author, year_start, year_end, page, pagelen } = queryString.parse(
+    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen } = queryString.parse(
       window.location.search
     );
     // https://stackoverflow.com/a/4564199/2603230
@@ -46,34 +46,37 @@ class CloudsearchView extends React.Component {
     year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
     page = Number(page) || DEFAULTS_FORM_DATA.page;
     pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
+    article_type_article = article_type_article ? article_type_article === 'true' : DEFAULTS_FORM_DATA.article_type_article;
+    article_type_advertisement = article_type_advertisement ? article_type_advertisement === 'true' : DEFAULTS_FORM_DATA.article_type_advertisement;
     this.setState({
       loading: true,
       formData: {
-        q,
+        article_text,
         year_start,
         year_end,
         page,
         pagelen,
         author,
+        title,
+        article_type_article,
+        article_type_advertisement,
       }
     });
 
-    if (q || author || (year_start && year_end)) { // probably should just allow any
-      document.title =
-        "Search results for " + q + STRINGS.SITE_NAME_WITH_DIVIDER;
-      // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      this.searchFor({
-        q,
-        year_start,
-        year_end,
-        resultsPerPage: pagelen,
-        pageNumber: page,
-        author
-      });
-    } else {
-      document.title = "Search" + STRINGS.SITE_NAME_WITH_DIVIDER;
-      this.setState({ loading: false });
-    }
+    document.title =
+      "Search results for " + article_text + STRINGS.SITE_NAME_WITH_DIVIDER;
+    // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
+    this.searchFor({
+      article_text,
+      year_start,
+      year_end,
+      resultsPerPage: pagelen,
+      pageNumber: page,
+      author,
+      title,
+      article_type_article,
+      article_type_advertisement,
+    });
   }
 
   render() {
@@ -83,10 +86,20 @@ class CloudsearchView extends React.Component {
       type: "object",
       required: [],
       properties: {
-        q: {
-          title: "Keyword",
+        article_text: {
+          title: "Article Text",
           type: "string",
-          default: DEFAULTS_FORM_DATA.q
+          default: DEFAULTS_FORM_DATA.article_text
+        },
+        title: {
+          title: "Article Title",
+          type: "string",
+          default: DEFAULTS_FORM_DATA.title
+        },
+        author: {
+          title: "Author",
+          type: "string",
+          default: DEFAULTS_FORM_DATA.author
         },
         year_start: {
           title: "From",
@@ -100,10 +113,15 @@ class CloudsearchView extends React.Component {
           enum: range,
           default: DEFAULTS_FORM_DATA.year_end
         },
-        author: {
-          title: "Author",
-          type: "string",
-          default: DEFAULTS_FORM_DATA.author
+        article_type_article: {
+          title: " Articles",
+          type: "boolean",
+          default: DEFAULTS_FORM_DATA.article_type_article,
+        },
+        article_type_advertisement: {
+          title: " Advertisements",
+          type: "boolean",
+          default: DEFAULTS_FORM_DATA.article_type_advertisement,
         },
         /** Hidden properties **/
         page: {
@@ -121,10 +139,13 @@ class CloudsearchView extends React.Component {
     };
 
     const uiSchema = {
-      q: {
+      article_text: {
         "ui:placeholder": "Leave empty to search all"
       },
       author: {
+        "ui:placeholder": "Leave empty to search all"
+      },
+      title: {
         "ui:placeholder": "Leave empty to search all"
       },
       page: {
@@ -207,21 +228,27 @@ class CloudsearchView extends React.Component {
   }
 
   searchFor({
-    q,
+    article_text,
     year_start,
     year_end,
     resultsPerPage = 20,
     pageNumber = 1,
-    author
+    author,
+    title,
+    article_type_article,
+    article_type_advertisement,
   }) {      
     const searchQuery = createCloudsearchQuery({ 
-      q: q, 
+      article_text: article_text, 
       resultsPerPage: resultsPerPage, 
       pageNumber: pageNumber, 
       highlight: 'article_text',
       year_start: year_start,
       year_end: year_end,
       author: author,
+      title: title,
+      article_type_article: article_type_article,
+      article_type_advertisement: article_type_advertisement,
     });
 
     if(!searchQuery){

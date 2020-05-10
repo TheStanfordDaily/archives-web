@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 
 const SearchResult = ({eachResult, getDatePath}) => {
-    let author_data = DEFAULTS_FORM_DATA;
+    let author_data = {...DEFAULTS_FORM_DATA};
     if(eachResult.author){
         author_data.author = eachResult.author;
     }
