@@ -23,7 +23,6 @@ export function sendCloudsearchFromForm(event, history) {
   }
 
 export function getCloudsearchURL(formData) {
-    // console.log(STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData));
     return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
@@ -259,16 +258,7 @@ class CloudsearchView extends React.Component {
     pageNumber = 1,
     dateFrom,
     dateTo
-  }) {
-    console.log(    year_start,
-      year_end,
-      searchWithin,
-      searchSummaries,
-      resultsPerPage = 20,
-      pageNumber = 1,
-      dateFrom,
-      dateTo);
-      
+  }) {      
     const searchQuery = createCloudsearchQuery({ 
       q: q, 
       resultsPerPage: resultsPerPage, 
@@ -282,16 +272,26 @@ class CloudsearchView extends React.Component {
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
       searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
-    console.log(serverSearchURL);
     fetch(serverSearchURL)
       .then(e => e.json())
       .then(e => {
         // TODO: handle error
-        console.log(e);
         const hits = e.hits.hit;
         const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
-          const text = hit.fields.article_text.substring(0, 500); // todo: find section of article which is most relevant to search and subtring from that.
+          const replace_text = {
+            "\\.\\.\\.":'..."<br><br>"...',
+            "<em>":"<mark>",
+            "</em>":"</mark>"
+          }
+          var RE = new RegExp(Object.keys(replace_text).join("|"), "gi"); 
+          const highlighted_text = (' ' + hit.highlights.article_text).slice(1).replace(RE, function(matched){
+            if(matched === '...'){
+              return replace_text['\\.\\.\\.'];
+            }
+            return replace_text[matched];
+          });
+          const text = '"' + highlighted_text + '"';
           const title = hit.fields.title;
           const type = hit.fields.article_type;
           const matchCount = 100; // idk what this is yet
