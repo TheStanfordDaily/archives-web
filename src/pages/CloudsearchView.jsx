@@ -2,13 +2,13 @@ import "rc-pagination/assets/index.css";
 
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
 import { STRINGS, getDatePath } from "../helpers/constants";
-import { createCloudsearchQuery, createSearchQuery } from "../helpers/search";
 
 import Form from "react-jsonschema-form";
 import { Link } from "react-router-dom";
 import Loading from "./components/Loading";
 import Pagination from "rc-pagination";
 import React from "react";
+import { createCloudsearchQuery } from "../helpers/search";
 import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
@@ -26,14 +26,6 @@ export function getCloudsearchURL(formData) {
     // console.log(STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData));
     return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
-
-// const CloudsearchView = () => {
-//     return (
-//         <div>
-//             Cloudsearch View
-//         </div>
-//       );
-// }
 
 export const DEFAULTS_FORM_DATA = {
   q: "",
@@ -165,8 +157,8 @@ class CloudsearchView extends React.Component {
           total={
             Math.min(
               this.state.searchResultsSize,
-              1000
-            ) /* BitBucket cannot fetch results past result number 1000. */
+              10000
+            ) /* cloudsearch needs cursor to fetch results past result number 10000. (todo: implement cursor lol) */
           }
           showTotal={(total, range) =>
             `${range[0]} - ${range[1]} of ${total} results`
@@ -268,13 +260,13 @@ class CloudsearchView extends React.Component {
     dateFrom,
     dateTo
   }) {
-    const searchQuery = createCloudsearchQuery({ query: q });
-    console.log(searchQuery);
+    const searchQuery = createCloudsearchQuery({ q: q, resultsPerPage: resultsPerPage, pageNumber: pageNumber });
+    console.log(searchQuery, resultsPerPage, pageNumber);
 
     const serverSearchURL =
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
-      searchQuery;
+      searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
     console.log(serverSearchURL);
     fetch(serverSearchURL)
       .then(e => e.json())
@@ -282,7 +274,7 @@ class CloudsearchView extends React.Component {
         // TODO: handle error
         console.log(e);
         const hits = e.hits.hit;
-        const searchResultsSize = hits.length;
+        const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
           const text = hit.fields.article_text;
           const title = hit.fields.title;
@@ -304,7 +296,7 @@ class CloudsearchView extends React.Component {
         // TODO: sort results by `matchCount`?
         this.setState({
           searchResults: results,
-          searchResultsSize: searchResultsSize,
+          searchResultsSize: resultsSize,
           loading: false
         });
       });

@@ -54,8 +54,17 @@ function roundUpToNearest(i, n) {
     return Math.ceil(i / n) * n;
 }
 
-export function createCloudsearchQuery({query}){
-    return "q=" + query; //for now, basic; assumes query is string.
+export function createCloudsearchQuery(query){
+    console.log("query", query);
+    let query_string = "q=" + query.q;
+    if(query.resultsPerPage){
+        query_string += `&size=${query.resultsPerPage}`;
+    }
+    if(query.pageNumber){
+        query_string += `&start=${query.resultsPerPage * query.pageNumber}`;
+    }
+    
+    return query_string
 }
 
 export function createSearchQuery({ year_start, year_end, year, month, day, type, query }) {
