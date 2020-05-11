@@ -64,15 +64,17 @@ export function createCloudsearchQuery(query){
             query_string += `&size=${query.resultsPerPage}`;
         }
         if(query.pageNumber){
+            if(!query.resultsPerPage){
+                throw new Error("must have results per page if specifying page number");
+            }
             query_string += `&start=${query.resultsPerPage * query.pageNumber}`;
         }
         if(query.highlight === 'article_text'){
             query_string += `&highlight.article_text=%7Bformat:'html',max_phrases:5%7D`; //this nailed me for an hour: must encode '{' and '}'
         }
-
         console.log(query_string);
         return query_string;
-    } catch {
+    } catch(error){
         return undefined;
     }
 }
