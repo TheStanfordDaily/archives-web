@@ -29,7 +29,6 @@ function add_or_lucene_string(lucene_string, key, val){
   
 export function createCloudsearchQuery(query){
     try {
-        let query_string = "q.parser=lucene&q=";
         let lucene_string = "";
         if(query.article_text){
             lucene_string += add_and_lucene_string(lucene_string, 'article_text', query.article_text);
@@ -45,7 +44,6 @@ export function createCloudsearchQuery(query){
         }if(query.author_title){
             lucene_string += add_and_lucene_string(lucene_string, 'author_title', '"' + query.author_title + '"');
         }
-        
         let article_type_lucene_string = ""
         if(query.article_type_article !== undefined && query.article_type_article){
             article_type_lucene_string += add_or_lucene_string(article_type_lucene_string, 'article_type', 'article');
@@ -53,27 +51,24 @@ export function createCloudsearchQuery(query){
         if(query.article_type_advertisement !== undefined && query.article_type_advertisement){
             article_type_lucene_string += add_or_lucene_string(article_type_lucene_string, 'article_type', 'advertisement');
         }
-
         lucene_string += add_and_lucene_nested_string(lucene_string, article_type_lucene_string)
-
         const ast = lucene.parse(lucene_string);
         let lucene_query = lucene.toString(ast);
-        query_string += lucene_query;
+        let query_obj = {"q.parser": "lucene", "q": lucene_query};
 
         if(query.resultsPerPage){
-            query_string += `&size=${query.resultsPerPage}`;
+            query_obj = {...query_obj, "size": query.resultsPerPage};
         }
         if(query.pageNumber){
             if(!query.resultsPerPage){
                 throw new Error("must have results per page if specifying page number");
             }
-            query_string += `&start=${query.resultsPerPage * (query.pageNumber-1)}`;
+            query_obj = {...query_obj, "start": query.resultsPerPage * (query.pageNumber-1)};
         }
         if(query.highlight === 'article_text'){
-            query_string += `&highlight.article_text=%7Bformat:'html',max_phrases:5%7D`; //this nailed me for an hour: must encode '{' and '}'
+            query_obj = {...query_obj, "highlight.article_text": "{format:'html',max_phrases:5}"};
         }
-        console.log(query_string);
-        return query_string;
+        return queryString.stringify(query_obj);
     } catch(error){
         return undefined;
     }
