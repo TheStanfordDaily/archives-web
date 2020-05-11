@@ -12,6 +12,7 @@ export const DEFAULTS_FORM_DATA = {
     title: undefined,
     article_type_article: true,
     article_type_advertisement: true,
+    author_title: undefined,
   };
   
 function add_and_lucene_string(lucene_string, key, val){
@@ -34,13 +35,15 @@ export function createCloudsearchQuery(query){
             lucene_string += add_and_lucene_string(lucene_string, 'article_text', query.article_text);
         }
         if(query.author){
-            lucene_string += add_and_lucene_string(lucene_string, 'author', query.author);
+            lucene_string += add_and_lucene_string(lucene_string, 'author', '"' + query.author + '"');
         }
         if(query.year_start && query.year_end){
             lucene_string += add_and_lucene_string(lucene_string, 'publish_date', `[${query.year_start}-01-01T12:00:00Z TO ${query.year_end+1}-01-02T12:00:00Z]`);
         }
         if(query.title){
-            lucene_string += add_and_lucene_string(lucene_string, 'title', query.title);
+            lucene_string += add_and_lucene_string(lucene_string, 'title', '"' + query.title + '"');
+        }if(query.author_title){
+            lucene_string += add_and_lucene_string(lucene_string, 'author_title', '"' + query.author_title + '"');
         }
         
         let article_type_lucene_string = ""

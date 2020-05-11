@@ -38,7 +38,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen } = queryString.parse(
+    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = queryString.parse(
       window.location.search
     );
     // https://stackoverflow.com/a/4564199/2603230
@@ -60,6 +60,7 @@ class CloudsearchView extends React.Component {
         title,
         article_type_article,
         article_type_advertisement,
+        author_title,
       }
     });
 
@@ -76,6 +77,7 @@ class CloudsearchView extends React.Component {
       title,
       article_type_article,
       article_type_advertisement,
+      author_title,
     });
   }
 
@@ -101,9 +103,19 @@ class CloudsearchView extends React.Component {
           type: "string",
           default: DEFAULTS_FORM_DATA.author
         },
-        // author_title: {
-
-        // },
+        author_title: {
+          title: "Author Title",
+          enum: ['SENIOR STAFF WRITER', 'STAFF WRITER', 'DESK EDITOR', 
+          'MANAGING EDITOR', 'EDITOR IN CHIEF', 'DEPUTY EDITOR', 'EXECUTIVE EDITOR', 'STAFF', 
+          'ASSU President', 'ASSU Parlimentarian', 'STAFF FOOTBALL WRITERS', 'FASHION COLUMNIST', 
+          'FOOTBALL EDITOR', 'ARTS EDITOR', 'FOOD EDITOR', 'FOOD DINING EDITOR', 'OPINIONS DESK',
+          'FOOD DRUNK EDITOR', 'FELLOW', 'DAILY INTERN', 'CONTRIBUTING EDITOR', 'MANAGING WRITER',
+          'GUEST COLUMNIST', 'SEX GODDESS', 'GUEST COLUMNISTS', 'EDITORIAL STAKE', 'CONTRIBUTING YANKEE',
+          'SPECIAL CONTRIBUTOR', 'EDITORIAL BOARD', 'CONTRIBUTING WRITER', 'EDITORIAL STAFF', 'FILM CRITIC',
+          'HEALTH EDITOR', 'ASSHOLE', 'INTERMISSION', 'NEWS EDITOR', 'CLASS PRESIDENT', 'ASSOCIATED PRESS',
+          'AP SPORTS WRITER', 'AP BASEBALL WRITER', 'WEEKLY COLUMNIST', 'HEALTH COLUMNIST', 'ASSOCIATED EDITOR',
+          'ASSOCIATE EDITOR', 'SPORTS EDITOR', 'EDITOR THE DAILY', ]
+        },
         year_start: {
           title: "From",
           type: "number",
@@ -240,6 +252,7 @@ class CloudsearchView extends React.Component {
     title,
     article_type_article,
     article_type_advertisement,
+    author_title,
   }) {      
     const searchQuery = createCloudsearchQuery({ 
       article_text: article_text, 
@@ -252,6 +265,7 @@ class CloudsearchView extends React.Component {
       title: title,
       article_type_article: article_type_article,
       article_type_advertisement: article_type_advertisement,
+      author_title: author_title,
     });
 
     if(!searchQuery){
