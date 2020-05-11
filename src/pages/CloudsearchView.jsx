@@ -101,6 +101,9 @@ class CloudsearchView extends React.Component {
           type: "string",
           default: DEFAULTS_FORM_DATA.author
         },
+        // author_title: {
+
+        // },
         year_start: {
           title: "From",
           type: "number",

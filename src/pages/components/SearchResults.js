@@ -9,6 +9,10 @@ const SearchResult = ({eachResult, getDatePath}) => {
     if(eachResult.author){
         author_data.author = eachResult.author;
     }
+    let year_data = {...DEFAULTS_FORM_DATA};
+    year_data.year_start = eachResult.date.year();
+    year_data.year_end = eachResult.date.year();
+
     return (
         <div className="EachResult">
             <h4 className="EachResultTitle">
@@ -27,7 +31,7 @@ const SearchResult = ({eachResult, getDatePath}) => {
                 </Link>
                 </span>
                 <span className="EachResultDate">
-                {eachResult.date.format("MMMM DD, YYYY")}
+                    <Link to={getCloudsearchURL(year_data)}>{eachResult.date.format("MMMM DD, YYYY")}</Link>
                 </span>
             </h4>
             {eachResult.subtitle &&
