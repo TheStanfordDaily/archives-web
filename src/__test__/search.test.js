@@ -14,7 +14,7 @@ describe("createCloudsearchQuery", () => {
         article_type_advertisement: true,
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article OR article_type:advertisement)"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%20OR%20article_type%3Aadvertisement%29&q.parser=lucene"`
     );
   });
 
@@ -26,7 +26,7 @@ describe("createCloudsearchQuery", () => {
         article_type_article: true,
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -39,7 +39,7 @@ describe("createCloudsearchQuery", () => {
         article_type_advertisement: false,
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -72,7 +72,7 @@ describe("createCloudsearchQuery", () => {
         article_text: "test",
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=article_text:test AND publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)"`
+      `"q=article_text%3Atest%20AND%20publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -85,7 +85,7 @@ describe("createCloudsearchQuery", () => {
         author: "Firstname Lastname",
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=author:\\"Firstname Lastname\\" AND publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)"`
+      `"q=author%3A%22Firstname%20Lastname%22%20AND%20publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -98,7 +98,7 @@ describe("createCloudsearchQuery", () => {
         title: "TitleWord1 TitleWord2",
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND title:\\"TitleWord1 TitleWord2\\" AND (article_type:article)"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20title%3A%22TitleWord1%20TitleWord2%22%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -111,7 +111,7 @@ describe("createCloudsearchQuery", () => {
         author_title: "AUTHOR_TITLE",
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND author_title:\\"AUTHOR_TITLE\\" AND (article_type:article)"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20author_title%3A%22AUTHOR_TITLE%22%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 
@@ -124,7 +124,7 @@ describe("createCloudsearchQuery", () => {
         resultsPerPage: 20,
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)&size=20"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene&size=20"`
     );
   });
 
@@ -138,7 +138,7 @@ describe("createCloudsearchQuery", () => {
         resultsPerPage: 20,
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)&size=20&start=400"`
+      `"q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene&size=20&start=380"`
     );
   });
 
@@ -162,7 +162,7 @@ describe("createCloudsearchQuery", () => {
         highlight: "article_text",
       })
     ).toMatchInlineSnapshot(
-      `"q.parser=lucene&q=publish_date:[1892-01-01T12:00:00Z TO 2015-01-02T12:00:00Z] AND (article_type:article)&highlight.article_text=%7Bformat:'html',max_phrases:5%7D"`
+      `"highlight.article_text=%7Bformat%3A%27html%27%2Cmax_phrases%3A5%7D&q=publish_date%3A%5B1892-01-01T12%3A00%3A00Z%20TO%202015-01-02T12%3A00%3A00Z%5D%20AND%20%28article_type%3Aarticle%29&q.parser=lucene"`
     );
   });
 });
