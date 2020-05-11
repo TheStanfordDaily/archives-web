@@ -173,7 +173,6 @@ class CloudsearchView extends React.Component {
         "ui:widget": "hidden"
       },
     };
-
     const pagination = (
       <>
         <Pagination
@@ -184,7 +183,7 @@ class CloudsearchView extends React.Component {
           total={
             Math.min(
               this.state.searchResultsSize,
-              9980
+              10000
             ) /* cloudsearch needs cursor to fetch results past result number 10000. (todo: implement cursor lol) */
           }
           showTotal={(total, range) =>
@@ -286,7 +285,7 @@ class CloudsearchView extends React.Component {
       .then(e => {
         // TODO: handle error
         const hits = e.hits.hit;
-        const resultsSize = e.hits.found - resultsPerPage;
+        const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
           const replace_text = {
             "\\.\\.\\.":'...<br>...',

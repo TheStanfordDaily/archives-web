@@ -67,7 +67,7 @@ export function createCloudsearchQuery(query){
             if(!query.resultsPerPage){
                 throw new Error("must have results per page if specifying page number");
             }
-            query_string += `&start=${query.resultsPerPage * query.pageNumber}`;
+            query_string += `&start=${query.resultsPerPage * (query.pageNumber-1)}`;
         }
         if(query.highlight === 'article_text'){
             query_string += `&highlight.article_text=%7Bformat:'html',max_phrases:5%7D`; //this nailed me for an hour: must encode '{' and '}'
