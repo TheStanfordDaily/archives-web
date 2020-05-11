@@ -114,7 +114,7 @@ class CloudsearchView extends React.Component {
           'SPECIAL CONTRIBUTOR', 'EDITORIAL BOARD', 'CONTRIBUTING WRITER', 'EDITORIAL STAFF', 'FILM CRITIC',
           'HEALTH EDITOR', 'ASSHOLE', 'INTERMISSION', 'NEWS EDITOR', 'CLASS PRESIDENT', 'ASSOCIATED PRESS',
           'AP SPORTS WRITER', 'AP BASEBALL WRITER', 'WEEKLY COLUMNIST', 'HEALTH COLUMNIST', 'ASSOCIATED EDITOR',
-          'ASSOCIATE EDITOR', 'SPORTS EDITOR', 'EDITOR THE DAILY', ]
+          'ASSOCIATE EDITOR', 'SPORTS EDITOR', 'EDITOR THE DAILY', ],
         },
         year_start: {
           title: "From",
@@ -161,6 +161,9 @@ class CloudsearchView extends React.Component {
         "ui:placeholder": "Leave empty to search all"
       },
       title: {
+        "ui:placeholder": "Leave empty to search all"
+      },
+      author_title: {
         "ui:placeholder": "Leave empty to search all"
       },
       page: {
