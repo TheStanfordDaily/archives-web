@@ -1,38 +1,17 @@
 import "rc-pagination/assets/index.css";
 
-import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
+import { DEFAULTS_FORM_DATA, createCloudsearchQuery, getCloudsearchURL } from "../helpers/search";
 import { STRINGS, getDatePath } from "../helpers/constants";
 
 import Form from "react-jsonschema-form";
-import { Link } from "react-router-dom";
 import Loading from "./components/Loading";
 import Pagination from "rc-pagination";
 import React from "react";
-import { createCloudsearchQuery } from "../helpers/search";
+import SearchResults from "./components/SearchResults";
 import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
 import queryString from "query-string";
-
-export function sendCloudsearchFromForm(event, history) {
-        const searchKeyword = event.target.elements.searchKeyword.value;
-        if (searchKeyword) {
-            history.push(getCloudsearchURL({ q: searchKeyword }));
-        }
-        event.preventDefault();
-  }
-
-export function getCloudsearchURL(formData) {
-    return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
-}
-
-export const DEFAULTS_FORM_DATA = {
-  q: "",
-  year_start: 1892,
-  year_end: 2014,
-  page: 1,
-  pagelen: 20
-};
 
 class CloudsearchView extends React.Component {
   constructor(props) {
@@ -59,7 +38,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { q, year_start, year_end, page, pagelen } = queryString.parse(
+    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = queryString.parse(
       window.location.search
     );
     // https://stackoverflow.com/a/4564199/2603230
@@ -67,32 +46,39 @@ class CloudsearchView extends React.Component {
     year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
     page = Number(page) || DEFAULTS_FORM_DATA.page;
     pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
+    article_type_article = article_type_article ? article_type_article === 'true' : DEFAULTS_FORM_DATA.article_type_article;
+    article_type_advertisement = article_type_advertisement ? article_type_advertisement === 'true' : DEFAULTS_FORM_DATA.article_type_advertisement;
     this.setState({
       loading: true,
       formData: {
-        q,
+        article_text,
         year_start,
         year_end,
         page,
-        pagelen
+        pagelen,
+        author,
+        title,
+        article_type_article,
+        article_type_advertisement,
+        author_title,
       }
     });
 
-    if (q) {
-      document.title =
-        "Search results for " + q + STRINGS.SITE_NAME_WITH_DIVIDER;
-      // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
-      this.searchFor({
-        q,
-        year_start,
-        year_end,
-        resultsPerPage: pagelen,
-        pageNumber: page
-      });
-    } else {
-      document.title = "Search" + STRINGS.SITE_NAME_WITH_DIVIDER;
-      this.setState({ loading: false });
-    }
+    document.title =
+      "Search results for " + article_text + STRINGS.SITE_NAME_WITH_DIVIDER;
+    // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
+    this.searchFor({
+      article_text,
+      year_start,
+      year_end,
+      resultsPerPage: pagelen,
+      pageNumber: page,
+      author,
+      title,
+      article_type_article,
+      article_type_advertisement,
+      author_title,
+    });
   }
 
   render() {
@@ -100,12 +86,35 @@ class CloudsearchView extends React.Component {
 
     const schema = {
       type: "object",
-      required: ["q"],
+      required: [],
       properties: {
-        q: {
-          title: "Search",
+        article_text: {
+          title: "Article Text",
           type: "string",
-          default: DEFAULTS_FORM_DATA.q
+          default: DEFAULTS_FORM_DATA.article_text
+        },
+        title: {
+          title: "Article Title",
+          type: "string",
+          default: DEFAULTS_FORM_DATA.title
+        },
+        author: {
+          title: "Author",
+          type: "string",
+          default: DEFAULTS_FORM_DATA.author
+        },
+        author_title: {
+          title: "Author Title",
+          enum: ['SENIOR STAFF WRITER', 'STAFF WRITER', 'DESK EDITOR', 
+          'MANAGING EDITOR', 'EDITOR IN CHIEF', 'DEPUTY EDITOR', 'EXECUTIVE EDITOR', 'STAFF', 
+          'ASSU President', 'ASSU Parlimentarian', 'STAFF FOOTBALL WRITERS', 'FASHION COLUMNIST', 
+          'FOOTBALL EDITOR', 'ARTS EDITOR', 'FOOD EDITOR', 'FOOD DINING EDITOR', 'OPINIONS DESK',
+          'FOOD DRUNK EDITOR', 'FELLOW', 'DAILY INTERN', 'CONTRIBUTING EDITOR', 'MANAGING WRITER',
+          'GUEST COLUMNIST', 'SEX GODDESS', 'GUEST COLUMNISTS', 'EDITORIAL STAKE', 'CONTRIBUTING YANKEE',
+          'SPECIAL CONTRIBUTOR', 'EDITORIAL BOARD', 'CONTRIBUTING WRITER', 'EDITORIAL STAFF', 'FILM CRITIC',
+          'HEALTH EDITOR', 'ASSHOLE', 'INTERMISSION', 'NEWS EDITOR', 'CLASS PRESIDENT', 'ASSOCIATED PRESS',
+          'AP SPORTS WRITER', 'AP BASEBALL WRITER', 'WEEKLY COLUMNIST', 'HEALTH COLUMNIST', 'ASSOCIATED EDITOR',
+          'ASSOCIATE EDITOR', 'SPORTS EDITOR', 'EDITOR THE DAILY', ],
         },
         year_start: {
           title: "From",
@@ -118,6 +127,16 @@ class CloudsearchView extends React.Component {
           type: "number",
           enum: range,
           default: DEFAULTS_FORM_DATA.year_end
+        },
+        article_type_article: {
+          title: " Articles",
+          type: "boolean",
+          default: DEFAULTS_FORM_DATA.article_type_article,
+        },
+        article_type_advertisement: {
+          title: " Advertisements",
+          type: "boolean",
+          default: DEFAULTS_FORM_DATA.article_type_advertisement,
         },
         /** Hidden properties **/
         page: {
@@ -135,17 +154,25 @@ class CloudsearchView extends React.Component {
     };
 
     const uiSchema = {
-      q: {
-        "ui:placeholder": "Enter keyword here"
+      article_text: {
+        "ui:placeholder": "Leave empty to search all"
+      },
+      author: {
+        "ui:placeholder": "Leave empty to search all"
+      },
+      title: {
+        "ui:placeholder": "Leave empty to search all"
+      },
+      author_title: {
+        "ui:placeholder": "Leave empty to search all"
       },
       page: {
         "ui:widget": "hidden"
       },
       pagelen: {
         "ui:widget": "hidden"
-      }
+      },
     };
-
     const pagination = (
       <>
         <Pagination
@@ -156,7 +183,7 @@ class CloudsearchView extends React.Component {
           total={
             Math.min(
               this.state.searchResultsSize,
-              9980
+              10000
             ) /* cloudsearch needs cursor to fetch results past result number 10000. (todo: implement cursor lol) */
           }
           showTotal={(total, range) =>
@@ -179,7 +206,6 @@ class CloudsearchView extends React.Component {
           <Form
             schema={schema}
             uiSchema={uiSchema}
-            idPrefix="search"
             formData={this.state.formData}
             onSubmit={e => {
               let formData = e.formData;
@@ -205,38 +231,8 @@ class CloudsearchView extends React.Component {
           ) : this.state.searchResults.length ? (
             <div className="SearchResultAllResultsContent">
               <div className="EachResult SearchPagination">{pagination}</div>
-              {this.state.searchResults.map((eachResult, index) => (
-                <div className="EachResult" key={index}>
-                  <h4 className="EachResultTitle">
-                    {eachResult.type === "advertisement" ? (
-                      <IoMdMegaphone />
-                    ) : (
-                      <IoIosPaper />
-                    )}
-                    <span>
-                      <Link
-                        to={getDatePath(eachResult.date, {
-                          section: eachResult.id
-                        })}
-                      >
-                        {eachResult.title}
-                      </Link>
-                    </span>
-                    <span className="EachResultDate">
-                      {eachResult.date.format("MMMM DD, YYYY")}
-                    </span>
-                  </h4>
-                  <div className="EachResultTexts">
-                    {eachResult.text.map((eachText, textIndex) => (
-                      <p
-                        className="EachResultEachText"
-                        key={textIndex}
-                        dangerouslySetInnerHTML={{ __html: eachText }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
+              <SearchResults searchResults={this.state.searchResults} getDatePath={getDatePath} />
+              
               {/* TODO: add a notice with `EachResult` class here to notice the user that there query has return >1000 results and only first 1000 can be shown and please limit query */}
               <div className="EachResult SearchPagination">{pagination}</div>
             </div>
@@ -249,38 +245,50 @@ class CloudsearchView extends React.Component {
   }
 
   searchFor({
-    q,
+    article_text,
     year_start,
     year_end,
-    searchWithin,
-    searchSummaries,
     resultsPerPage = 20,
     pageNumber = 1,
-    dateFrom,
-    dateTo
+    author,
+    title,
+    article_type_article,
+    article_type_advertisement,
+    author_title,
   }) {      
     const searchQuery = createCloudsearchQuery({ 
-      q: q, 
+      article_text: article_text, 
       resultsPerPage: resultsPerPage, 
       pageNumber: pageNumber, 
       highlight: 'article_text',
       year_start: year_start,
       year_end: year_end,
+      author: author,
+      title: title,
+      article_type_article: article_type_article,
+      article_type_advertisement: article_type_advertisement,
+      author_title: author_title,
     });
+
+    if(!searchQuery){
+      alert("error in search query!");
+      this.props.history.push(getCloudsearchURL(DEFAULTS_FORM_DATA));
+      return;
+    }
 
     const serverSearchURL =
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
       searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
-    fetch(serverSearchURL)
+      fetch(serverSearchURL)
       .then(e => e.json())
       .then(e => {
         // TODO: handle error
         const hits = e.hits.hit;
-        const resultsSize = e.hits.found - resultsPerPage;
+        const resultsSize = e.hits.found;
         const results = hits.map(function(hit){
           const replace_text = {
-            "\\.\\.\\.":'...<br><br>...',
+            "\\.\\.\\.":'...<br>...',
             "<em>":"<mark>",
             "</em>":"</mark>"
           }
@@ -293,6 +301,9 @@ class CloudsearchView extends React.Component {
           });
           const text = '...' + highlighted_text + '...';
           const title = hit.fields.title;
+          const subtitle = hit.fields.subtitle;
+          const author = hit.fields.author;
+          const author_title = hit.fields.author_title;
           const type = hit.fields.article_type;
           const matchCount = 100; // idk what this is yet
           const raw_id = hit.id;
@@ -300,7 +311,10 @@ class CloudsearchView extends React.Component {
           const date = moment(new Date(hit.fields.publish_date));
           return {
             text: [text],
+            subtitle: subtitle,
             title: title,
+            author: author,
+            author_title: author_title,
             type: type,
             matchCount: matchCount,
             id: id,
