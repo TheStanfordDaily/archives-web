@@ -1,6 +1,6 @@
-import React from "react";
 import GithubCorner from "react-github-corner";
 import { IoMdPaper } from "react-icons/io";
+import React from "react";
 
 const Header = function() {
   return (
@@ -46,13 +46,10 @@ const Header = function() {
                 Support<span className="HideOnSmallScreen"> the Daily</span>
               </button>
               <select name="amount" className="tsd-select form-control">
-                <option value={5}>$5</option>
-                <option value={10}>$10</option>
-                <option value={25}>$25</option>
                 <option value={50}>$50</option>
-                <option value={100}>$100</option>
-                <option value={500}>$500</option>
+                <option value={200}>$200</option>
                 <option value={1000}>$1,000</option>
+                <option value="">Other</option>
               </select>
               {/* <div className="checkbox" style={{
                                 marginTop: '10px'
@@ -96,7 +93,7 @@ const Header = function() {
               <input type="hidden" name="no_note" defaultValue={1} />
               <input type="hidden" name="currency_code" defaultValue="USD" />
               <input type="hidden" name="src" defaultValue={1} />
-              <input type="hidden" name="a3" defaultValue={5} />
+              <input type="hidden" name="a3" defaultValue={50} />
               <input type="hidden" name="p3" defaultValue={1} />
               <input type="hidden" name="t3" defaultValue="M" />
             </form>
