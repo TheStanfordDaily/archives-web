@@ -93,7 +93,7 @@ const Header = function() {
               <input type="hidden" name="no_note" defaultValue={1} />
               <input type="hidden" name="currency_code" defaultValue="USD" />
               <input type="hidden" name="src" defaultValue={1} />
-              <input type="hidden" name="a3" defaultValue={5} />
+              <input type="hidden" name="a3" defaultValue={50} />
               <input type="hidden" name="p3" defaultValue={1} />
               <input type="hidden" name="t3" defaultValue="M" />
             </form>
