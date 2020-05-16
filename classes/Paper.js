@@ -65,7 +65,7 @@ class Paper {
         let subtitle = "";
         let author = "";
         if (dmdID) {
-          let titleObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:titleInfo");
+          let titleObjs = xmlResults.querySelector(`[ID=${dmdID}]`).getElementsByTagName("MODS:titleInfo");
           if (titleObjs.length >= 1) {
             title = titleObjs[0].textContent.trim() || "Untitled";
           }
@@ -77,7 +77,7 @@ class Paper {
               }
             }
           }
-          let authorObjs = xmlResults.getElementById(dmdID).getElementsByTagName("MODS:namePart");
+          let authorObjs = xmlResults.querySelector(`[ID=${dmdID}]`).getElementsByTagName("MODS:namePart");
           if (authorObjs.length) {
             for (let i = 0; i < authorObjs.length; i++) {
               let authorObj = authorObjs[i];
@@ -97,7 +97,7 @@ class Paper {
         }
 
         let areaIDs = {};
-        let areaTypes = ["title", "author", "body"];
+        let areaTypes = ["TITLE", "AUTHOR", "BODY"];
         for (let eachAreaType of areaTypes) {
           let rawAreas = eachSection.querySelectorAll("div[TYPE='" + eachAreaType + "'] area[FILEID='" + altoFileID + "']");
           areaIDs[eachAreaType] = [];

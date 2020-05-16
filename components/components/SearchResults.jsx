@@ -27,11 +27,13 @@ const SearchResult = ({eachResult, getDatePath}) => {
                 )}
                 <span>
                 <Link
-                    href={getDatePath(eachResult.date, {
+                    href="[year]/[month]/[day]"
+                    as={getDatePath(eachResult.date, {
                     section: eachResult.id
                     })}
-                >
+                ><a>
                     {eachResult.title}
+                </a>
                 </Link>
                 </span>
                 <span className="EachResultDate">

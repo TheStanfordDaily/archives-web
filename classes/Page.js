@@ -29,7 +29,7 @@ class Page {
   }
 
   getBlockText(id) {
-    let textBlock = this.altoData.getElementById(id);
+    let textBlock = this.altoData.querySelector(`[ID=${id}]`);
     let text = "";
     for (let line of textBlock.getElementsByTagName("textline")) {
       // console.log(line.id); // todo: use this to match with the text corrections we have.
@@ -65,12 +65,11 @@ class Page {
       this.pageSize = pageSize;
     }
     const heightScaleFactor = pageSize.height / pageSize.width;
-
-    let textBlock = this.altoData.getElementById(id);
-    let xPos = textBlock.getAttribute("hpos") / pageSize.width;
-    let yPos = textBlock.getAttribute("vpos") / pageSize.height * heightScaleFactor;
-    let width = textBlock.getAttribute("width") / pageSize.width;
-    let height = textBlock.getAttribute("height") / pageSize.height * heightScaleFactor;
+    let textBlock = this.altoData.querySelector(`[ID=${id}]`);
+    let xPos = textBlock.getAttribute("HPOS") / pageSize.width;
+    let yPos = textBlock.getAttribute("VPOS") / pageSize.height * heightScaleFactor;
+    let width = textBlock.getAttribute("WIDTH") / pageSize.width;
+    let height = textBlock.getAttribute("HEIGHT") / pageSize.height * heightScaleFactor;
     let results = {
       id: id,
       x: xPos,

@@ -12,6 +12,7 @@ import moment from "moment";
 import queryString from "query-string";
 import { withRouter } from "next/router";
 import Router from "next/router";
+import { getQueryString } from "./PaperView";
 
 class CloudsearchView extends React.Component {
   constructor(props) {
@@ -38,8 +39,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    // TODO: we can't use this.props.router.query because it's empty here -- is this a bug?
-    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = queryString.parse(this.props.router.asPath.split("?")[1]);
+    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = getQueryString(this.props.router);
     console.log(queryString.parse(this.props.router.asPath.split("?")[1]));
     // https://stackoverflow.com/a/4564199/2603230
     year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;

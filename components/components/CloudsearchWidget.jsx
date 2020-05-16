@@ -8,7 +8,10 @@ const CloudsearchWidget = ({history}) => {
     const [keyword, setKeyword] = useState("");
     return ( 
         <form
-            onSubmit={e => sendCloudsearchFromForm(e, history)}
+            onSubmit={e => {
+                e.preventDefault();
+                Router.push(getCloudsearchURL({ article_text: keyword }));
+            }}
         >
             <div className="input-group">
                 <input
@@ -20,8 +23,7 @@ const CloudsearchWidget = ({history}) => {
                     required
                 />
                 <div className="input-group-append">
-                    <button type="button" className="form-control HomeSearchButton"
-                        onClick={() => Router.push(getCloudsearchURL({ article_text: keyword })) }
+                    <button type="submit" className="form-control HomeSearchButton"
                     >
                         <IoIosSearch />
                     </button>

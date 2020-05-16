@@ -11,7 +11,7 @@ import {
   getMonthEventsFromMetadata
 } from "../helpers/papers";
 import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
-import Router from "next/router";
+import Router, { withRouter } from "next/router";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -33,8 +33,8 @@ class CalendarView extends React.Component {
       return <Loading />;
     }
 
-    let yearString = this.props.match.params.year;
-    let monthString = this.props.match.params.month;
+    let yearString = this.props.router.query.year;
+    let monthString = this.props.router.query.month;
     let thisMonth = moment({
       year: Number(yearString),
       month: Number(monthString) - 1
@@ -137,4 +137,4 @@ class CalendarView extends React.Component {
   }
 }
 
-export default CalendarView;
+export default withRouter(CalendarView);

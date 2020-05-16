@@ -8,23 +8,21 @@ import { STRINGS, getMonthPath } from "../helpers/constants";
 class AllYearView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true, allPapers: [] };
+    this.state = { allPapers: [] };
   }
 
   async componentDidMount() {
     document.title = "Calendar" + STRINGS.SITE_NAME_WITH_DIVIDER;
+  }
+
+  static async getInitialProps() {
     let allPapers = await fetchMetadata();
-    this.setState({ allPapers: allPapers, loading: false });
+    return {allPapers};
   }
 
   render() {
-    if (this.state.loading) {
-      return <Loading />;
-    }
-
-    console.log(this.state.allPapers);
-
-    const allYears = Object.keys(this.state.allPapers);
+    const { allPapers } = this.props;
+    const allYears = Object.keys(allPapers);
 
     console.log(allYears[0]);
     console.log(allYears[allYears.length - 1]);
@@ -41,9 +39,9 @@ class AllYearView extends React.Component {
         let dateMoment = moment({ year: year, month: month });
         monthsElements.push(
           <div key={month} className="EachMonth">
-            {isMonthInMetaData(this.state.allPapers, dateMoment) ? (
+            {isMonthInMetaData(allPapers, dateMoment) ? (
               <Link
-                to={getMonthPath(dateMoment)}
+                href={getMonthPath(dateMoment)}
                 title={dateMoment.format("MMMM YYYY")}
                 className="EachMonthLink"
               >

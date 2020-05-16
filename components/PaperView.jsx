@@ -68,7 +68,7 @@ class PaperView extends React.Component {
     //let paper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
     //let allPapers = await fetchAllPapers();
     //let paper = allPapers[10000];
-    let matchParams = getQueryString(this.props.router);
+    let matchParams = this.props.router.query;
     this.paper = await fetchPaper(
       matchParams.year,
       matchParams.month,
@@ -108,7 +108,6 @@ class PaperView extends React.Component {
 
     // Go to the page number given by the query.
     this.onQueryChange();
-    this.onHashChange();
 
     // TODO: this is called many many times. Need to remove when unmount
     // TODO: also check other classes' componentDidMount
@@ -136,42 +135,6 @@ class PaperView extends React.Component {
           this.props.router.asPath
       );
       this.onQueryChange();
-    }
-    if (getHash(this.props.router) !== getHash(prevProps.router)) {
-      console.log(
-        "location.hash changes from " +
-        getHash(prevProps.router) +
-          " to " +
-          getHash(this.props.router)
-      );
-      this.onHashChange();
-    }
-  }
-
-  onHashChange() {
-    console.log("on hash change");
-    if (!getHash(this.props.router)) {
-      let newLink = this.getNavigationSelectionLink(navigationType.ISSUE);
-      let queryValue = getQueryString(this.props.router);
-      if (queryValue.section) {
-        // Display article view by default if there is a section selected.
-        newLink = this.getNavigationSelectionLink(navigationType.ARTICLE);
-      }
-      Router.push(newLink);
-      return;
-    }
-
-    let hashValue = queryString.parse(getHash(this.props.router));
-    console.log(hashValue);
-    for (const type in navigationType) {
-      let typeName = navigationType[type];
-      if (
-        typeName in hashValue &&
-        typeName !== this.state.navigationSelection
-      ) {
-        this.setNavigationSelection(typeName);
-        break;
-      }
     }
   }
 
@@ -211,6 +174,9 @@ class PaperView extends React.Component {
     this.viewer.goToPage(pageIndex);
 
     this.setOverlays(pageIndex);
+
+    // Go to the right hash (issue / article):
+    this.setNavigationSelection(getHash(this.props.router) || navigationType.ISSUE);
   }
 
   onPageChange(page) {
@@ -237,11 +203,12 @@ class PaperView extends React.Component {
       console.log("Number(queryValue.page) !== pageNumber");
       queryValue.page = pageNumber;
       Router.push(
-        getDatePath(
-          this.paper.date,
-          queryValue,
-          getHash(this.props.router)
-        )
+         "/[year]/[month]/[day]",
+         getDatePath(
+            this.paper.date,
+            queryValue,
+            getHash({asPath: window.location.href}) // TODO: this.props.router doesn't work here
+          )
       );
     }
   }
@@ -275,6 +242,7 @@ class PaperView extends React.Component {
             return obj.sectionID === eachSectionID;
           });
           console.log(eachSection);
+         
 
           if (eachSection === undefined) {
             // It means that this section is probably not on this page.
@@ -282,7 +250,6 @@ class PaperView extends React.Component {
           }
 
           selectedSectionsObjects.push(eachSection);
-
           let allOverlays = eachSection.areaIDs;
           for (let eachOverlayType in allOverlays) {
             let overlayIDs = allOverlays[eachOverlayType];
@@ -301,7 +268,7 @@ class PaperView extends React.Component {
                 eachSection.sectionID +
                 "-" +
                 eachID;
-              elt.className = "SectionHighlight";
+              elt.className = "SectionHighlight";              
               this.viewer.addOverlay({
                 element: elt,
                 location: new OpenSeadragon.Rect(
@@ -325,7 +292,6 @@ class PaperView extends React.Component {
           );
           this.viewer.viewport.fitBounds(newBounds, true);
         }
-
         this.setState({ selectedSections: selectedSectionsObjects });
       });
     }
@@ -415,20 +381,24 @@ class PaperView extends React.Component {
               </p>
             </div>
             <div className="PaperNavigationSelectType">
-              <Link
-                href={this.getNavigationSelectionLink(navigationType.ISSUE)}
-              >
-                <a className={this.getNavigationSelectionClasses(
+                <a href={this.getNavigationSelectionLink(navigationType.ISSUE)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  Router.push(this.getNavigationSelectionLink(navigationType.ISSUE));
+                  this.setNavigationSelection(navigationType.ISSUE);
+                }}
+                className={this.getNavigationSelectionClasses(
                   navigationType.ISSUE
                 )}>Issue</a>
-              </Link>
-              <Link
-                href={this.getNavigationSelectionLink(navigationType.ARTICLE)}
-              >
-                <a className={this.getNavigationSelectionClasses(
+<a href={this.getNavigationSelectionLink(navigationType.ARTICLE)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  Router.push(this.getNavigationSelectionLink(navigationType.ARTICLE));
+                  this.setNavigationSelection(navigationType.ARTICLE);
+                }}
+                className={this.getNavigationSelectionClasses(
                   navigationType.ARTICLE
                 )}>Article</a>
-              </Link>
             </div>
           </div>
           <div
