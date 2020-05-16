@@ -16,6 +16,7 @@ import {
   getDatePath,
   getMonthPath
 } from "../helpers/constants";
+import Router, { withRouter } from "next/router";
 
 const navigationType = {
   ISSUE: "issue",
@@ -23,6 +24,24 @@ const navigationType = {
 };
 
 const defaultNavigationPercentage = 30;
+
+/*
+ * Returns the hash from a URL. Next JS's router doesn't
+ * automatically do this parsing for us.
+ */
+export const getHash = router => {
+  const path = router.asPath.split("#")[1];
+  return path;
+}
+
+/*
+ * Returns the query string from a URL. Next JS's router doesn't
+ * automatically do this parsing for us.
+ */
+export const getQueryString = router => {
+  const path = router.asPath.split(/[\?\#]/)[1];
+  return queryString.parse(path);
+}
 
 class PaperView extends React.Component {
   constructor(props) {
@@ -49,7 +68,7 @@ class PaperView extends React.Component {
     //let paper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
     //let allPapers = await fetchAllPapers();
     //let paper = allPapers[10000];
-    let matchParams = this.props.match.params;
+    let matchParams = getQueryString(this.props.router);
     this.paper = await fetchPaper(
       matchParams.year,
       matchParams.month,
@@ -109,39 +128,40 @@ class PaperView extends React.Component {
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
-    if (this.props.router.search !== prevProps.router.search) {
+    if (this.props.router.asPath !== prevProps.router.asPath) {
       console.log(
         "location.search changes from " +
-        prevProps.router.search +
+        prevProps.router.asPath +
           " to " +
-          this.props.router.search
+          this.props.router.asPath
       );
       this.onQueryChange();
     }
-    if (this.props.router.hash !== prevProps.router.hash) {
+    if (getHash(this.props.router) !== getHash(prevProps.router)) {
       console.log(
         "location.hash changes from " +
-        prevProps.router.hash +
+        getHash(prevProps.router) +
           " to " +
-          this.props.router.hash
+          getHash(this.props.router)
       );
       this.onHashChange();
     }
   }
 
   onHashChange() {
-    if (!this.props.router.hash) {
+    console.log("on hash change");
+    if (!getHash(this.props.router)) {
       let newLink = this.getNavigationSelectionLink(navigationType.ISSUE);
-      let queryValue = queryString.parse(this.props.router.search);
+      let queryValue = getQueryString(this.props.router);
       if (queryValue.section) {
         // Display article view by default if there is a section selected.
         newLink = this.getNavigationSelectionLink(navigationType.ARTICLE);
       }
-      this.props.history.replace(newLink);
+      Router.push(newLink);
       return;
     }
 
-    let hashValue = queryString.parse(this.props.router.hash);
+    let hashValue = queryString.parse(getHash(this.props.router));
     console.log(hashValue);
     for (const type in navigationType) {
       let typeName = navigationType[type];
@@ -159,7 +179,7 @@ class PaperView extends React.Component {
     // This might be overriden by `SectionContent`.
     document.title = getDateTitle(this.paper.date);
 
-    let queryValue = queryString.parse(this.props.router.search);
+    let queryValue = getQueryString(this.props.router);
     console.log("Query set/changed to:");
     console.log(queryValue);
 
@@ -209,18 +229,18 @@ class PaperView extends React.Component {
       currentBounds.height / currentBounds.width
     );
     this.viewer.viewport.fitBounds(newBounds, true);
-
-    let queryValue = queryString.parse(this.props.router.search);
-    //console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
+    
+    let queryValue = getQueryString(this.props.router);
+    // console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
     // Only use `history.replace` if current query pageNumber is not equal to the new pageNumber.
     if (Number(queryValue.page) !== pageNumber) {
       console.log("Number(queryValue.page) !== pageNumber");
       queryValue.page = pageNumber;
-      this.props.history.replace(
+      Router.push(
         getDatePath(
           this.paper.date,
           queryValue,
-          this.props.router.hash.substring(1)
+          getHash(this.props.router)
         )
       );
     }
@@ -232,7 +252,7 @@ class PaperView extends React.Component {
       selectedSections: []
     });
 
-    let queryValue = queryString.parse(this.props.router.search);
+    let queryValue = getQueryString(this.props.router);
     // For the name of `section`, see https://stackoverflow.com/a/9176496/2603230
     // For the use of `castArray`, it is to ensure the section var is an array even if the input has only one section (i.e. "section=...").
     let displayingSections = castArray(queryValue.section);
@@ -339,7 +359,8 @@ class PaperView extends React.Component {
   }
 
   getNavigationSelectionLink(selection) {
-    return this.props.router.search + "#" + selection;
+    let path = this.props.router.asPath.split("#")[0]; // gets the url except for the hash
+    return path + "#" + selection;
   }
 
   setNavigationSelection(selection) {
@@ -359,7 +380,7 @@ class PaperView extends React.Component {
   }
 
   scrollToPageNumber() {
-    let queryValue = queryString.parse(this.props.router.search);
+    let queryValue = getQueryString(this.props.router);
     let pageNumber = Number(queryValue.page);
     let articleListEle = document.querySelector("#page-" + pageNumber);
     if (articleListEle) {
@@ -395,20 +416,18 @@ class PaperView extends React.Component {
             </div>
             <div className="PaperNavigationSelectType">
               <Link
-                className={this.getNavigationSelectionClasses(
-                  navigationType.ISSUE
-                )}
                 href={this.getNavigationSelectionLink(navigationType.ISSUE)}
               >
-                <a>Issue</a>
+                <a className={this.getNavigationSelectionClasses(
+                  navigationType.ISSUE
+                )}>Issue</a>
               </Link>
               <Link
-                className={this.getNavigationSelectionClasses(
-                  navigationType.ARTICLE
-                )}
                 href={this.getNavigationSelectionLink(navigationType.ARTICLE)}
               >
-                <a>Article</a>
+                <a className={this.getNavigationSelectionClasses(
+                  navigationType.ARTICLE
+                )}>Article</a>
               </Link>
             </div>
           </div>
@@ -433,9 +452,8 @@ class PaperView extends React.Component {
                         },
                         navigationType.ISSUE
                       )}
-                      title={"Go to Page " + page.pageLabel}
                     >
-                      <a>&rarr;</a>
+                      <a title={"Go to Page " + page.pageLabel}>&rarr;</a>
                     </Link>
                   </h3>
                   <ul>
@@ -450,7 +468,8 @@ class PaperView extends React.Component {
                           {/* We add one more `span` here because `SectionName` is `table-cell` and we only want onClick on the actual text. */}
                           <Link
                             className="SectionTitleLink"
-                            href={getDatePath(
+                            href="/[year]/[month]/[day]"
+                            as={getDatePath(
                               this.paper.date,
                               {
                                 page: page.pageNumber,
@@ -484,9 +503,7 @@ class PaperView extends React.Component {
                   this.setNavigationWidthFromPxWidth(pxWidth);
                 }}
                 backLink={() => {
-                  let queryValue = queryString.parse(
-                    this.props.router.search
-                  );
+                  let queryValue = getQueryString(this.props.router);
                   return getDatePath(
                     this.paper.date,
                     {
