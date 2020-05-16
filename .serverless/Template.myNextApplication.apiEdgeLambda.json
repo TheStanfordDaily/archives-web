@@ -1,0 +1,17 @@
+{
+  "name": "v45shx7-xcy6z3g",
+  "hash": "K1omryeIfNdo6FiMHqdztw7tzMTQlBbb7vW8NafVJt4=",
+  "description": "API Lambda@Edge for Next CloudFront distribution",
+  "memory": 512,
+  "timeout": 10,
+  "code": "/Users/epicfaace/tsd/archives-web/.serverless_nextjs/api-lambda",
+  "shims": [],
+  "handler": "index.handler",
+  "runtime": "nodejs10.x",
+  "env": {},
+  "role": {
+    "arn": "arn:aws:iam::607998788272:role/v45shx7-pv99m34"
+  },
+  "arn": "arn:aws:lambda:us-east-1:607998788272:function:v45shx7-xcy6z3g",
+  "region": "us-east-1"
+}
