@@ -1,0 +1,8 @@
+myNextApplication:
+  component: serverless-next.js@1.8.0
+  inputs:
+    cloudfront:
+      comment: "Stanford Daily Archives website"
+      defaults:
+        ttl: 600
+        compress: true

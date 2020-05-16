@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import interact from "interactjs";
-import OpenSeadragon from "openseadragon";
 import moment from "moment";
 import queryString from "query-string";
 import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
@@ -24,6 +23,26 @@ const navigationType = {
 };
 
 const defaultNavigationPercentage = 30;
+
+// We define document and window here so that the production build still
+// works, because openseadragon requires that certain properties are not undefined.
+if (typeof document === 'undefined') {
+  global.document = {
+    createElement: () => ({}),
+    documentElement: {}
+  };
+  global.window = {
+    addEventListener: () => null,
+    removeEventListener: () => null,
+    location: {
+      search: ""
+    }
+  };
+  global.navigator = {
+
+  };
+}
+const OpenSeadragon = require("openseadragon");
 
 /*
  * Returns the hash from a URL. Next JS's router doesn't

@@ -5,6 +5,4 @@ const DynamicPaperViewNoSSR = dynamic(
   { ssr: false }
 );
 
-export default () => (
-  <DynamicPaperViewNoSSR />
-);
+export default () => (<DynamicPaperViewNoSSR />);
