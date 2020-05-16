@@ -1,8 +1,18 @@
 # Archives Web
 
-[![Build Status](https://travis-ci.com/TheStanfordDaily/archives-web.svg?branch=master)](https://travis-ci.com/TheStanfordDaily/archives-web)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/18b5bb7c-4136-4b00-a7c8-09b80998ba92/deploy-status)](https://app.netlify.com/sites/stanforddaily-archives/deploys)
-[![Greenkeeper badge](https://badges.greenkeeper.io/TheStanfordDaily/archives-web.svg)](https://greenkeeper.io/)
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## npm package
 
 Helper functions (and web app) for METS/ALTO archives viewing.
 

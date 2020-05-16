@@ -1,6 +1,6 @@
-import { Link, withRouter } from "react-router-dom";
+import Link from "next/link";
 import { Nav, Navbar } from "react-bootstrap";
-
+import { withRouter } from 'next/router';
 import React from "react";
 import ReactGA from "react-ga";
 import { STRINGS } from "../../helpers/constants";
@@ -11,7 +11,7 @@ class TSDNavbar extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (this.props.router !== prevProps.router) {
       this.onRouteChanged();
     }
   }
@@ -37,16 +37,15 @@ class TSDNavbar extends React.Component {
       for (let navItemName in navItems[navType]) {
         const navItemPathname = navItems[navType][navItemName];
         let classNames = "nav-link";
-        if (this.props.location.pathname === navItemPathname) {
+        if (this.props.router.pathname === navItemPathname) {
           classNames += " active";
         }
         navLinks[navType].push(
           <Link
-            to={navItemPathname}
-            className={classNames}
+            href={navItemPathname}
             key={navItemPathname}
           >
-            {navItemName}
+            <a className={classNames}>{navItemName}</a>
           </Link>
         );
       }
@@ -63,8 +62,8 @@ class TSDNavbar extends React.Component {
         </Navbar.Collapse>
         <div className="mx-auto order-0">
           <Navbar.Brand className="mx-auto site-title">
-            <Link to={STRINGS.ROUTE_ROOT}>
-              {/* TODO: use TSD logo */ STRINGS.SITE_NAME}
+            <Link href={STRINGS.ROUTE_ROOT}>
+              <a>{/* TODO: use TSD logo */ STRINGS.SITE_NAME}</a>
             </Link>
           </Navbar.Brand>
         </div>

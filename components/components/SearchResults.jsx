@@ -1,7 +1,7 @@
 import { DEFAULTS_FORM_DATA, getCloudsearchURL } from '../../helpers/search';
 import { IoIosPaper, IoMdMegaphone } from 'react-icons/io';
 
-import { Link } from 'react-router-dom';
+import Link from "next/link";
 import React from 'react';
 
 const SearchResult = ({eachResult, getDatePath}) => {
@@ -27,7 +27,7 @@ const SearchResult = ({eachResult, getDatePath}) => {
                 )}
                 <span>
                 <Link
-                    to={getDatePath(eachResult.date, {
+                    href={getDatePath(eachResult.date, {
                     section: eachResult.id
                     })}
                 >
@@ -35,13 +35,13 @@ const SearchResult = ({eachResult, getDatePath}) => {
                 </Link>
                 </span>
                 <span className="EachResultDate">
-                    <Link to={getCloudsearchURL(year_data)}>{eachResult.date.format("MMMM DD, YYYY")}</Link>
+                    <Link href={getCloudsearchURL(year_data)}><a>{eachResult.date.format("MMMM DD, YYYY")}</a></Link>
                 </span>
             </h4>
             {eachResult.subtitle &&
                 <h5 className="EachResultSubtitle">{eachResult.subtitle}</h5>}
             {eachResult.author &&
-                <h5 className="EachResultAuthor">By <Link to={getCloudsearchURL(author_data)}>{eachResult.author.replace(/^\s+|\s+$/g, '')}</Link>{eachResult.author_title && <Link to={getCloudsearchURL(author_title_data)}>{`, ${eachResult.author_title}`}</Link>}</h5>}
+                <h5 className="EachResultAuthor">By <Link href={getCloudsearchURL(author_data)}><a>{eachResult.author.replace(/^\s+|\s+$/g, '')}</a></Link>{eachResult.author_title && <Link href={getCloudsearchURL(author_title_data)}><a>{`, ${eachResult.author_title}`}</a></Link>}</h5>}
             <div className="EachResultTexts">
                 {eachResult.text.map((eachText, textIndex) => (
                 <p

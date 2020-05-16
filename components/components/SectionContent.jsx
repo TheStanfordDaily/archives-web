@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import fetch from "cross-fetch";
 import Loading from "./Loading";
 import { STRINGS, INTERNAL, getDateTitle } from "../../helpers/constants";
@@ -87,9 +87,9 @@ class SectionContent extends React.Component {
         <Link
           className="CloseButton"
           title="Back to the issue list"
-          to={this.props.backLink()}
+          href={this.props.backLink()}
         >
-          &times;
+          <a>&times;</a>
         </Link>
         {this.state.sectionContent.title && (
           <h3>{this.state.sectionContent.title}</h3>

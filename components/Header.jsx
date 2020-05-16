@@ -1,8 +1,10 @@
 import GithubCorner from "react-github-corner";
 import { IoMdPaper } from "react-icons/io";
 import React from "react";
+import { useRouter } from 'next/router';
 
 const Header = function() {
+  const router = useRouter();
   return (
     <>
       <GithubCorner
@@ -38,7 +40,7 @@ const Header = function() {
                 type="hidden"
                 name="item_number"
                 defaultValue={`Archives Site - From Header in Page: ${
-                  window.location.href
+                  router.pathname
                 }`}
               />
               <input type="hidden" name="currency_code" defaultValue="USD" />

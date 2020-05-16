@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import moment from "moment";
 import Loading from "./components/Loading";
 import { fetchMetadata, isMonthInMetaData } from "../helpers/papers";
@@ -47,7 +47,7 @@ class AllYearView extends React.Component {
                 title={dateMoment.format("MMMM YYYY")}
                 className="EachMonthLink"
               >
-                {moment.monthsShort(month)}
+                <a>{moment.monthsShort(month)}</a>
               </Link>
             ) : (
               <span className="EachMonthNoLink">

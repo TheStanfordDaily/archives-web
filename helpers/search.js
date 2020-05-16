@@ -78,11 +78,3 @@ export function getCloudsearchURL(formData) {
     return STRINGS.ROUTE_CLOUDSEARCH_PREFIX + "?" + queryString.stringify(formData);
 }
 
-export function sendCloudsearchFromForm(event, history) {
-    const searchKeyword = event.target.elements.searchKeyword.value;
-    if (searchKeyword) {
-        history.push(getCloudsearchURL({ article_text: searchKeyword }));
-    }
-    event.preventDefault();
-}
-

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import NotFound from "./NotFound";
@@ -11,8 +11,7 @@ import {
   getMonthEventsFromMetadata
 } from "../helpers/papers";
 import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
-
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import Router from "next/router";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -74,7 +73,8 @@ class CalendarView extends React.Component {
         <div className="CalendarTitle">
           <div className="CalendarTitleLeft">
             <span className="CalendarNavigationButton CalendarNavigationBackButton">
-              <Link to={STRINGS.ROUTE_CALENDAR}>View All Years</Link>
+              <Link href={STRINGS.ROUTE_CALENDAR}>
+                <a>View All Years</a></Link>
             </span>
           </div>
           <div className="CalendarTitleCenter">
@@ -106,10 +106,10 @@ class CalendarView extends React.Component {
               event: ({ event }) => {
                 return (
                   <Link
-                    to={getDatePath(event.start)}
+                    href={getDatePath(event.start)}
                     title={moment(event.start).format("MMMM D, YYYY")}
                   >
-                    {event.title}
+                    <a>{event.title}</a>
                   </Link>
                 );
               },
@@ -133,7 +133,7 @@ class CalendarView extends React.Component {
   }
 
   goToNewDate(newDate) {
-    this.props.history.push(getMonthPath(newDate));
+    Router.push(getMonthPath(newDate));
   }
 }
 

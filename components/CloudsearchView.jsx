@@ -1,5 +1,3 @@
-import "rc-pagination/assets/index.css";
-
 import { DEFAULTS_FORM_DATA, createCloudsearchQuery, getCloudsearchURL } from "../helpers/search";
 import { STRINGS, getDatePath } from "../helpers/constants";
 
@@ -12,6 +10,8 @@ import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
 import queryString from "query-string";
+import { withRouter } from "next/router";
+import Router from "next/router";
 
 class CloudsearchView extends React.Component {
   constructor(props) {
@@ -32,15 +32,15 @@ class CloudsearchView extends React.Component {
 
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
-    if (this.props.location.search !== prevProps.location.search) {
+    if (this.props.router.asPath !== prevProps.router.asPath) {
       this.startSearchFromQuery();
     }
   }
 
   startSearchFromQuery() {
-    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = queryString.parse(
-      window.location.search
-    );
+    // TODO: we can't use this.props.router.query because it's empty here -- is this a bug?
+    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = queryString.parse(this.props.router.asPath.split("?")[1]);
+    console.log(queryString.parse(this.props.router.asPath.split("?")[1]));
     // https://stackoverflow.com/a/4564199/2603230
     year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
     year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
@@ -192,7 +192,7 @@ class CloudsearchView extends React.Component {
           onChange={(current, pageSize) => {
             let newFormData = this.state.formData;
             newFormData.page = current;
-            this.props.history.push(getCloudsearchURL(newFormData));
+            Router.push(getCloudsearchURL(newFormData));
           }}
         />
         {/* TODO: add number per page with `select` (10/20/50/100/500) and a `checkbox` to display/hide article content here */}
@@ -210,7 +210,7 @@ class CloudsearchView extends React.Component {
             onSubmit={e => {
               let formData = e.formData;
               formData.page = 1;  // Reset the results to the first page.
-              this.props.history.push(getCloudsearchURL(formData));
+              Router.push(getCloudsearchURL(formData));
             }}
           >
             <button
@@ -272,7 +272,7 @@ class CloudsearchView extends React.Component {
 
     if(!searchQuery){
       alert("error in search query!");
-      this.props.history.push(getCloudsearchURL(DEFAULTS_FORM_DATA));
+      Router.push(getCloudsearchURL(DEFAULTS_FORM_DATA));
       return;
     }
 
@@ -331,4 +331,4 @@ class CloudsearchView extends React.Component {
   }
 }
  
-export default CloudsearchView;
+export default withRouter(CloudsearchView);
