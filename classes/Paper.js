@@ -5,11 +5,17 @@ import fetch from "cross-fetch";
 import parseXML from "../helpers/parseXML";
 
 class Paper {
-  constructor(year, month, day, folderPath, metsFilePath) {
+  constructor(year, month, day, folderPath, metsFilePath, prefetchedPages=null) {
     // The argument monthIndex is 0-based. Hence the `-1`.
     this.date = new Date(year, month - 1, day);
     this.folderPath = folderPath;
     this.metsFilePath = metsFilePath;
+    this.prefetchedPages = prefetchedPages;
+  }
+
+  async fetchPages() {
+    this.prefetchedPages = await fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath).then(e => e.text());
+    return this.prefetchedPages;
   }
 
   async getPages() {
@@ -19,7 +25,7 @@ class Paper {
 
     this.pages = [];
 
-    let xmlResults = await fetch(STRINGS.FILE_SERVER_URL + this.folderPath + this.metsFilePath).then(e => e.text()).then(e => parseXML(e));
+    let xmlResults = parseXML(this.prefetchedPages || await this.fetchPages());
 
     let altoFiles = xmlResults.querySelector("fileGrp[ID='ALTOGRP']").children;
     //console.log(altoFiles);

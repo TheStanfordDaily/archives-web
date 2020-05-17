@@ -1,8 +1,3 @@
-import dynamic from 'next/dynamic';
+import PaperView from "../../../../components/PaperView";
 
-const DynamicPaperViewNoSSR = dynamic(
-  () => import("../../../../components/PaperView"),
-  { ssr: false }
-);
-
-export default () => (<DynamicPaperViewNoSSR />);
+export default PaperView;

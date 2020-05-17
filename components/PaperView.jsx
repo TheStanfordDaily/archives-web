@@ -16,6 +16,7 @@ import {
   getMonthPath
 } from "../helpers/constants";
 import Router, { withRouter } from "next/router";
+import Paper from "../classes/Paper";
 
 const navigationType = {
   ISSUE: "issue",
@@ -75,31 +76,36 @@ class PaperView extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    /*const path = require('path');
-
-    var openseadragonImagesFolderPath = path.join(
-      path.dirname(require.resolve('openseadragon')),
-      "./images/"
-    );
-    console.log(openseadragonImagesFolderPath);*/
-
-    //let paper = new Paper(1920, 10, 1, "data.2012-aug/data/stanford/1920/10/01_01/", "Stanford_Daily_19201001_0001-METS.xml");
-    //let allPapers = await fetchAllPapers();
-    //let paper = allPapers[10000];
-    let matchParams = this.props.router.query;
-    this.paper = await fetchPaper(
+  static async getInitialProps(param) {
+    let matchParams = param.query;
+    const paper = await fetchPaper(
       matchParams.year,
       matchParams.month,
       matchParams.day
     );
+    paper && await paper.fetchPages(); //paper.getPages();
+
+    // TODO: prefetch alto data
+    // let pageNumber = Number(param.query.page);
+    // // `goToPage` is 0-indexed.
+    // let pageIndex = pageNumber - 1;
+
+    // let thisPage = this.allPages[pageIndex];
+    //   console.log(thisPage.sections);
+    //   thisPage.getAltoData()
+    return { paper };
+  }
+
+  async componentDidMount() {
+    const { date, folderPath, metsFilePath, prefetchedPages } = this.props.paper;
+    // hardcode date for now so it can be manually set with this.paper.date
+    this.paper = new Paper(1, 1, 2000, folderPath, metsFilePath, prefetchedPages);
+    this.paper.date = date;
+    this.allPages = this.paper && await this.paper.getPages();
     if (this.paper === null) {
       this.setState({ paperNotFound: true });
       return;
     }
-
-    this.allPages = await this.paper.getPages();
-    console.log(this.allPages);
 
     var allTileSources = [];
     for (let eachPage of this.allPages) {
