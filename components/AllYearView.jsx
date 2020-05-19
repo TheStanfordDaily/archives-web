@@ -24,9 +24,6 @@ class AllYearView extends React.Component {
     const { allPapers } = this.props;
     const allYears = Object.keys(allPapers);
 
-    console.log(allYears[0]);
-    console.log(allYears[allYears.length - 1]);
-
     // https://stackoverflow.com/q/22876978/2603230
     let yearElements = [];
     for (
@@ -42,10 +39,9 @@ class AllYearView extends React.Component {
             {isMonthInMetaData(allPapers, dateMoment) ? (
               <Link
                 href={getMonthPath(dateMoment)}
-                title={dateMoment.format("MMMM YYYY")}
-                className="EachMonthLink"
               >
-                <a>{moment.monthsShort(month)}</a>
+                <a title={dateMoment.format("MMMM YYYY")}
+                className="EachMonthLink">{moment.monthsShort(month)}</a>
               </Link>
             ) : (
               <span className="EachMonthNoLink">
