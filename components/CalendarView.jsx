@@ -16,22 +16,26 @@ import Router, { withRouter } from "next/router";
 const localizer = BigCalendar.momentLocalizer(moment);
 
 class CalendarView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { loading: true, allPapers: [] };
+
+  static async getInitialProps() {
+    let allPapers = await fetchMetadata();
+    return {allPapers};
   }
 
-  async componentDidMount() {
-    let allPapers = await fetchMetadata();
-    this.setState({ allPapers: allPapers, loading: false });
+  componentDidMount() {
+    let yearString = this.props.router.query.year;
+    let monthString = this.props.router.query.month;
+    let thisMonth = moment({
+      year: Number(yearString),
+      month: Number(monthString) - 1
+    });
+    document.title = thisMonth.format("MMMM YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
   }
 
   componentWillUnmount() {}
 
   render() {
-    if (this.state.loading) {
-      return <Loading />;
-    }
+    const { allPapers } = this.props;
 
     let yearString = this.props.router.query.year;
     let monthString = this.props.router.query.month;
@@ -39,30 +43,28 @@ class CalendarView extends React.Component {
       year: Number(yearString),
       month: Number(monthString) - 1
     });
-
-    document.title =
-      thisMonth.format("MMMM YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
+  
 
     if (!thisMonth.isValid()) {
       return <NotFound />;
     }
 
-    let calendarNotFound = !isMonthInMetaData(this.state.allPapers, thisMonth);
+    let calendarNotFound = !isMonthInMetaData(allPapers, thisMonth);
 
     let allEvents = [];
     if (!calendarNotFound) {
       allEvents = allEvents.concat(
         getMonthEventsFromMetadata(
-          this.state.allPapers,
+          allPapers,
           thisMonth.clone().subtract(1, "months")
         )
       );
       allEvents = allEvents.concat(
-        getMonthEventsFromMetadata(this.state.allPapers, thisMonth.clone())
+        getMonthEventsFromMetadata(allPapers, thisMonth.clone())
       );
       allEvents = allEvents.concat(
         getMonthEventsFromMetadata(
-          this.state.allPapers,
+          allPapers,
           thisMonth.clone().add(1, "months")
         )
       );
