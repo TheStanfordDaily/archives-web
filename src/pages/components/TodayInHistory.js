@@ -109,6 +109,7 @@ class TodayPaperView extends React.Component {
                 { this.state.yearsLeft.length > 0 ?
                 <div>
                     <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} style={{position: 'relative'}} >
+                    {/*note: height is calculated s.t. entire paper fits into the openseadragon component. this.ourRef.clientWidth / window.innerWidth is needed b/c the width of component is not width of window */}
                         <div className="PaperSection" id="paper-openseadragon" style={{ height: 100*(this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth / window.innerWidth: 1)) + "vw", width: '100%' }} />
                     </div>
                 </div>

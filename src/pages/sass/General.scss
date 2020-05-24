@@ -33,23 +33,6 @@ a {
   }
 }
 
-.fakeA {
-  color: $color__link;
-  text-decoration: none;
-
-  &:hover,
-  &:focus,
-  &:active {
-    color: $color__link-hover;
-    text-decoration: underline;
-  }
-  &:hover,
-  &:active {
-    outline: 0;
-  }
-  cursor:pointer;
-}
-
 mark {
   background: $color__sun;
 }
