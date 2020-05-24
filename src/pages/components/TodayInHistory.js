@@ -48,6 +48,7 @@ class TodayPaperView extends React.Component {
             this.setState({yearsLeft: newYearsLeft});
 
             this.state.matchParams = {year: year, month: date.format('MM'), day: date.format('DD')};
+            console.log(this.state.matchParams);
             this.paper = await fetchPaper(
                 this.state.matchParams.year,
                 this.state.matchParams.month,
@@ -74,7 +75,7 @@ class TodayPaperView extends React.Component {
                 prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
                 preserveViewport: true,
                 visibilityRatio: 0.75,
-                defaultZoomLevel: .95,
+                defaultZoomLevel: 1,
                 sequenceMode: true,
                 showReferenceStrip: false,
                 showNavigator: true,
@@ -110,23 +111,22 @@ class TodayPaperView extends React.Component {
                     <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} style={{position: 'relative'}} >
                         <div className="PaperSection" id="paper-openseadragon" style={{ height: 100*(this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth / window.innerWidth: 1)) + "vw", width: '100%' }} />
                     </div>
-                    <div className="row">
-                        <div style={{padding: '10px'}}>
-                            <Link
-                                to={getDatePath(new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${this.state.matchParams.day}`))}
-                            >
-                                Go to this paper's page
-                            </Link>
-                        </div>
-                        {/* <div style={{padding: '10px'}}>
-                            <p className='fakeA' onClick={() => {this.getNewPaper()}}>Get another page from today</p>
-                        </div> */}
-                    </div>
                 </div>
                 :
-                <p>Congratulations--you've viewed all papers from today!</p> 
+                <p>There are no papers from today!</p> 
                 }
+                <div style={{width: '100%', padding: '10px'}}>
+                    <p>
+                    Today's paper is from {this.state.matchParams.month}/{this.state.matchParams.day}/{this.state.matchParams.year}. {moment().format('DD') !== this.state.matchParams.day ? `(no papers published on this day, so we selected the nearest match)` : ' '}
+                    <Link
+                        to={getDatePath((new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${String(Number(this.state.matchParams.day) + 1).padStart(2, '0')}`)))}
+                    >
+                        Go to this paper's page
+                    </Link>
+                    </p>
+                </div>
             </div>
+            
         );
     }
 }
