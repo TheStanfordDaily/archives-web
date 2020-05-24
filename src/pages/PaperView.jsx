@@ -1,21 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import interact from "interactjs";
-import OpenSeadragon from "openseadragon";
-import moment from "moment";
-import queryString from "query-string";
-import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
-import NotFound from "./NotFound";
-import Loading from "./components/Loading";
-import SectionContent from "./components/SectionContent";
-import { fetchPaper } from "../helpers/papers";
-import { castArray } from "../helpers/util";
 import {
   INTERNAL,
-  getDateTitle,
   getDatePath,
+  getDateTitle,
   getMonthPath
 } from "../helpers/constants";
+import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
+
+import { Link } from "react-router-dom";
+import Loading from "./components/Loading";
+import NotFound from "./NotFound";
+import OpenSeadragon from "openseadragon";
+import React from "react";
+import SectionContent from "./components/SectionContent";
+import { castArray } from "../helpers/util";
+import { fetchPaper } from "../helpers/papers";
+import interact from "interactjs";
+import moment from "moment";
+import queryString from "query-string";
 
 const navigationType = {
   ISSUE: "issue",
@@ -50,6 +51,7 @@ class PaperView extends React.Component {
     //let allPapers = await fetchAllPapers();
     //let paper = allPapers[10000];
     let matchParams = this.props.match.params;
+    console.log(this.props);
     this.paper = await fetchPaper(
       matchParams.year,
       matchParams.month,

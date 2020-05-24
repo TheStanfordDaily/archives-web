@@ -26,7 +26,18 @@ function add_and_lucene_nested_string(lucene_string, string){
 function add_or_lucene_string(lucene_string, key, val){
     return ` ${lucene_string.length > 0 ? 'OR' : ''} ${key}:${val}`; 
 }
-  
+
+// // randomly selects a year, and returns the query url for that year.
+// export function getTodayInHistoryQuery(possibleYears){
+
+//     try {
+//         let lucene_string = "";
+//         lucene_string += publish_date
+//     } catch(error){
+//         return undefined;
+//     }
+// }
+
 export function createCloudsearchQuery(query){
     try {
         let lucene_string = "";
