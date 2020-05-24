@@ -17,13 +17,12 @@ import moment from "moment";
 const localizer = momentLocalizer(moment);
 
 class CalendarView extends React.Component {
-
-  static async getInitialProps() {
-    let allPapers = await fetchMetadata();
-    return {allPapers};
+  constructor(props) {
+    super(props);
+    this.state = { loading: true, allPapers: [] };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let yearString = this.props.router.query.year;
     let monthString = this.props.router.query.month;
     let thisMonth = moment({
@@ -31,12 +30,18 @@ class CalendarView extends React.Component {
       month: Number(monthString) - 1
     });
     document.title = thisMonth.format("MMMM YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
+
+    let allPapers = await fetchMetadata();
+    this.setState({allPapers, loading: false});
   }
 
   componentWillUnmount() {}
 
   render() {
-    const { allPapers } = this.props;
+    const { allPapers, loading } = this.state;
+    if (loading) {
+      return <Loading />;
+    }
 
     let yearString = this.props.router.query.year;
     let monthString = this.props.router.query.month;
@@ -110,7 +115,6 @@ class CalendarView extends React.Component {
                 return (
                   <Link
                     href={getDatePath(event.start)}
-                    title={moment(event.start).format("MMMM D, YYYY")}
                   >
                     <a>{event.title}</a>
                   </Link>

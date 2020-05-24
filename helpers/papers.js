@@ -1,7 +1,7 @@
-import moment from 'moment'
 import Paper from '../classes/Paper';
 import { STRINGS } from '../helpers/constants';
 import fetch from "cross-fetch";
+import moment from 'moment'
 
 export async function fetchMetadata() {
   let allPapers = await fetch(STRINGS.FILE_SERVER_URL + "metadata.json").then(e => e.json());
@@ -57,7 +57,7 @@ export async function fetchAllPapers() {
       }
     }
   }
-  console.log(results);
+  // console.log(results);
   return results;
 }
 
@@ -80,7 +80,7 @@ export function getMonthEventsFromMetadata(metadata, month) {
     //console.log(eachEvent);
     allEvents.push(eachEvent);
   }
-  console.log(allEvents);
+  // console.log(allEvents);
   return allEvents;
 }
 

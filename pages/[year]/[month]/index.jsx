@@ -1,3 +1,6 @@
-import CalendarView from "../../../components/CalendarView";
+import dynamic from 'next/dynamic';
 
-export default CalendarView;
+const DynamicComponent = dynamic(() => import('../../../components/CalendarView'),
+{ ssr: false });
+
+export default DynamicComponent; 
