@@ -67,7 +67,7 @@ class TodayPaperView extends React.Component {
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
             preserveViewport: true,
             visibilityRatio: 0.75,
-            defaultZoomLevel: 1,
+            defaultZoomLevel: .95,
             sequenceMode: true,
             showReferenceStrip: false,
             showNavigator: true,
@@ -98,13 +98,8 @@ class TodayPaperView extends React.Component {
         console.log(this.state.height, this.state.width, this.state.height / this.state.width * window.screen.width, window.screen.width);
 
         return (
-            <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} >
-                <div className="NavigationSection" style={{ flexBasis: 0 + "%" }}>
-                    <div className="PaperNavigationItems">
-                        <div style={{height: (this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth : window.screen.width)) + "px"}} />   
-                    </div>
-                </div>
-                <div className="PaperSection" id="paper-openseadragon" style={{ flexBasis: '100%' }} />
+            <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} style={{position: 'relative'}} >
+                <div className="PaperSection" id="paper-openseadragon" style={{ height: 100*(this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth / window.screen.width: 1)) + "vw", width: '100%' }} />
             </div>
         );
     }
@@ -113,7 +108,7 @@ class TodayPaperView extends React.Component {
   
 const TodayInHistory = () => {
     // today in history doesn't display properly for smaller windows.
-    return (window.innerWidth > 700 &&
+    return (
     <div style={{textAlign: 'center', marginTop: '20px'}}>
         <h2>Today in History</h2>
         <TodayPaperView />
