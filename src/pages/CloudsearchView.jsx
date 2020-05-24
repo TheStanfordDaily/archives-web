@@ -230,6 +230,7 @@ class CloudsearchView extends React.Component {
           onChange={(current, pageSize) => {
             let newFormData = this.state.formData;
             newFormData.page = current;
+            console.log(newFormData);
             this.props.history.push(getCloudsearchURL(newFormData));
           }}
         />

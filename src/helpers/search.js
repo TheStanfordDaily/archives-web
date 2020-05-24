@@ -74,7 +74,6 @@ export function createCloudsearchQuery(query){
         }else if(query.sort === 'date (ascending)'){
             query_obj = {...query_obj, "sort": "publish_date asc"}
         }
-
         return queryString.stringify(query_obj);
     } catch(error){
         return undefined;
