@@ -1,3 +1,6 @@
-import AllYearView from "../components/AllYearView";
+import dynamic from 'next/dynamic';
 
-export default AllYearView;
+const DynamicComponent = dynamic(() => import('../components/AllYearView'),
+{ ssr: false });
+
+export default DynamicComponent;

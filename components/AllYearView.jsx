@@ -8,20 +8,20 @@ import { STRINGS, getMonthPath } from "../helpers/constants";
 class AllYearView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { allPapers: [] };
+    this.state = { loading: true, allPapers: [] };
   }
 
   async componentDidMount() {
     document.title = "Calendar" + STRINGS.SITE_NAME_WITH_DIVIDER;
-  }
-
-  static async getInitialProps() {
     let allPapers = await fetchMetadata();
-    return {allPapers};
+    this.setState({allPapers, loading: false});
   }
 
   render() {
-    const { allPapers } = this.props;
+    const { allPapers, loading } = this.state;
+    if (loading) {
+      return <Loading />;
+    }
     const allYears = Object.keys(allPapers);
 
     // https://stackoverflow.com/q/22876978/2603230
