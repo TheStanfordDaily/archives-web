@@ -2,8 +2,8 @@
   "name": "v45shx7-41x9ebh",
   "arn": "arn:aws:iam::607998788272:role/v45shx7-41x9ebh",
   "service": [
-    "lambda.amazonaws.com",
-    "edgelambda.amazonaws.com"
+    "edgelambda.amazonaws.com",
+    "lambda.amazonaws.com"
   ],
   "policy": {
     "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
