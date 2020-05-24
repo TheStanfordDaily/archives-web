@@ -373,7 +373,7 @@ class PaperView extends React.Component {
   scrollToPageNumber() {
     let queryValue = getQueryString(this.props.router);
     let pageNumber = Number(queryValue.page);
-    let articleListEle = document.querySelector("#page-" + pageNumber);
+    let articleListEle = document && document.querySelector("#page-" + pageNumber);
     if (articleListEle) {
       articleListEle.scrollIntoView();
     }
