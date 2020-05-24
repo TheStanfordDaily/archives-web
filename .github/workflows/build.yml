@@ -15,4 +15,5 @@ jobs:
         key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
     - run: yarn install
     # - run: CI=true yarn test
+    - run: yarn next --version
     - run: yarn build
