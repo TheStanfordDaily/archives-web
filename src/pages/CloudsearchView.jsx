@@ -38,7 +38,7 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { article_text, author, title, article_type_article, article_type_advertisement, start_date, end_date, page, pagelen, author_title } = queryString.parse(
+    let { article_text, author, title, article_type_article, article_type_advertisement, start_date, end_date, page, pagelen, author_title, sort } = queryString.parse(
       window.location.search
     );
     // https://stackoverflow.com/a/4564199/2603230
@@ -61,11 +61,23 @@ class CloudsearchView extends React.Component {
         article_type_article,
         article_type_advertisement,
         author_title,
+        sort,
       }
     });
 
     document.title =
-      "Search results for " + article_text + STRINGS.SITE_NAME_WITH_DIVIDER;
+      "Search results for " + 
+      (
+           article_text 
+        || title 
+        || author 
+        || author_title 
+        || `${start_date} to ${end_date}` 
+        || ((article_type_article ? 'articles' : '') 
+            + ((article_type_article && article_type_advertisement) ? ' and ' : '') 
+            + (article_type_advertisement ? 'advertisements' : ''))
+      )
+        + STRINGS.SITE_NAME_WITH_DIVIDER;
     // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
     this.searchFor({
       article_text,
@@ -78,6 +90,7 @@ class CloudsearchView extends React.Component {
       article_type_article,
       article_type_advertisement,
       author_title,
+      sort,
     });
   }
 
@@ -135,6 +148,11 @@ class CloudsearchView extends React.Component {
           title: " Advertisements",
           type: "boolean",
           default: DEFAULTS_FORM_DATA.article_type_advertisement,
+        },
+        sort: {
+          title: "Sort by",
+          enum: ['relevance', 'date (descending)', 'date (ascending)', ],
+          default: DEFAULTS_FORM_DATA.sort,
         },
         /** Hidden properties **/
         page: {
@@ -276,6 +294,7 @@ class CloudsearchView extends React.Component {
     article_type_article,
     article_type_advertisement,
     author_title,
+    sort,
   }) {      
     const searchQuery = createCloudsearchQuery({ 
       article_text: article_text, 
@@ -289,6 +308,7 @@ class CloudsearchView extends React.Component {
       article_type_article: article_type_article,
       article_type_advertisement: article_type_advertisement,
       author_title: author_title,
+      sort: sort,
     });
 
     if(!searchQuery){
@@ -301,7 +321,6 @@ class CloudsearchView extends React.Component {
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
       searchQuery;
-    console.log(searchQuery);
     fetch(serverSearchURL)
     .then(e => e.json())
     .then(e => {

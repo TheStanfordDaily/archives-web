@@ -13,6 +13,7 @@ export const DEFAULTS_FORM_DATA = {
     article_type_article: true,
     article_type_advertisement: true,
     author_title: undefined,
+    sort: 'relevance',
   };
   
 function add_and_lucene_string(lucene_string, key, val){
@@ -68,8 +69,11 @@ export function createCloudsearchQuery(query){
         if(query.highlight === 'article_text'){
             query_obj = {...query_obj, "highlight.article_text": "{format:'html',max_phrases:5}"};
         }
-
-        console.log(query_obj);
+        if(query.sort === 'date (descending)'){
+            query_obj = {...query_obj, "sort": "publish_date desc"}
+        }else if(query.sort === 'date (ascending)'){
+            query_obj = {...query_obj, "sort": "publish_date asc"}
+        }
         return queryString.stringify(query_obj);
     } catch(error){
         return undefined;
