@@ -1,19 +1,20 @@
-import React from "react";
-import Link from "next/link";
-import BigCalendar from "react-big-calendar";
-import moment from "moment";
-import NotFound from "./NotFound";
-import Loading from "./components/Loading";
-import CalendarNotFoundComponent from "./components/CalendarNotFoundComponent";
+import {Calendar, momentLocalizer} from "react-big-calendar";
+import Router, { withRouter } from "next/router";
+import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
 import {
   fetchMetadata,
-  isMonthInMetaData,
-  getMonthEventsFromMetadata
+  getMonthEventsFromMetadata,
+  isMonthInMetaData
 } from "../helpers/papers";
-import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
-import Router, { withRouter } from "next/router";
 
-const localizer = BigCalendar.momentLocalizer(moment);
+import CalendarNotFoundComponent from "./components/CalendarNotFoundComponent";
+import Link from "next/link";
+import Loading from "./components/Loading";
+import NotFound from "./NotFound";
+import React from "react";
+import moment from "moment";
+
+const localizer = momentLocalizer(moment);
 
 class CalendarView extends React.Component {
 
@@ -93,7 +94,7 @@ class CalendarView extends React.Component {
           <div className="CalendarTitleRight">{/* Nothing here yet. */}</div>
         </div>
         <div className="CalendarContent">
-          <BigCalendar
+          <Calendar
             ref={calendar => {
               this.calendar = calendar;
             }}
