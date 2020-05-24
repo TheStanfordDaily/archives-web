@@ -4,8 +4,8 @@ import queryString from "query-string";
 
 export const DEFAULTS_FORM_DATA = {
     article_text: "",
-    year_start: 1892,
-    year_end: 2014,
+    start_date: "1892-09-19",
+    end_date: "2014-06-13",
     page: 1,
     pagelen: 20,
     author: undefined,
@@ -47,8 +47,8 @@ export function createCloudsearchQuery(query){
         if(query.author){
             lucene_string += add_and_lucene_string(lucene_string, 'author', '"' + query.author + '"');
         }
-        if(query.year_start && query.year_end){
-            lucene_string += add_and_lucene_string(lucene_string, 'publish_date', `[${query.year_start}-01-01T12:00:00Z TO ${query.year_end+1}-01-02T12:00:00Z]`);
+        if(query.start_date && query.end_date){
+            lucene_string += add_and_lucene_string(lucene_string, 'publish_date', `[${query.start_date}T00:00:00Z TO ${query.end_date}T23:59:59Z]`);
         }
         if(query.title){
             lucene_string += add_and_lucene_string(lucene_string, 'title', '"' + query.title + '"');
@@ -79,6 +79,8 @@ export function createCloudsearchQuery(query){
         if(query.highlight === 'article_text'){
             query_obj = {...query_obj, "highlight.article_text": "{format:'html',max_phrases:5}"};
         }
+
+        console.log(query_obj);
         return queryString.stringify(query_obj);
     } catch(error){
         return undefined;
