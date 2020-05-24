@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import NotFound from "../NotFound";
 import OpenSeadragon from "openseadragon";
 import React from 'react';
 import { fetchPaper } from "../../helpers/papers";
+import { getDatePath } from "../../helpers/constants";
 import moment from "moment";
 
 const navigationType = {
@@ -13,6 +15,10 @@ const navigationType = {
 class TodayPaperView extends React.Component {
     constructor(props) {
         super(props);
+        let yearsLeft = [];
+        for(let i = 1892; i <= 2014; i++){
+            yearsLeft.push(i);
+        }
         this.state = {
             paperNotFound: false,
             loading: true,
@@ -21,31 +27,31 @@ class TodayPaperView extends React.Component {
             customNavigationWidth: false,
             width: 1, // it's the ratio of width to height that matters 
             height: 1,  // also these values will be overridden (unless no article can be found for the current day, which shouldn't happen)
+            yearsLeft: yearsLeft,
+            yearsHistory: [],
+            matchParams: null,
         };
     }
 
     async componentDidMount() {
         let date = moment();
 
-        let yearsLeft = [];
-        for(let i = 1892; i <= 2014; i++){
-            yearsLeft.push(i);
-        }
-
         // get an available paper
         while(!this.paper){
-            if(yearsLeft.length === 0){
+            if(this.state.yearsLeft.length === 0){
                 break;
             }
-            let yearIndex = Math.floor(Math.random() * yearsLeft.length)
-            let year = yearsLeft[yearIndex];
-            yearsLeft.splice(yearIndex, 1);
+            let yearIndex = Math.floor(Math.random() * this.state.yearsLeft.length)
+            let year = this.state.yearsLeft[yearIndex];
+            let newYearsLeft=  [...this.state.yearsLeft];
+            newYearsLeft.splice(yearIndex, 1);
+            this.setState({yearsLeft: newYearsLeft});
 
-            let matchParams = {year: year, month: date.format('MM'), day: date.format('DD')};
+            this.state.matchParams = {year: year, month: date.format('MM'), day: date.format('DD')};
             this.paper = await fetchPaper(
-                matchParams.year,
-                matchParams.month,
-                matchParams.day
+                this.state.matchParams.year,
+                this.state.matchParams.month,
+                this.state.matchParams.day
             );
         }
 
@@ -62,28 +68,30 @@ class TodayPaperView extends React.Component {
         }
         this.setState({ loading: false });
 
-        let viewer = new OpenSeadragon({
-            id: "paper-openseadragon",
-            prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
-            preserveViewport: true,
-            visibilityRatio: 0.75,
-            defaultZoomLevel: .95,
-            sequenceMode: true,
-            showReferenceStrip: false,
-            showNavigator: true,
-            tileSources: allTileSources
-        });
+        if(this.state.yearsLeft.length > 0){
+            let viewer = new OpenSeadragon({
+                id: "paper-openseadragon",
+                prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
+                preserveViewport: true,
+                visibilityRatio: 0.75,
+                defaultZoomLevel: .95,
+                sequenceMode: true,
+                showReferenceStrip: false,
+                showNavigator: true,
+                tileSources: allTileSources
+            });
 
-        viewer.addHandler('open', () => {
-            if(viewer){
-                this.setState({
-                    width: (viewer.world.getItemAt(0).source.dimensions.x / window.devicePixelRatio),
-                    height: (viewer.world.getItemAt(0).source.dimensions.y / window.devicePixelRatio)
-                });
-            }
-        });
+            viewer.addHandler('open', () => {
+                if(viewer){
+                    this.setState({
+                        width: (viewer.world.getItemAt(0).source.dimensions.x / window.devicePixelRatio),
+                        height: (viewer.world.getItemAt(0).source.dimensions.y / window.devicePixelRatio)
+                    });
+                }
+            });
 
-        this.viewer = viewer;
+            this.viewer = viewer;
+        }
     }
 
     render() {
@@ -95,16 +103,33 @@ class TodayPaperView extends React.Component {
             return <Loading />;
         }
 
-        console.log(this.state.height, this.state.width, this.state.height / this.state.width * window.screen.width, window.screen.width);
-
         return (
-            <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} style={{position: 'relative'}} >
-                <div className="PaperSection" id="paper-openseadragon" style={{ height: 100*(this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth / window.screen.width: 1)) + "vw", width: '100%' }} />
+            <div>
+                { this.state.yearsLeft.length > 0 ?
+                <div>
+                    <div className="PaperMainView" ref={ourRef => {this.ourRef = ourRef;}} style={{position: 'relative'}} >
+                        <div className="PaperSection" id="paper-openseadragon" style={{ height: 100*(this.state.height / this.state.width * (this.ourRef ? this.ourRef.clientWidth / window.innerWidth: 1)) + "vw", width: '100%' }} />
+                    </div>
+                    <div className="row">
+                        <div style={{padding: '10px'}}>
+                            <Link
+                                to={getDatePath(new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${this.state.matchParams.day}`))}
+                            >
+                                Go to this paper's page
+                            </Link>
+                        </div>
+                        {/* <div style={{padding: '10px'}}>
+                            <p className='fakeA' onClick={() => {this.getNewPaper()}}>Get another page from today</p>
+                        </div> */}
+                    </div>
+                </div>
+                :
+                <p>Congratulations--you've viewed all papers from today!</p> 
+                }
             </div>
         );
     }
 }
-  
   
 const TodayInHistory = () => {
     // today in history doesn't display properly for smaller windows.
