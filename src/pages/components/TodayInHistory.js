@@ -109,7 +109,7 @@ class TodayPaperView extends React.Component {
 const TodayInHistory = () => {
     // today in history doesn't display properly for smaller windows.
     return (
-    <div style={{textAlign: 'center', marginTop: '20px'}}>
+    <div style={{textAlign: 'center'}}>
         <h2>Today in History</h2>
         <TodayPaperView />
     </div> );
