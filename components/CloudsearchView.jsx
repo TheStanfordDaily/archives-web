@@ -39,11 +39,10 @@ class CloudsearchView extends React.Component {
   }
 
   startSearchFromQuery() {
-    let { article_text, author, title, article_type_article, article_type_advertisement, year_start, year_end, page, pagelen, author_title } = getQueryString(this.props.router);
-    console.log(queryString.parse(this.props.router.asPath.split("?")[1]));
+    let { article_text, author, title, article_type_article, article_type_advertisement, start_date, end_date, page, pagelen, author_title, sort } = getQueryString(this.props.router);
     // https://stackoverflow.com/a/4564199/2603230
-    year_start = Number(year_start) || DEFAULTS_FORM_DATA.year_start;
-    year_end = Number(year_end) || DEFAULTS_FORM_DATA.year_end;
+    start_date = start_date || DEFAULTS_FORM_DATA.start_date;
+    end_date = end_date || DEFAULTS_FORM_DATA.end_date;
     page = Number(page) || DEFAULTS_FORM_DATA.page;
     pagelen = Number(pagelen) || DEFAULTS_FORM_DATA.pagelen;
     article_type_article = article_type_article ? article_type_article === 'true' : DEFAULTS_FORM_DATA.article_type_article;
@@ -52,8 +51,8 @@ class CloudsearchView extends React.Component {
       loading: true,
       formData: {
         article_text,
-        year_start,
-        year_end,
+        start_date,
+        end_date,
         page,
         pagelen,
         author,
@@ -61,16 +60,28 @@ class CloudsearchView extends React.Component {
         article_type_article,
         article_type_advertisement,
         author_title,
+        sort,
       }
     });
 
     document.title =
-      "Search results for " + article_text + STRINGS.SITE_NAME_WITH_DIVIDER;
+      "Search results for " + 
+      (
+           article_text 
+        || title 
+        || author 
+        || author_title 
+        || `${start_date} to ${end_date}` 
+        || ((article_type_article ? 'articles' : '') 
+            + ((article_type_article && article_type_advertisement) ? ' and ' : '') 
+            + (article_type_advertisement ? 'advertisements' : ''))
+      )
+        + STRINGS.SITE_NAME_WITH_DIVIDER;
     // TODO: make sure `page` (x>=1) and `pagelen` (1<=x<=1000) is number and within the acceptable range.
     this.searchFor({
       article_text,
-      year_start,
-      year_end,
+      start_date,
+      end_date,
       resultsPerPage: pagelen,
       pageNumber: page,
       author,
@@ -78,12 +89,11 @@ class CloudsearchView extends React.Component {
       article_type_article,
       article_type_advertisement,
       author_title,
+      sort,
     });
   }
 
   render() {
-    const range = Array.from({ length: 2014 - 1892 + 1 }, (x, i) => i + 1892);
-
     const schema = {
       type: "object",
       required: [],
@@ -116,17 +126,17 @@ class CloudsearchView extends React.Component {
           'AP SPORTS WRITER', 'AP BASEBALL WRITER', 'WEEKLY COLUMNIST', 'HEALTH COLUMNIST', 'ASSOCIATED EDITOR',
           'ASSOCIATE EDITOR', 'SPORTS EDITOR', 'EDITOR THE DAILY', ],
         },
-        year_start: {
+        start_date: {
           title: "From",
-          type: "number",
-          enum: range,
-          default: DEFAULTS_FORM_DATA.year_start
+          type: "string",
+          format: "date",
+          default: DEFAULTS_FORM_DATA.start_date,
         },
-        year_end: {
+        end_date: {
           title: "To",
-          type: "number",
-          enum: range,
-          default: DEFAULTS_FORM_DATA.year_end
+          type: "string",
+          format: "date",
+          default:  DEFAULTS_FORM_DATA.end_date,
         },
         article_type_article: {
           title: " Articles",
@@ -137,6 +147,11 @@ class CloudsearchView extends React.Component {
           title: " Advertisements",
           type: "boolean",
           default: DEFAULTS_FORM_DATA.article_type_advertisement,
+        },
+        sort: {
+          title: "Sort by",
+          enum: ['relevance', 'date (descending)', 'date (ascending)', ],
+          default: DEFAULTS_FORM_DATA.sort,
         },
         /** Hidden properties **/
         page: {
@@ -171,6 +186,28 @@ class CloudsearchView extends React.Component {
       },
       pagelen: {
         "ui:widget": "hidden"
+      },
+      start_date: {
+        "ui:widget": "alt-date",
+        "ui:options": {
+          "yearsRange": [
+            1892,
+            2014
+          ],
+          hideNowButton: true,
+          hideClearButton: true,
+        }
+      },
+      end_date: {
+        "ui:widget": "alt-date",
+        "ui:options": {
+          "yearsRange": [
+            1892,
+            2014
+          ],
+          hideNowButton: true,
+          hideClearButton: true,
+        }
       },
     };
     const pagination = (
@@ -246,8 +283,8 @@ class CloudsearchView extends React.Component {
 
   searchFor({
     article_text,
-    year_start,
-    year_end,
+    start_date,
+    end_date,
     resultsPerPage = 20,
     pageNumber = 1,
     author,
@@ -255,19 +292,21 @@ class CloudsearchView extends React.Component {
     article_type_article,
     article_type_advertisement,
     author_title,
+    sort,
   }) {      
     const searchQuery = createCloudsearchQuery({ 
       article_text: article_text, 
       resultsPerPage: resultsPerPage, 
       pageNumber: pageNumber, 
       highlight: 'article_text',
-      year_start: year_start,
-      year_end: year_end,
+      start_date: start_date,
+      end_date: end_date,
       author: author,
       title: title,
       article_type_article: article_type_article,
       article_type_advertisement: article_type_advertisement,
       author_title: author_title,
+      sort: sort,
     });
 
     if(!searchQuery){
@@ -279,55 +318,58 @@ class CloudsearchView extends React.Component {
     const serverSearchURL =
       STRINGS.CLOUDSEARCH_SEARCH_URL +
       "?" +
-      searchQuery; // todo: make this more dynamic; user can choose what to highlight & we chose what to highlight, based on what the user searches for (title, authorname, text etc).
-      fetch(serverSearchURL)
-      .then(e => e.json())
-      .then(e => {
-        // TODO: handle error
-        const hits = e.hits.hit;
-        const resultsSize = e.hits.found;
-        const results = hits.map(function(hit){
-          const replace_text = {
-            "\\.\\.\\.":'...<br>...',
-            "<em>":"<mark>",
-            "</em>":"</mark>"
+      searchQuery;
+    fetch(serverSearchURL)
+    .then(e => e.json())
+    .then(e => {
+      // TODO: handle error
+      if(!e.hits){
+        e.hits = {found: 0, hit: []};
+      }
+      const hits = e.hits.hit;
+      const resultsSize = e.hits.found;
+      const results = hits.map(function(hit){
+        const replace_text = {
+          "\\.\\.\\.":'...<br>...',
+          "<em>":"<mark>",
+          "</em>":"</mark>"
+        }
+        var RE = new RegExp(Object.keys(replace_text).join("|"), "gi"); 
+        const highlighted_text = (' ' + hit.highlights.article_text).slice(1).replace(RE, function(matched){
+          if(matched === '...'){
+            return replace_text['\\.\\.\\.'];
           }
-          var RE = new RegExp(Object.keys(replace_text).join("|"), "gi"); 
-          const highlighted_text = (' ' + hit.highlights.article_text).slice(1).replace(RE, function(matched){
-            if(matched === '...'){
-              return replace_text['\\.\\.\\.'];
-            }
-            return replace_text[matched];
-          });
-          const text = '...' + highlighted_text + '...';
-          const title = hit.fields.title;
-          const subtitle = hit.fields.subtitle;
-          const author = hit.fields.author;
-          const author_title = hit.fields.author_title;
-          const type = hit.fields.article_type;
-          const matchCount = 100; // idk what this is yet
-          const raw_id = hit.id;
-          const id = raw_id.substring(raw_id.indexOf(type) + type.length);
-          const date = moment(new Date(hit.fields.publish_date));
-          return {
-            text: [text],
-            subtitle: subtitle,
-            title: title,
-            author: author,
-            author_title: author_title,
-            type: type,
-            matchCount: matchCount,
-            id: id,
-            date: date
-          };
+          return replace_text[matched];
         });
-        // TODO: sort results by `matchCount`?
-        this.setState({
-          searchResults: results,
-          searchResultsSize: resultsSize,
-          loading: false
-        });
+        const text = '...' + highlighted_text + '...';
+        const title = hit.fields.title;
+        const subtitle = hit.fields.subtitle;
+        const author = hit.fields.author;
+        const author_title = hit.fields.author_title;
+        const type = hit.fields.article_type;
+        const matchCount = 100; // idk what this is yet
+        const raw_id = hit.id;
+        const id = raw_id.substring(raw_id.indexOf(type) + type.length);
+        const date = moment(new Date(hit.fields.publish_date));
+        return {
+          text: [text],
+          subtitle: subtitle,
+          title: title,
+          author: author,
+          author_title: author_title,
+          type: type,
+          matchCount: matchCount,
+          id: id,
+          date: date
+        };
       });
+      // TODO: sort results by `matchCount`?
+      this.setState({
+        searchResults: results,
+        searchResultsSize: resultsSize,
+        loading: false
+      });
+    });
   }
 }
  

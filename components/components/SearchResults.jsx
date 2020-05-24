@@ -14,8 +14,8 @@ const SearchResult = ({eachResult, getDatePath}) => {
         author_title_data.author_title = eachResult.author_title;
     }
     let year_data = {...DEFAULTS_FORM_DATA}; 
-    year_data.year_start = eachResult.date.year(); //just link to current year, because we can't search for specific days (yet)
-    year_data.year_end = eachResult.date.year();
+    year_data.start_date = eachResult.date.format("YYYY-MM-DD");
+    year_data.end_date = eachResult.date.format("YYYY-MM-DD");
 
     return (
         <div className="EachResult">
