@@ -27,7 +27,7 @@ function add_and_lucene_nested_string(lucene_string, string){
 function add_or_lucene_string(lucene_string, key, val){
     return ` ${lucene_string.length > 0 ? 'OR' : ''} ${key}:${val}`; 
 }
-  
+
 export function createCloudsearchQuery(query){
     try {
         let lucene_string = "";

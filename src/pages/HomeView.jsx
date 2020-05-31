@@ -1,6 +1,7 @@
 import CloudsearchWidget from "./components/CloudsearchWidget";
 import React from "react";
 import { STRINGS } from "../helpers/constants";
+import TodayInHistory from "./components/TodayInHistory";
 
 class HomeView extends React.Component {
   componentDidMount() {
@@ -11,7 +12,7 @@ class HomeView extends React.Component {
 
   render() {
     return (
-      <div className="HomeMainView container mt-4 text-left">
+      <div className="HomeMainView container mt-4 text-left"> {/*where is HomeMainView defined?*/}
         <div className="row">
           <div className="HomeSection col-12 col-sm-4">
             <h2>About this collection</h2>
@@ -54,6 +55,9 @@ class HomeView extends React.Component {
             Stanford-related news, sports and arts content, and serves as the
             voice of the student body.
           </div>
+        </div>
+        <div>
+          <TodayInHistory />
         </div>
       </div>
     );

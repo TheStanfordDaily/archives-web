@@ -1,18 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import BigCalendar from "react-big-calendar";
-import moment from "moment";
-import NotFound from "./NotFound";
-import Loading from "./components/Loading";
-import CalendarNotFoundComponent from "./components/CalendarNotFoundComponent";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
 import {
   fetchMetadata,
-  isMonthInMetaData,
-  getMonthEventsFromMetadata
+  getMonthEventsFromMetadata,
+  isMonthInMetaData
 } from "../helpers/papers";
-import { STRINGS, getDatePath, getMonthPath } from "../helpers/constants";
 
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import BigCalendar from "react-big-calendar";
+import CalendarNotFoundComponent from "./components/CalendarNotFoundComponent";
+import { Link } from "react-router-dom";
+import Loading from "./components/Loading";
+import NotFound from "./NotFound";
+import React from "react";
+import moment from "moment";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
