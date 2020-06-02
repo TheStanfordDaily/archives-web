@@ -99,9 +99,12 @@ class PaperView extends React.Component {
 
   async componentDidMount() {
     const { date, folderPath, metsFilePath, prefetchedPages } = this.props.paper;
+    // console.log("PAPER PROPS", this.props.paper);
     // hardcode date for now so it can be manually set with this.paper.date
     this.paper = new Paper(1, 1, 2000, folderPath, metsFilePath, prefetchedPages);
+    // console.log("DATE", date);
     this.paper.date = date;
+    // console.log("this.paper.date1", this.paper.date);
     this.allPages = this.paper && await this.paper.getPages();
     if (this.paper === null) {
       this.setState({ paperNotFound: true });
@@ -112,7 +115,7 @@ class PaperView extends React.Component {
     for (let eachPage of this.allPages) {
       allTileSources.push(eachPage.getTileSource());
     }
-    console.log(allTileSources);
+    // console.log(allTileSources);
     this.setState({ loading: false });
 
     this.viewer = new OpenSeadragon({
@@ -154,12 +157,12 @@ class PaperView extends React.Component {
   // https://reactjs.org/docs/react-component.html#componentdidupdate
   componentDidUpdate(prevProps) {
     if (this.props.router.asPath !== prevProps.router.asPath) {
-      console.log(
-        "location.search changes from " +
-        prevProps.router.asPath +
-          " to " +
-          this.props.router.asPath
-      );
+      // console.log(
+      //   "location.search changes from " +
+      //   prevProps.router.asPath +
+      //     " to " +
+      //     this.props.router.asPath
+      // );
       this.onQueryChange();
     }
   }
@@ -167,10 +170,12 @@ class PaperView extends React.Component {
   onQueryChange() {
     // This might be overriden by `SectionContent`.
     document.title = getDateTitle(this.paper.date);
+    // console.log("this.paper.date2", this.paper.date);
+    // console.log("set title to ", document.title);
 
     let queryValue = getQueryString(this.props.router);
-    console.log("Query set/changed to:");
-    console.log(queryValue);
+    // console.log("Query set/changed to:");
+    // console.log(queryValue);
 
     let pageNumber = Number(queryValue.page);
 
@@ -194,9 +199,9 @@ class PaperView extends React.Component {
       if (pageNumberForSection !== -1) {
         pageIndex = pageNumberForSection - 1;
       }
-      console.log(sectionIDs[0] + " is on " + pageNumberForSection);
+      // console.log(sectionIDs[0] + " is on " + pageNumberForSection);
     }
-    console.log("Going to page " + pageIndex);
+    // console.log("Going to page " + pageIndex);
     this.viewer.goToPage(pageIndex);
 
     this.setOverlays(pageIndex);
@@ -223,10 +228,11 @@ class PaperView extends React.Component {
     this.viewer.viewport.fitBounds(newBounds, true);
     
     let queryValue = getQueryString(this.props.router);
+    // console.log("query Value: ", queryValue, this.props.router);
     // console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
     // Only use `history.replace` if current query pageNumber is not equal to the new pageNumber.
     if (Number(queryValue.page) !== pageNumber) {
-      console.log("Number(queryValue.page) !== pageNumber");
+      // console.log("Number(queryValue.page) !== pageNumber");
       queryValue.page = pageNumber;
       Router.push(
          "/[year]/[month]/[day]",
@@ -254,10 +260,10 @@ class PaperView extends React.Component {
         selectedSections: [INTERNAL.LOADING_PLACEHOLDER]
       });
       let thisPage = this.allPages[pageIndex];
-      console.log(thisPage.sections);
+      // console.log(thisPage.sections);
       thisPage.getAltoData().then(results => {
-        console.log("finished getAltoData");
-        console.log(results);
+        // console.log("finished getAltoData");
+        // console.log(results);
 
         let firstOverlayY = null;
 
@@ -267,7 +273,7 @@ class PaperView extends React.Component {
           let eachSection = thisPage.sections.find(obj => {
             return obj.sectionID === eachSectionID;
           });
-          console.log(eachSection);
+          // console.log(eachSection);
          
 
           if (eachSection === undefined) {
@@ -331,7 +337,7 @@ class PaperView extends React.Component {
 
   setNavigationWidthFromPxWidth(pxWidth, force = false) {
     let percent = (pxWidth / window.innerWidth) * 100;
-    console.log(percent);
+    // console.log(percent);
 
     this.setNavigationWidthFromPercent(percent, force);
   }
@@ -398,7 +404,7 @@ class PaperView extends React.Component {
           <div className="PaperTitleBar">
             <div className="PaperTitleInfo">
               <h1>
-                <time>{moment(this.paper.date).format("YYYY-MM-DD")}</time>
+                <time>{moment(this.paper.date).utc().format("YYYY-MM-DD")}</time>
               </h1>
               <p className="BackToCalendarButton">
                 <Link href={getMonthPath(this.paper.date)}>
@@ -495,7 +501,7 @@ class PaperView extends React.Component {
                     this.navElement.offsetWidth - this.navElement.clientWidth;
                   // 40px is for padding-left: 20px; and padding-right: 20px;
                   let pxWidth = scrollWidth + scrollbarWidth + 40;
-                  console.log(pxWidth);
+                  // console.log(pxWidth);
                   this.setNavigationWidthFromPxWidth(pxWidth);
                 }}
                 backLink={() => {
