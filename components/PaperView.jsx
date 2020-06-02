@@ -1,22 +1,23 @@
-import React from "react";
+import {
+  INTERNAL,
+  getDatePath,
+  getDateTitle,
+  getMonthPath
+} from "../helpers/constants";
+import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
+import Router, { withRouter } from "next/router";
+
 import Link from "next/link";
+import Loading from "./components/Loading";
+import NotFound from "./NotFound";
+import Paper from "../classes/Paper";
+import React from "react";
+import SectionContent from "./components/SectionContent";
+import { castArray } from "../helpers/util";
+import { fetchPaper } from "../helpers/papers";
 import interact from "interactjs";
 import moment from "moment";
 import queryString from "query-string";
-import { IoIosPaper, IoMdMegaphone } from "react-icons/io";
-import NotFound from "./NotFound";
-import Loading from "./components/Loading";
-import SectionContent from "./components/SectionContent";
-import { fetchPaper } from "../helpers/papers";
-import { castArray } from "../helpers/util";
-import {
-  INTERNAL,
-  getDateTitle,
-  getDatePath,
-  getMonthPath
-} from "../helpers/constants";
-import Router, { withRouter } from "next/router";
-import Paper from "../classes/Paper";
 
 const navigationType = {
   ISSUE: "issue",
