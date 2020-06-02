@@ -1,60 +1,39 @@
 {
-  "name": "@thestanforddaily/archives-web",
-  "version": "0.3.5",
-  "license": "Apache-2.0",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TheStanfordDaily/archives-web.git"
+  "name": "archives-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "prepare-todo-fix": "babel . --out-dir lib",
+    "test": "react-scripts test",
+    "deploy": "sls"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "bootstrap": "^4.3.1",
     "cross-fetch": "^3.0.2",
     "interactjs": "^1.4.3",
-    "jsdom": "^16.0.1",
+    "jsdom": "^16.2.2",
     "lucene": "^2.1.1",
     "moment": "^2.24.0",
+    "next": "^9.4.2",
     "node-sass": "^4.13.1",
     "openseadragon": "^2.4.0",
     "query-string": "^6.5.0",
     "rc-pagination": "^1.18.0",
-    "react": "^16.8.6",
-    "react-big-calendar": "^0.21.0",
+    "react": "16.13.1",
+    "react-big-calendar": "^0.24.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-div-100vh": "^0.3.4",
-    "react-dom": "^16.8.6",
+    "react-dom": "16.13.1",
     "react-ga": "^2.6.0",
     "react-github-corner": "^2.3.0",
     "react-icons": "^3.7.0",
     "react-jsonschema-form": "^1.5.0",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "^3.3.1"
-  },
-  "files": [
-    "/lib"
-  ],
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts --max_old_space_size=8192 build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "prepare": "babel src --out-dir lib"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react-scripts": "^3.3.1",
+    "xmldom": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -63,7 +42,10 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@zeit/next-css": "^1.0.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "prettier": "^2.0.0"
+    "next-images": "^1.4.0",
+    "prettier": "^2.0.0",
+    "serverless": "^1.71.1"
   }
 }
