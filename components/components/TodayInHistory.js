@@ -120,8 +120,8 @@ class TodayPaperView extends React.Component {
                     <p>
                     Today's paper is from {this.state.matchParams.month}/{this.state.matchParams.day}/{this.state.matchParams.year}. {moment().format('DD') !== this.state.matchParams.day ? `(no papers published on this day, so we selected the nearest match)` : ' '}
                     <Link
-                        href={getDatePath((new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${String(Number(this.state.matchParams.day) + 1).padStart(2, '0')}`)))}
-                        key={getDatePath((new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${String(Number(this.state.matchParams.day) + 1).padStart(2, '0')}`)))}
+                        href={getDatePath((new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${String(Number(this.state.matchParams.day)).padStart(2, '0')}`)))}
+                        key={getDatePath((new Date(`${this.state.matchParams.year}-${this.state.matchParams.month}-${String(Number(this.state.matchParams.day)).padStart(2, '0')}`)))}
                     >
                         Go to this paper's page
                     </Link>
