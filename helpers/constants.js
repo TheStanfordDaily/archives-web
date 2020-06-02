@@ -20,6 +20,7 @@ export const INTERNAL = {
   LOADING_PLACEHOLDER: "___LOADING___"
 }
 
+// Need to use .utc() for moment b/c of timezone madness. see https://stackoverflow.com/questions/47528857/momentjs-date-string-adds-one-day 
 export function getDateTitle(date, sectionTitle = null) {
   let results =
     moment(date).utc().format("MMMM D, YYYY") + STRINGS.SITE_NAME_WITH_DIVIDER;
