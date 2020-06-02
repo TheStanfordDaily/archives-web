@@ -490,7 +490,7 @@ class PaperView extends React.Component {
               ))
             ) : (
               <SectionContent
-                date={moment(this.paper.date)}
+                date={moment(this.paper.date).utc()}
                 section={
                   this.state.selectedSections.length
                     ? this.state.selectedSections[0]

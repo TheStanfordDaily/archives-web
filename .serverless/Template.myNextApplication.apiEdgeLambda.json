@@ -1,10 +1,10 @@
 {
   "name": "v45shx7-xcy6z3g",
-  "hash": "VR0b5yc/Cmce4uanWUdYtrMb4jRhbWvw96ojHOR2pTg=",
+  "hash": "Dp7C/Bgdd7n2gBvWoaVVjK3nmGK2SiiqPRkjHD1xHWI=",
   "description": "API Lambda@Edge for Next CloudFront distribution",
   "memory": 512,
   "timeout": 10,
-  "code": "/Users/epicfaace/tsd/archives-web/.serverless_nextjs/api-lambda",
+  "code": "/Users/alexfu/Desktop/School/College/Clubs_Activities/TSD/archivesweb/.serverless_nextjs/api-lambda",
   "shims": [],
   "handler": "index.handler",
   "runtime": "nodejs10.x",

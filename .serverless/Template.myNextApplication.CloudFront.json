@@ -17,7 +17,7 @@
         "api/*": {
           "ttl": 0,
           "lambda@edge": {
-            "origin-request": "arn:aws:lambda:us-east-1:607998788272:function:v45shx7-xcy6z3g:74"
+            "origin-request": "arn:aws:lambda:us-east-1:607998788272:function:v45shx7-xcy6z3g:92"
           },
           "allowedHttpMethods": [
             "HEAD",
@@ -43,7 +43,7 @@
       "queryString": true
     },
     "lambda@edge": {
-      "origin-request": "arn:aws:lambda:us-east-1:607998788272:function:v45shx7-1sjjtyk:74"
+      "origin-request": "arn:aws:lambda:us-east-1:607998788272:function:v45shx7-1sjjtyk:92"
     }
   }
 }
