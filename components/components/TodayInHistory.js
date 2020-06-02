@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Loading from "../components/Loading";
 import NotFound from "../NotFound";
-import OpenSeadragon from "openseadragon";
 import React from 'react';
 import { fetchPaper } from "../../helpers/papers";
 import { getDatePath } from "../../helpers/constants";
@@ -69,7 +68,8 @@ class TodayPaperView extends React.Component {
         }
         this.setState({ loading: false });
 
-        if(this.state.yearsLeft.length > 0){
+        if(this.state.yearsLeft.length > 0 && typeof document !== 'undefined'){
+            const OpenSeadragon = require("openseadragon");
             let viewer = new OpenSeadragon({
                 id: "paper-openseadragon",
                 prefixUrl: "https://openseadragon.github.io/openseadragon/images/", // TODO: change to local path
