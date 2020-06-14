@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { Nav, Navbar } from "react-bootstrap";
-import { withRouter } from 'next/router';
+
+import Link from "next/link";
 import React from "react";
 import ReactGA from "react-ga";
 import { STRINGS } from "../../helpers/constants";
+import { withRouter } from 'next/router';
 
 class TSDNavbar extends React.Component {
   componentDidMount() {
@@ -25,6 +26,7 @@ class TSDNavbar extends React.Component {
       left: {
         Home: STRINGS.ROUTE_ROOT,
         Calendar: STRINGS.ROUTE_CALENDAR,
+        Corrections: STRINGS.ROUTE_CORRECTIONS,
         Acknowledgements: STRINGS.ROUTE_ACKNOWLEDGEMENTS
       },
       right: {
