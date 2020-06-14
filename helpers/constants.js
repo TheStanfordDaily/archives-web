@@ -22,7 +22,6 @@ export const STRINGS = {
     day: "entry.400521547",
     article_type: "entry.1225480261",
     article_num: "entry.2002440206",
-    incorrect_text: "entry.2028841586",
   },
 }
 

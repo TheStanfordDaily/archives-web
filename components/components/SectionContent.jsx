@@ -1,8 +1,9 @@
-import React from "react";
+import { INTERNAL, STRINGS, getDateTitle } from "../../helpers/constants";
+
 import Link from "next/link";
-import fetch from "cross-fetch";
 import Loading from "./Loading";
-import { STRINGS, INTERNAL, getDateTitle } from "../../helpers/constants";
+import React from "react";
+import fetch from "cross-fetch";
 
 class SectionContent extends React.Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class SectionContent extends React.Component {
         </p>
       );
     }
-
+    
     // TODO: automatically resize the parent's `flex-basis` given the `pre`'s width (of the longest line) (to a max of 50% width).
     // TODO: resize back to default 30% after going back to issue.
     return (
