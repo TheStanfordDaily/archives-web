@@ -1,5 +1,6 @@
 import {
   INTERNAL,
+  STRINGS,
   getDatePath,
   getDateTitle,
   getMonthPath
@@ -395,6 +396,22 @@ class PaperView extends React.Component {
       return <Loading />;
     }
 
+    let correctionsDate = new Date(this.paper.date);
+    let correctionsPrefill = {...STRINGS.CORRECTIONS_GOOGLE_FORM_PREFILL};
+    correctionsPrefill.day = correctionsDate.getDay();
+    correctionsPrefill.month = correctionsDate.toLocaleString('default', { month: 'long' });
+    correctionsPrefill.year = correctionsDate.getFullYear();
+    if(this.state.selectedSections.length && this.state.selectedSections[0].sectionID){
+      correctionsPrefill.article_num = this.state.selectedSections[0].sectionID.match(/\d+/)[0];
+      correctionsPrefill.article_type = this.state.selectedSections[0].type === "advertisement" ? "Advertisement" : "Article";
+    }else{
+      correctionsPrefill.article_num = 0;
+      correctionsPrefill.article_type = "Article"
+    }
+    let correctionHref = STRINGS.ROUTE_CORRECTIONS + (queryString.stringify(correctionsPrefill) ? "?" + queryString.stringify(correctionsPrefill) : "");
+    console.log(correctionHref);
+
+
     return (
       <div className="PaperMainView">
         <div
@@ -489,6 +506,7 @@ class PaperView extends React.Component {
                 </div>
               ))
             ) : (
+              <div>
               <SectionContent
                 date={moment(this.paper.date).utc()}
                 section={
@@ -515,6 +533,12 @@ class PaperView extends React.Component {
                   );
                 }}
               />
+              <p>See an Error? Submit a <Link title="correction" href={correctionHref}>
+                  <a target="_blank">
+                    correction
+                  </a>
+                </Link>!</p>
+              </div>
             )}
           </div>
         </div>

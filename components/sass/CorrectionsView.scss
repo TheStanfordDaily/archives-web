@@ -1,0 +1,20 @@
+.CorrectionsMainView {
+    text-align: left;
+    margin: auto;
+    .CorrectionsContent {
+      padding: 50px 20%;
+      h1 {
+        text-align: center;
+      }
+      p:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+    .CorrectionsContent {
+      padding: 20px 20px;
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  }
+  

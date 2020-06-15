@@ -12,8 +12,17 @@ export const STRINGS = {
   ROUTE_ROOT: "/",
   ROUTE_CALENDAR: "/calendar",
   ROUTE_ACKNOWLEDGEMENTS: "/acknowledgements",
+  ROUTE_CORRECTIONS: "/corrections",
   ROUTE_CLOUDSEARCH_PREFIX: '/search', 
   GOOGLE_ANALYTICS_TRACKING_ID: "UA-5773957-6",
+  CORRECTIONS_GOOGLE_FORM: "https://docs.google.com/forms/d/e/1FAIpQLSf8BdqmWzBnOTVg9AS_diCDUbLO-JB3T_BJHo72PzwQGZo5oQ/viewform?embedded=true",
+  CORRECTIONS_GOOGLE_FORM_PREFILL: {
+    year: "entry.1772093325",
+    month: "entry.336350248",
+    day: "entry.400521547",
+    article_type: "entry.1225480261",
+    article_num: "entry.2002440206",
+  },
 }
 
 export const INTERNAL = {
