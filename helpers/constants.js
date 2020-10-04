@@ -8,7 +8,7 @@ export const STRINGS = {
   FILE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
   IMAGE_SERVER_URL: "https://tiles.archives.stanforddaily.com/",
   CLOUDSEARCH_SEARCH_URL: "https://ehabp6fuc5.execute-api.us-east-1.amazonaws.com/prod",
-  SECTION_CONTENT_SERVER_URL: "https://raw.githubusercontent.com/TheStanfordDaily/archives-text/master/",
+  SECTION_CONTENT_SERVER_URL: "https://raw.githubusercontent.com/TheStanfordDaily/archives-text/main/",
   ROUTE_ROOT: "/",
   ROUTE_CALENDAR: "/calendar",
   ROUTE_ACKNOWLEDGEMENTS: "/acknowledgements",
