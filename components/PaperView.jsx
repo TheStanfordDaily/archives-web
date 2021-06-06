@@ -229,13 +229,14 @@ class PaperView extends React.Component {
     this.viewer.viewport.fitBounds(newBounds, true);
     
     let queryValue = getQueryString(this.props.router);
-    // console.log("query Value: ", queryValue, this.props.router);
-    // console.log("queryValue.page is " + queryValue.page.toString() + "while pageNumber is " + pageNumber.toString());
-    // Only use `history.replace` if current query pageNumber is not equal to the new pageNumber.
+    // Only change the current page if current query pageNumber is not equal to the new pageNumber.
     if (Number(queryValue.page) !== pageNumber) {
-      // console.log("Number(queryValue.page) !== pageNumber");
+      // If we are navigating from the search page, then queryValue.page will be undefined; in this
+      // case, we don't want to add a new history entry (or it will be impossible to navigate back),
+      // so we should run Router.replace instead of Router.push.
+      const pushOrReplace = queryValue.page === undefined ? Router.replace: Router.push;
       queryValue.page = pageNumber;
-      Router.push(
+      pushOrReplace(
          "/[year]/[month]/[day]",
          getDatePath(
             this.paper.date,
