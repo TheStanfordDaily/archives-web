@@ -18,19 +18,20 @@ import TSDNavbar from "../components/components/TSDNavbar";
 // We define document and window here so that the production build still
 // works, because openseadragon requires that certain properties are not undefined.
 if (typeof document === 'undefined') {
-  document = {
+  global.document = {
     createElement: () => ({}),
     documentElement: {}
   };
-  window = {
+  global.window = {
     addEventListener: () => null,
     removeEventListener: () => null,
     location: {
       search: ""
     }
   };
-  navigator = {
+  global.navigator = {
   };
+  document = global.document;
 }
 
 
