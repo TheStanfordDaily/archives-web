@@ -20,7 +20,8 @@ import TSDNavbar from "../components/components/TSDNavbar";
 if (typeof document === 'undefined') {
   global.document = {
     createElement: () => ({}),
-    documentElement: {}
+    documentElement: {},
+    querySelector: () => ({}),
   };
   global.window = {
     addEventListener: () => null,
