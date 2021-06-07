@@ -27,24 +27,6 @@ const navigationType = {
 
 const defaultNavigationPercentage = 30;
 
-// We define document and window here so that the production build still
-// works, because openseadragon requires that certain properties are not undefined.
-if (typeof document === 'undefined') {
-  global.document = {
-    createElement: () => ({}),
-    documentElement: {}
-  };
-  global.window = {
-    addEventListener: () => null,
-    removeEventListener: () => null,
-    location: {
-      search: ""
-    }
-  };
-  global.navigator = {
-
-  };
-}
 const OpenSeadragon = require("openseadragon");
 
 /*
