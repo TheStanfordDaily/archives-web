@@ -14,9 +14,24 @@ import { STRINGS } from "../helpers/constants";
 import TSDNavbar from "../components/components/TSDNavbar";
 
 
-// Workaround to fix builds for https://github.com/vercel/next.js/issues/15883
+// Workaround to fix production builds, see https://github.com/vercel/next.js/issues/15883
+// We define document and window here so that the production build still
+// works, because openseadragon requires that certain properties are not undefined.
 if (typeof document === 'undefined') {
-  global.document = { querySelector: function () {}, };
+  global.document = {
+    createElement: () => ({}),
+    documentElement: {},
+    querySelector: function () {}
+  };
+  global.window = {
+    addEventListener: () => null,
+    removeEventListener: () => null,
+    location: {
+      search: ""
+    }
+  };
+  global.navigator = {
+  };
 }
 
 
