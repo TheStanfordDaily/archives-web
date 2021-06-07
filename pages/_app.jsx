@@ -14,6 +14,12 @@ import { STRINGS } from "../helpers/constants";
 import TSDNavbar from "../components/components/TSDNavbar";
 
 
+// Workaround to fix builds for https://github.com/vercel/next.js/issues/15883
+if (typeof document === 'undefined') {
+  global.document = { querySelector: function () {}, };
+}
+
+
   /*
    * Wrapper for all pages.
    */
