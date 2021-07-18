@@ -16,7 +16,6 @@ import React from "react";
 import SectionContent from "./components/SectionContent";
 import { castArray } from "../helpers/util";
 import { fetchPaper } from "../helpers/papers";
-import interact from "interactjs";
 import moment from "moment";
 import queryString from "query-string";
 
@@ -27,8 +26,6 @@ const navigationType = {
 
 const defaultNavigationPercentage = 30;
 
-// We define document and window here so that the production build still
-// works, because openseadragon requires that certain properties are not undefined.
 if (typeof document === 'undefined') {
   global.document = {
     createElement: () => ({}),
@@ -45,7 +42,12 @@ if (typeof document === 'undefined') {
 
   };
 }
-const OpenSeadragon = require("openseadragon");
+
+// We will load these modules in componentDidMount() to ensure
+// that they only load in the browser (as they are only compatible
+// with the browser)
+let OpenSeadragon = null;
+let interact = null;
 
 /*
  * Returns the hash from a URL. Next JS's router doesn't
@@ -99,6 +101,12 @@ class PaperView extends React.Component {
   }
 
   async componentDidMount() {
+
+    if (!OpenSeadragon || !interact) {
+      OpenSeadragon = require("openseadragon");
+      interact = require("interactjs");
+    }
+
     const { date, folderPath, metsFilePath, prefetchedPages } = this.props.paper;
     // console.log("PAPER PROPS", this.props.paper);
     // hardcode date for now so it can be manually set with this.paper.date
