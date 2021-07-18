@@ -14,7 +14,7 @@ import { STRINGS } from "../helpers/constants";
 import TSDNavbar from "../components/components/TSDNavbar";
 
 // Workaround for https://github.com/vercel/next.js/issues/15883
-if (typeof document === 'undefined') { // @ts-ignore global.document = { querySelector: function () {}, }; }
+if (typeof document === 'undefined') { global.document = { querySelector: function () {}, }; }
 
 
   /*
