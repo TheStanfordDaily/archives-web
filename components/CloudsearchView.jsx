@@ -6,7 +6,7 @@ import Loading from "./components/Loading";
 import Pagination from "rc-pagination";
 import React from "react";
 import SearchResults from "./components/SearchResults";
-import fetch from "cross-fetch";
+// import fetch from "cross-fetch";
 import localeInfo from "rc-pagination/lib/locale/en_US";
 import moment from "moment";
 import queryString from "query-string";
